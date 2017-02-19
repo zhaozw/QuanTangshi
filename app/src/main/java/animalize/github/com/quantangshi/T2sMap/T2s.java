@@ -77,11 +77,13 @@ public class T2s {
             int temp_i = i;
 
             // 得到codepoint
-            char c = s.charAt(i);
+            char c = s.charAt(temp_i);
+            
             if (Character.isHighSurrogate(c)) {
                 // 是surrogates
-                if (i + 1 < s.length() && Character.isLowSurrogate(s.charAt(i + 1))) {
-                    codepoint = Character.codePointAt(s, i);
+                if (temp_i + 1 < s.length() &&
+                        Character.isLowSurrogate(s.charAt(temp_i + 1))) {
+                    codepoint = Character.codePointAt(s, temp_i);
                     i += 1;
                 } else {
                     // 缺失LowSurrogate，转换为一个方块
@@ -92,7 +94,7 @@ public class T2s {
                 codepoint = 0x25A1;
             } else {
                 // 非surrogates
-                codepoint = s.codePointAt(i);
+                codepoint = c;
             }
 
             // 转换
@@ -106,7 +108,7 @@ public class T2s {
                     } else if (codepoint != temp_codepoint) {
                         // 在集合，并且不是简->简，而是繁->简
                         Poem.CodepointPosition p = new Poem.CodepointPosition(temp_i,
-                                temp_i + (temp_codepoint > 0xffff ? 2 : 1),
+                                temp_i + (codepoint > 0xffff ? 2 : 1),
                                 temp_codepoint);
                         lst.add(p);
                     }
