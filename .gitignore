@@ -1,5 +1,6 @@
 *.iml
 *.zip
+.idea
 .gradle
 /app/src/main/assets/databases/tangshi.db.zip
 /local.properties

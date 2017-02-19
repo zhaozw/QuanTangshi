@@ -136,8 +136,12 @@ public class T2s {
             BufferedReader bufReader = new BufferedReader(inputReader);
             String line = "";
             String Result = "";
+
             while ((line = bufReader.readLine()) != null)
                 Result += line;
+
+            bufReader.close();
+
             return Result;
         } catch (Exception e) {
             e.printStackTrace();
