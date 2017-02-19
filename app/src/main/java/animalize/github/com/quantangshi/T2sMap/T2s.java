@@ -27,9 +27,7 @@ public class T2s {
     private static Map<Integer, Integer> map;
     private static Set<Integer> set;
 
-    private T2s() {
-        Context context = MyApplication.getContext();
-
+    private T2s(Context context) {
         String s = getFromAssets(context, "map.json");
         if (s == "")
             return;
@@ -76,7 +74,7 @@ public class T2s {
             final int temp_i = i;
 
             // 得到codepoint
-            char c = s.charAt(temp_i);
+            final char c = s.charAt(temp_i);
 
             if (Character.isHighSurrogate(c)) {
                 // 是surrogates
@@ -126,7 +124,7 @@ public class T2s {
 
     private static void getT2s() {
         if (mT2s == null) {
-            mT2s = new T2s();
+            mT2s = new T2s(MyApplication.getContext());
         }
     }
 

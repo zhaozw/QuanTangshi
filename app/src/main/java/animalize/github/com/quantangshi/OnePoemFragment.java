@@ -8,12 +8,14 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +31,6 @@ public class OnePoemFragment extends Fragment {
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
-    private TextView mSimple;
     private ScrollView mScroller;
 
     private Button mTButton;
@@ -74,9 +75,6 @@ public class OnePoemFragment extends Fragment {
 
         // text
         mText = (TextView) v.findViewById(R.id.poem_text);
-
-        // 显示简体
-        mSimple = (TextView) v.findViewById(R.id.show_s);
 
         // scroller
         mScroller = (ScrollView) v.findViewById(R.id.poem_scroller);
@@ -128,7 +126,6 @@ public class OnePoemFragment extends Fragment {
     private void refreshPoem(boolean toTop) {
         mTitle.setText(mP.getTitle());
         mAuthor.setText(mP.getAuthor());
-        mSimple.setText("");
 
         int mode = mP.getMode();
         if (mode == 0) {
@@ -153,14 +150,22 @@ public class OnePoemFragment extends Fragment {
                                @Override
                                public void updateDrawState(TextPaint ds) {
                                    super.updateDrawState(ds);
-                                   ds.setColor(Color.rgb(0x33,0x33,0x99));
+                                   ds.setColor(Color.rgb(0x33, 0x33, 0x99));
                                    ds.setUnderlineText(false);
                                }
 
                                @Override
                                public void onClick(View widget) {
                                    String s = String.valueOf(Character.toChars(p.s_codepoint));
-                                   mSimple.setText(s);
+                                   Toast t = Toast.makeText(getContext(), s, Toast.LENGTH_SHORT);
+                                   // 字体
+                                   ViewGroup group = (ViewGroup) t.getView();
+                                   TextView messageTextView = (TextView) group.getChildAt(0);
+                                   messageTextView.setTextSize(40);
+                                   // 居中
+                                   t.setGravity(Gravity.CENTER, 0, 0);
+                                   // 显示
+                                   t.show();
                                }
                            },
                         p.begin, p.end,
