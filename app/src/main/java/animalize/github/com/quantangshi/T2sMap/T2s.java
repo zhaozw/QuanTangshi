@@ -24,14 +24,13 @@ public class T2s {
     private static final String TAG = "T2s";
 
     private static T2s mT2s;
-    private static Context mContext;
     private static Map<Integer, Integer> map;
     private static Set<Integer> set;
 
     private T2s() {
-        mContext = MyApplication.getContext();
+        Context context = MyApplication.getContext();
 
-        String s = getFromAssets("map.json");
+        String s = getFromAssets(context, "map.json");
         if (s == "")
             return;
 
@@ -78,7 +77,7 @@ public class T2s {
 
             // 得到codepoint
             char c = s.charAt(temp_i);
-            
+
             if (Character.isHighSurrogate(c)) {
                 // 是surrogates
                 if (temp_i + 1 < s.length() &&
@@ -131,9 +130,9 @@ public class T2s {
         }
     }
 
-    private static String getFromAssets(String fileName) {
+    private static String getFromAssets(Context context, String fileName) {
         try {
-            InputStream is = mContext.getResources().getAssets().open(fileName);
+            InputStream is = context.getResources().getAssets().open(fileName);
             InputStreamReader inputReader = new InputStreamReader(is);
             BufferedReader bufReader = new BufferedReader(inputReader);
             String line = "";

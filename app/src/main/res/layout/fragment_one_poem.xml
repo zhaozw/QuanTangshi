@@ -2,33 +2,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/repeat_bg"
     android:orientation="vertical"
-    tools:context="animalize.github.com.quantangshi.OnePoemFragment"
-    android:background="@drawable/repeat_bg">
+    tools:context="animalize.github.com.quantangshi.OnePoemFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/poem_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:padding="9dp"
         android:textAlignment="center"
-        android:textSize="36sp"
-        android:textColor="@android:color/black"/>
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="36sp" />
     <TextView
         android:id="@+id/poem_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:paddingRight="20dp"
+        android:textAllCaps="false"
         android:textSize="24sp"
         />
 
     <View
         android:layout_width="match_parent"
+        android:layout_height="2dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_height="2dp"
         android:background="#9900cc"
         />
     <ScrollView
@@ -42,24 +46,25 @@
             android:id="@+id/poem_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:textAlignment="center"
-            android:textSize="26sp"
-            android:textColor="@android:color/black" />
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="26sp" />
     </ScrollView>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#9900cc"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:background="#9900cc"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
         <TextView
             android:id="@+id/show_s"
             android:layout_width="0dp"
