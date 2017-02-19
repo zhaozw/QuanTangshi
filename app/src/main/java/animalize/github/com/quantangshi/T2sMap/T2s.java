@@ -73,7 +73,7 @@ public class T2s {
         int codepoint;
 
         for (int i = 0; i < s.length(); i++) {
-            int temp_i = i;
+            final int temp_i = i;
 
             // 得到codepoint
             char c = s.charAt(temp_i);
