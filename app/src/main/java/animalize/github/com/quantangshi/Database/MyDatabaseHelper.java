@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.MyApplication;
 
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
@@ -27,10 +28,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static SQLiteDatabase getDB(Context context) {
+    public static SQLiteDatabase getDB() {
         SQLiteDatabase db;
         if (mHelper == null) {
-            mHelper = new MyDatabaseHelper(context.getApplicationContext());
+            Context context = MyApplication.getContext();
+            mHelper = new MyDatabaseHelper(context);
 
             // attach
             String mQuantangshi = MyAssetsDatabaseHelper.getDBPath(context, false);
@@ -69,9 +71,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 总共有多少首诗
-    public static synchronized int getPoemCount(Context context) {
+    public static synchronized int getPoemCount() {
         if (mPoemCount == -1) {
-            SQLiteDatabase db = getDB(context);
+            SQLiteDatabase db = getDB();
 
             String sql = "SELECT count(*) FROM tangshi.poem";
             Cursor c = db.rawQuery(sql, null);
@@ -83,8 +85,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 得到指定id的诗
-    public static synchronized Poem getPoemById(Context context, int id) {
-        SQLiteDatabase db = getDB(context);
+    public static synchronized Poem getPoemById(int id) {
+        SQLiteDatabase db = getDB();
 
         String sql = "SELECT * FROM tangshi.poem WHERE id=?";
         Cursor c = db.rawQuery(sql, new String[]{String.valueOf(id)});

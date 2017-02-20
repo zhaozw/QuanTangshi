@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(tb);
 
 
-        mPoemCount = MyDatabaseHelper.getPoemCount(this);
+        mPoemCount = MyDatabaseHelper.getPoemCount();
 
         Button bt = (Button) findViewById(R.id.main_test);
         bt.setText("共" + mPoemCount + "首诗");

@@ -56,7 +56,7 @@ public class OnePoemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             int id = getArguments().getInt(ARG_ID);
-            mP = MyDatabaseHelper.getPoemById(getActivity(), id);
+            mP = MyDatabaseHelper.getPoemById(id);
             mP.setMode(2);
         }
     }
@@ -109,9 +109,9 @@ public class OnePoemFragment extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int poemCount = MyDatabaseHelper.getPoemCount(getActivity());
+                int poemCount = MyDatabaseHelper.getPoemCount();
                 int id = new Random().nextInt(poemCount - 1) + 1;
-                mP = MyDatabaseHelper.getPoemById(getActivity(), id);
+                mP = MyDatabaseHelper.getPoemById(id);
                 mP.setMode(2);
                 refreshPoem(true);
             }
