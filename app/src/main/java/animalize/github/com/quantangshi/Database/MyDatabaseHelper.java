@@ -45,7 +45,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             //Log.i(TAG, "数据库版本: " + db_ver);
 
-            if (CHECK_TANGSHI_VERSION > db_ver){
+            if (CHECK_TANGSHI_VERSION > db_ver) {
                 // detach
                 db.execSQL("DETACH DATABASE tangshi");
 
@@ -107,6 +107,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // tag表
+        String sql = "CREATE TABLE tag (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "tag_name TEXT NOT NULL);";
+        db.execSQL(sql);
+
+        sql = "CREATE INDEX tname_idx ON tag(tag_name);";
+        db.execSQL(sql);
+
+        // tag_map表
+        sql = "CREATE TABLE tag_map (" +
+                "pid INTEGER, " +
+                "tid INTEGER);";
+        db.execSQL(sql);
+
+        sql = "CREATE INDEX pid_idx ON tag_map(pid);";
+        db.execSQL(sql);
+
+        sql = "CREATE INDEX tid_idx ON tag_map(tid);";
+        db.execSQL(sql);
     }
 
     @Override
