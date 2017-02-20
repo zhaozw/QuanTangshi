@@ -95,8 +95,9 @@ public class T2s {
             }
 
             // 转换
-            if (map.containsKey(codepoint)) {
-                int temp_codepoint = map.get(codepoint);
+            final Integer temp_codepoint = map.get(codepoint);
+            if (temp_codepoint != null) {
+                // 可转换
                 if (lst != null) {
                     // 简体+ 模式
                     if (!set.contains(temp_codepoint)) {
