@@ -111,16 +111,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // tag表
         String sql = "CREATE TABLE tag (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "tag_name TEXT NOT NULL);";
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT NOT NULL," +
+                "count INTEGER);";
         db.execSQL(sql);
 
-        sql = "CREATE INDEX tname_idx ON tag(tag_name);";
+        sql = "CREATE INDEX tname_idx ON tag(name);";
+        db.execSQL(sql);
+
+        sql = "CREATE INDEX tcount_idx ON tag(count);";
         db.execSQL(sql);
 
         // tag_map表
         sql = "CREATE TABLE tag_map (" +
-                "pid INTEGER, " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "pid INTEGER," +
                 "tid INTEGER);";
         db.execSQL(sql);
 
