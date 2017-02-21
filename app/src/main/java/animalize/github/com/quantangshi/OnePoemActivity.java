@@ -69,6 +69,7 @@ public class OnePoemActivity extends AppCompatActivity {
         });
 
         poemFragment.randomPoem();
+        updateUI(poemFragment.getMode());
     }
 
     private void updateUI(int mode) {

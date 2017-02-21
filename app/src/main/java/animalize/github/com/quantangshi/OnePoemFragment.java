@@ -72,6 +72,10 @@ public class OnePoemFragment extends Fragment {
         refreshPoem(true);
     }
 
+    public int getMode() {
+        return mMode;
+    }
+
     public void setMode(int mode) {
         mMode = mode;
         if (mP != null) {
