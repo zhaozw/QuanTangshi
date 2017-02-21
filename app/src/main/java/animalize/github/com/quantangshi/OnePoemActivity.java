@@ -34,6 +34,7 @@ public class OnePoemActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         poemFragment = (OnePoemFragment) fm.findFragmentById(R.id.fragment_one_poem);
 
+        // 按钮
         mTButton = (Button) findViewById(R.id.button_t);
         mTButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +69,12 @@ public class OnePoemActivity extends AppCompatActivity {
             }
         });
 
+        // 随机一首诗
         poemFragment.randomPoem();
         updateUI(poemFragment.getMode());
+
+        // 配置SlidingUpPanelLayout
+        //SlidingUpPanelLayout slide = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     }
 
     private void updateUI(int mode) {

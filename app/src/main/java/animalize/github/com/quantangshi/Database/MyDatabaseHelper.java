@@ -1,5 +1,6 @@
 package animalize.github.com.quantangshi.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,8 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.MyApplication;
 
 
@@ -105,6 +109,110 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         c.close();
 
         return p;
+    }
+
+    // 返回tag id，-1为没有
+    public static synchronized int getTagID(String tag) {
+        SQLiteDatabase db = getDB();
+
+        String sql = "SELECT id FROM tag WHERE name=?";
+        Cursor c = db.rawQuery(sql, new String[]{tag});
+        if (!c.moveToFirst()) {
+            c.close();
+            return -1;
+        }
+
+        int tid = c.getInt(c.getColumnIndex("id"));
+        c.close();
+        return tid;
+    }
+
+    // 诗是否有tag id
+    public static synchronized boolean poemHasTagID(int pid, int tid) {
+        SQLiteDatabase db = getDB();
+
+        String sql = "SELECT * FROM tag_map WHERE pid=?";
+        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(pid)});
+        if (!c.moveToFirst()) {
+            c.close();
+            return false;
+        }
+
+        c.close();
+        return true;
+    }
+
+    // 添加到tag表，count设为1，返回tag id
+    public static synchronized int addTag(String tag) {
+        SQLiteDatabase db = getDB();
+
+        ContentValues cv = new ContentValues();
+        cv.put("name", tag);
+        cv.put("count", 1);
+
+        return (int) db.insert("tag", null, cv);
+    }
+
+    // 得到tag count，-1为不存在
+    public static synchronized int getTagCount(int tid) {
+        SQLiteDatabase db = getDB();
+
+        String sql = "SELECT count FROM tag WHERE id=?";
+        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(tid)});
+        if (!c.moveToFirst()) {
+            c.close();
+            return -1;
+        }
+
+        int count = c.getInt(c.getColumnIndex("count"));
+        c.close();
+        return count;
+    }
+
+    // 更新tag count
+    public static synchronized void updateTagCount(int tid, int count) {
+        SQLiteDatabase db = getDB();
+
+        ContentValues cv = new ContentValues();
+        cv.put("count", count);
+
+        db.update("tag", cv, "id=?", new String[]{String.valueOf(count)});
+    }
+
+    // 添加到tag_map
+    public static synchronized int addTagMap(int pid, int tid) {
+        SQLiteDatabase db = getDB();
+
+        ContentValues cv = new ContentValues();
+        cv.put("pid", pid);
+        cv.put("tid", tid);
+
+        return (int) db.insert("tag_map", null, cv);
+    }
+
+    // 得到tag list
+    public static synchronized List<TagInfo> getTagsByPoem(int pid) {
+        SQLiteDatabase db = getDB();
+
+        String sql = "SELECT tag.id, tag.name, tag.count " +
+                "FROM tag, tag_map " +
+                "WHERE tag_map.pid=? AND tag_map.tid=tag.id";
+        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(pid)});
+
+        List<TagInfo> l = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                TagInfo ti = new TagInfo(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getInt(2)
+                );
+                l.add(ti);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return l;
     }
 
     @Override
