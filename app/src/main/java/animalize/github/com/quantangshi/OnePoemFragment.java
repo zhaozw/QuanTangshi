@@ -41,24 +41,9 @@ public class OnePoemFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static OnePoemFragment newInstance(int id) {
-        OnePoemFragment fragment = new OnePoemFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(ARG_ID, id);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            int id = getArguments().getInt(ARG_ID);
-            mP = MyDatabaseHelper.getPoemById(id);
-            mP.setMode(2);
-        }
     }
 
     @Override
@@ -109,18 +94,24 @@ public class OnePoemFragment extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int poemCount = MyDatabaseHelper.getPoemCount();
-                int id = new Random().nextInt(poemCount - 1) + 1;
-                mP = MyDatabaseHelper.getPoemById(id);
-                mP.setMode(2);
-                refreshPoem(true);
+                randomPoem();
             }
         });
 
+        randomPoem();
         // 显示
         refreshPoem(true);
 
         return v;
+    }
+
+    // 随机一首诗
+    private void randomPoem() {
+        int poemCount = MyDatabaseHelper.getPoemCount();
+        int id = new Random().nextInt(poemCount - 1) + 1;
+        mP = MyDatabaseHelper.getPoemById(id);
+        mP.setMode(2);
+        refreshPoem(true);
     }
 
     private void refreshPoem(boolean toTop) {
