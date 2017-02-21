@@ -9,12 +9,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class OnePoemActivity extends AppCompatActivity {
 
     private OnePoemFragment poemFragment;
+    private TagFragment tagFragment;
 
+    private TextView mPIDText;
     private Button mTButton;
     private Button mSButton;
     private Button mSpButton;
@@ -33,8 +36,11 @@ public class OnePoemActivity extends AppCompatActivity {
         // 得到 诗fragment
         FragmentManager fm = getSupportFragmentManager();
         poemFragment = (OnePoemFragment) fm.findFragmentById(R.id.fragment_one_poem);
+        tagFragment = (TagFragment) fm.findFragmentById(R.id.fragment_tag);
 
-        // 按钮
+        // 控件、按钮
+        mPIDText = (TextView) findViewById(R.id.textview_poem_id);
+
         mTButton = (Button) findViewById(R.id.button_t);
         mTButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,16 +71,22 @@ public class OnePoemActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                poemFragment.randomPoem();
+                randomPoem();
             }
         });
 
-        // 随机一首诗
-        poemFragment.randomPoem();
-        updateUI(poemFragment.getMode());
+        randomPoem();
 
         // 配置SlidingUpPanelLayout
         //SlidingUpPanelLayout slide = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    }
+
+    private void randomPoem() {
+        // 随机一首诗
+        int pid = poemFragment.randomPoem();
+        updateUI(poemFragment.getMode());
+        mPIDText.setText(String.valueOf(pid));
+        tagFragment.setPoemId(pid);
     }
 
     private void updateUI(int mode) {

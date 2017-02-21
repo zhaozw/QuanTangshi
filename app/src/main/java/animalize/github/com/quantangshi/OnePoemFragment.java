@@ -64,12 +64,15 @@ public class OnePoemFragment extends Fragment {
     }
 
     // 随机一首诗
-    public void randomPoem() {
+    public int randomPoem() {
         int poemCount = MyDatabaseHelper.getPoemCount();
-        int id = new Random().nextInt(poemCount - 1) + 1;
+        //int id = new Random().nextInt(poemCount - 1) + 1;
+        int id = new Random().nextInt(6) + 2400;
         mP = MyDatabaseHelper.getPoemById(id);
         mP.setMode(mMode);
         refreshPoem(true);
+
+        return id;
     }
 
     public int getMode() {
