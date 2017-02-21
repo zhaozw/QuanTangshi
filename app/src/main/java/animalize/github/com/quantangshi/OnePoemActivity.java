@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class OnePoemActivity
-        extends AppCompatActivity
-        implements OnePoemFragment.PoemFragmentCallback {
+public class OnePoemActivity extends AppCompatActivity {
 
     private OnePoemFragment poemFragment;
 
@@ -40,21 +38,24 @@ public class OnePoemActivity
         mTButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                poemFragment.changeMode(0);
+                poemFragment.setMode(0);
+                updateUI(0);
             }
         });
         mSButton = (Button) findViewById(R.id.button_s);
         mSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                poemFragment.changeMode(1);
+                poemFragment.setMode(1);
+                updateUI(1);
             }
         });
         mSpButton = (Button) findViewById(R.id.button_sp);
         mSpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                poemFragment.changeMode(2);
+                poemFragment.setMode(2);
+                updateUI(2);
             }
         });
 
@@ -70,8 +71,7 @@ public class OnePoemActivity
         poemFragment.randomPoem();
     }
 
-    @Override
-    public void updateUI(int mode) {
+    private void updateUI(int mode) {
         if (mode == 0) {
             mTButton.setTextColor(Color.BLUE);
             mSButton.setTextColor(Color.BLACK);

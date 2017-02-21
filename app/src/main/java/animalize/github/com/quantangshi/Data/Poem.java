@@ -37,38 +37,36 @@ public class Poem {
         this.text = text;
     }
 
-    public void setMode(int mode){
+    private String getTextByMode(String s,
+                                 int mode,
+                                 ArrayList<CodepointPosition> lst) {
+        if (mode == 1) {
+            return T2s.t2s(s, null);
+        } else if (mode == 2) {
+            return T2s.t2s(s, lst);
+        }
+        return s;
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
         assert 0 <= mode && mode <= 2;
         this.mode = mode;
 
-        if (mode == 1 && s_title == null){
+        if (mode == 1 && s_title == null) {
             s_title = getTextByMode(title, mode, null);
             s_author = getTextByMode(author, mode, null);
             s_text = getTextByMode(text, mode, null);
-        }
-        else if(mode == 2 && sp_title == null){
+        } else if (mode == 2 && sp_title == null) {
             sp_title = getTextByMode(title, mode, null);
             sp_author = getTextByMode(author, mode, null);
 
             posi_text = new ArrayList<>();
             sp_text = getTextByMode(text, mode, posi_text);
         }
-    }
-
-    private String getTextByMode(String s,
-                                 int mode,
-                                 ArrayList<CodepointPosition> lst){
-        switch (mode){
-            case 1:
-                return T2s.t2s(s, null);
-            case 2: // 2
-                return T2s.t2s(s, lst);
-        }
-        return s;
-    }
-
-    public int getMode(){
-        return mode;
     }
 
     public int getId() {
@@ -78,7 +76,7 @@ public class Poem {
     public String getTitle() {
         if (mode == 0)
             return title;
-        else if(mode == 1)
+        else if (mode == 1)
             return s_title;
         else
             return sp_title;
@@ -87,7 +85,7 @@ public class Poem {
     public String getAuthor() {
         if (mode == 0)
             return author;
-        else if(mode == 1)
+        else if (mode == 1)
             return s_author;
         else
             return sp_author;
@@ -96,7 +94,7 @@ public class Poem {
     public String getText() {
         if (mode == 0)
             return text;
-        else if(mode == 1)
+        else if (mode == 1)
             return s_text;
         else
             return sp_text;

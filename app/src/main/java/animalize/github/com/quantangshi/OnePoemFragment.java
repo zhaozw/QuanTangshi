@@ -23,10 +23,11 @@ import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 
 public class OnePoemFragment extends Fragment {
-    private static final String ARG_ID = "id";
     private static final String TAG = "OnePoemFragment";
 
     private Poem mP;
+    private int mMode = 2;
+
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
@@ -67,12 +68,16 @@ public class OnePoemFragment extends Fragment {
         int poemCount = MyDatabaseHelper.getPoemCount();
         int id = new Random().nextInt(poemCount - 1) + 1;
         mP = MyDatabaseHelper.getPoemById(id);
-        mP.setMode(2);
+        mP.setMode(mMode);
         refreshPoem(true);
     }
 
-    public void changeMode(int mode) {
-        mP.setMode(mode);
+    public void setMode(int mode) {
+        mMode = mode;
+        if (mP != null) {
+            mP.setMode(mode);
+        }
+
         refreshPoem(false);
     }
 
@@ -80,10 +85,9 @@ public class OnePoemFragment extends Fragment {
         mTitle.setText(mP.getTitle());
         mAuthor.setText(mP.getAuthor());
 
-        int mode = mP.getMode();
-        if (mode == 0) {
+        if (mMode == 0) {
             mText.setText(mP.getText());
-        } else if (mode == 1) {
+        } else if (mMode == 1) {
             mText.setText(mP.getText());
         } else {
             ArrayList<Poem.CodepointPosition> lst = mP.getPosiText();
@@ -122,12 +126,5 @@ public class OnePoemFragment extends Fragment {
             mScroller.scrollTo(0, 0);
         }
 
-        OnePoemActivity a = (OnePoemActivity) getActivity();
-        a.updateUI(mode);
-
-    }
-
-    public interface PoemFragmentCallback {
-        void updateUI(int mode);
     }
 }
