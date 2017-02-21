@@ -8,9 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 
 public class OnePoemActivity extends AppCompatActivity {
 
-    public static void actionStart(Context context, int id){
+    public static void actionStart(Context context) {
         Intent i = new Intent(context, OnePoemActivity.class);
-        i.putExtra("id", id);
         context.startActivity(i);
     }
 

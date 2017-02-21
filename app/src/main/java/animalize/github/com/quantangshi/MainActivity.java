@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = mRand.nextInt(mPoemCount - 1) + 1;
-                OnePoemActivity.actionStart(MainActivity.this, id);
+                OnePoemActivity.actionStart(MainActivity.this);
             }
         });
     }
