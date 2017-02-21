@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="animalize.github.com.quantangshi.OnePoemFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/poem_title"
         android:layout_width="match_parent"
@@ -53,47 +52,6 @@
             android:textColor="@android:color/black"
             android:textSize="26sp" />
     </ScrollView>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#9900cc"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/show_s"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"/>
-        <Button
-            android:id="@+id/button_t"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="繁"/>
-        <Button
-            android:id="@+id/button_s"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="简"/>
-        <Button
-            android:id="@+id/button_sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="简+"/>
-        <Button
-            android:id="@+id/next_random"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="随机"/>
-    </LinearLayout>
+
+
 </LinearLayout>

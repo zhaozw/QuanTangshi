@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +31,6 @@ public class OnePoemFragment extends Fragment {
     private TextView mAuthor;
     private TextView mText;
     private ScrollView mScroller;
-
-    private Button mTButton;
-    private Button mSButton;
-    private Button mSpButton;
 
     public OnePoemFragment() {
         // Required empty public constructor
@@ -64,54 +59,21 @@ public class OnePoemFragment extends Fragment {
         // scroller
         mScroller = (ScrollView) v.findViewById(R.id.poem_scroller);
 
-        mTButton = (Button) v.findViewById(R.id.button_t);
-        mTButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mP.setMode(0);
-                refreshPoem(false);
-            }
-        });
-        mSButton = (Button) v.findViewById(R.id.button_s);
-        mSButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mP.setMode(1);
-                refreshPoem(false);
-            }
-        });
-        mSpButton = (Button) v.findViewById(R.id.button_sp);
-        mSpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mP.setMode(2);
-                refreshPoem(false);
-            }
-        });
-
-        // 下一首随机诗
-        Button b = (Button) v.findViewById(R.id.next_random);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                randomPoem();
-            }
-        });
-
-        randomPoem();
-        // 显示
-        refreshPoem(true);
-
         return v;
     }
 
     // 随机一首诗
-    private void randomPoem() {
+    public void randomPoem() {
         int poemCount = MyDatabaseHelper.getPoemCount();
         int id = new Random().nextInt(poemCount - 1) + 1;
         mP = MyDatabaseHelper.getPoemById(id);
         mP.setMode(2);
         refreshPoem(true);
+    }
+
+    public void changeMode(int mode) {
+        mP.setMode(mode);
+        refreshPoem(false);
     }
 
     private void refreshPoem(boolean toTop) {
@@ -120,20 +82,10 @@ public class OnePoemFragment extends Fragment {
 
         int mode = mP.getMode();
         if (mode == 0) {
-            mTButton.setTextColor(Color.BLUE);
-            mSButton.setTextColor(Color.BLACK);
-            mSpButton.setTextColor(Color.BLACK);
             mText.setText(mP.getText());
         } else if (mode == 1) {
-            mTButton.setTextColor(Color.BLACK);
-            mSButton.setTextColor(Color.BLUE);
-            mSpButton.setTextColor(Color.BLACK);
             mText.setText(mP.getText());
         } else {
-            mTButton.setTextColor(Color.BLACK);
-            mSButton.setTextColor(Color.BLACK);
-            mSpButton.setTextColor(Color.BLUE);
-
             ArrayList<Poem.CodepointPosition> lst = mP.getPosiText();
             SpannableString ss = new SpannableString(mP.getText());
             for (final Poem.CodepointPosition p : lst) {
@@ -170,5 +122,12 @@ public class OnePoemFragment extends Fragment {
             mScroller.scrollTo(0, 0);
         }
 
+        OnePoemActivity a = (OnePoemActivity) getActivity();
+        a.updateUI(mode);
+
+    }
+
+    public interface PoemFragmentCallback {
+        void updateUI(int mode);
     }
 }
