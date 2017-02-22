@@ -14,7 +14,6 @@ import java.util.List;
 
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
-import animalize.github.com.quantangshi.Database.TagManager;
 import co.lujun.androidtagview.TagContainerLayout;
 
 
@@ -23,6 +22,7 @@ import co.lujun.androidtagview.TagContainerLayout;
  */
 public class TagFragment extends Fragment {
 
+    private static final String TAG = "TagFragment";
     private int mPid;
     private TagContainerLayout mTagContainer;
     private EditText mEdit;
@@ -52,7 +52,7 @@ public class TagFragment extends Fragment {
                     return;
                 }
 
-                TagManager.addTagToPoem(tag, mPid);
+                MyDatabaseHelper.addTagToPoem(tag, mPid);
                 mEdit.setText("");
 
                 setPoemId(mPid);
@@ -80,7 +80,14 @@ public class TagFragment extends Fragment {
         List<TagInfo> tagsinfo = MyDatabaseHelper.getTagsByPoem(pid);
         List<String> tags = new ArrayList<>();
         for (TagInfo info : tagsinfo) {
-            tags.add(info.getName());
+            String s;
+
+            if (info.getCount() > 1) {
+                s = info.getName() + "(" + info.getCount() + ")";
+            } else {
+                s = info.getName();
+            }
+            tags.add(s);
         }
 
         mTagContainer.setTags(tags);
