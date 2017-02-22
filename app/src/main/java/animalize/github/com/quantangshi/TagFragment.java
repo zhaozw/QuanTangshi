@@ -28,7 +28,8 @@ public class TagFragment extends Fragment {
     private int mPid;
 
     private List<TagInfo> mTagList;
-    private TagContainerLayout mTagContainer;
+    private TagContainerLayout mPoemTags;
+    private TagContainerLayout mAllTags;
 
     private boolean mRemoving = false;
     private EditText mEdit;
@@ -72,14 +73,14 @@ public class TagFragment extends Fragment {
             public void onClick(View v) {
                 setDelState();
 
-                List<String> t = mTagContainer.getTags();
-                mTagContainer.setTags(t);
+                List<String> t = mPoemTags.getTags();
+                mPoemTags.setTags(t);
             }
         });
 
         // tag
-        mTagContainer = (TagContainerLayout) v.findViewById(R.id.tagcontainerLayout);
-        mTagContainer.setOnTagClickListener(new TagView.OnTagClickListener() {
+        mPoemTags = (TagContainerLayout) v.findViewById(R.id.poem_tags);
+        mPoemTags.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
 
@@ -97,16 +98,18 @@ public class TagFragment extends Fragment {
             }
         });
 
+        mAllTags = (TagContainerLayout) v.findViewById(R.id.all_tags);
+
         return v;
     }
 
     public void setDelState() {
         if (mRemoving) {
-            mTagContainer.setEnableCross(false);
+            mPoemTags.setEnableCross(false);
             mRemoving = false;
             mDelTag.setText("删除");
         } else {
-            mTagContainer.setEnableCross(true);
+            mPoemTags.setEnableCross(true);
             mRemoving = true;
             mDelTag.setText("返回");
         }
@@ -142,8 +145,26 @@ public class TagFragment extends Fragment {
 
         mTagList = tagsinfo;
 
-        mTagContainer.setEnableCross(mRemoving);
-        mTagContainer.setTags(tags);
+        mPoemTags.setEnableCross(mRemoving);
+        mPoemTags.setTags(tags);
+
+        setAllTags();
     }
 
+    public void setAllTags() {
+        List<TagInfo> tagsinfo = MyDatabaseHelper.getTopTags(20);
+        List<String> tags = new ArrayList<>();
+        for (TagInfo info : tagsinfo) {
+            String s;
+
+            if (info.getCount() > 1) {
+                s = info.getName() + "(" + info.getCount() + ")";
+            } else {
+                s = info.getName();
+            }
+            tags.add(s);
+        }
+
+        mAllTags.setTags(tags);
+    }
 }

@@ -188,6 +188,32 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    // 得到count前20位的tag
+    public static synchronized List<TagInfo> getTopTags(int top) {
+        init();
+
+        String sql = "SELECT id, name, count " +
+                "FROM tag " +
+                "ORDER BY count DESC " +
+                "LIMIT ?";
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(top)});
+
+        List<TagInfo> l = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                TagInfo ti = new TagInfo(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getInt(2)
+                );
+                l.add(ti);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return l;
+    }
+
     // 从tag_map删除
     private static void delFromTagMap(int pid, int tid) {
         mDb.delete("tag_map",
