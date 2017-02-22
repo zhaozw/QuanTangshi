@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +9,11 @@
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagcontainerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:container_border_radius="0dp"
+        app:tag_horizontal_padding="12dp"
+        app:tag_text_size="18sp"
+        app:tag_vertical_padding="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

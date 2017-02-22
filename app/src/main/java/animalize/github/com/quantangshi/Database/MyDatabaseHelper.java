@@ -171,6 +171,38 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    // 删除一个tag
+    public static synchronized boolean delTagFromPoem(int pid, TagInfo info) {
+        SQLiteDatabase db = getDB();
+
+        if (!poemHasTagID(pid, info.getId())) {
+            // 没有
+            return false;
+        }
+
+        db.execSQL("BEGIN");
+
+        // 从tag_map表删除
+        delFromTagMap(pid, info.getId());
+        // count - 1
+        int count = MyDatabaseHelper.getTagCount(info.getId());
+        updateTagCount(info.getId(), count - 1);
+
+        db.execSQL("COMMIT");
+
+        return true;
+    }
+
+    // 从tag_map删除
+    private static void delFromTagMap(int pid, int tid) {
+        SQLiteDatabase db = getDB();
+
+        db.delete("tag_map",
+                "pid=? AND tid=?",
+                new String[]{String.valueOf(pid), String.valueOf(tid)});
+    }
+
+
     // 返回tag id，-1为没有
     private static int getTagID(String tag) {
         SQLiteDatabase db = getDB();
