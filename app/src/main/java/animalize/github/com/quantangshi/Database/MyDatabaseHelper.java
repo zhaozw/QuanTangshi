@@ -26,26 +26,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 静态变量
     private static MyDatabaseHelper mHelper;
+    private static SQLiteDatabase mDb;
     private static int mPoemCount = -1;
 
     private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static SQLiteDatabase getDB() {
-        SQLiteDatabase db;
+    public static void init() {
         if (mHelper == null) {
             Context context = MyApplication.getContext();
             mHelper = new MyDatabaseHelper(context);
 
             // attach
             String mQuantangshi = MyAssetsDatabaseHelper.getDBPath(context, false);
-            db = mHelper.getWritableDatabase();
-            db.execSQL("ATTACH DATABASE '" +
+            mDb = mHelper.getWritableDatabase();
+            mDb.execSQL("ATTACH DATABASE '" +
                     mQuantangshi + "' AS 'tangshi';");
 
             // 检查版本
-            Cursor cursor = db.rawQuery("SELECT value FROM tangshi.dbinfo WHERE name='ver'", null);
+            Cursor cursor = mDb.rawQuery("SELECT value FROM tangshi.dbinfo WHERE name='ver'", null);
             cursor.moveToFirst();
             int db_ver = Integer.parseInt(cursor.getString(0));
             cursor.close();
@@ -53,7 +53,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
             if (CHECK_TANGSHI_VERSION > db_ver) {
                 // detach
-                db.execSQL("DETACH DATABASE tangshi");
+                mDb.execSQL("DETACH DATABASE tangshi");
 
                 // del file
                 File file = new File(mQuantangshi);
@@ -63,24 +63,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 MyAssetsDatabaseHelper.getDBPath(context, true);
 
                 // attach again
-                db.execSQL("ATTACH DATABASE '" +
+                mDb.execSQL("ATTACH DATABASE '" +
                         mQuantangshi + "' AS 'tangshi'");
             }
-
-        } else {
-            db = mHelper.getWritableDatabase();
         }
-
-        return db;
     }
 
     // 总共有多少首诗
     public static synchronized int getPoemCount() {
         if (mPoemCount == -1) {
-            SQLiteDatabase db = getDB();
+            init();
 
             String sql = "SELECT count(*) FROM tangshi.poem";
-            Cursor c = db.rawQuery(sql, null);
+            Cursor c = mDb.rawQuery(sql, null);
             c.moveToFirst();
             mPoemCount = c.getInt(0);
             c.close();
@@ -90,10 +85,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 得到指定id的诗
     public static synchronized Poem getPoemById(int id) {
-        SQLiteDatabase db = getDB();
+        init();
 
         String sql = "SELECT * FROM tangshi.poem WHERE id=?";
-        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(id)});
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(id)});
         c.moveToFirst();
         Poem p = null;
         try {
@@ -113,12 +108,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 得到tag list
     public static synchronized List<TagInfo> getTagsByPoem(int pid) {
-        SQLiteDatabase db = getDB();
+        init();
 
         String sql = "SELECT tag.id, tag.name, tag.count " +
                 "FROM tag, tag_map " +
                 "WHERE tag_map.pid=? AND tag_map.tid=tag.id";
-        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(pid)});
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(pid)});
 
         List<TagInfo> l = new ArrayList<>();
         if (c.moveToFirst()) {
@@ -138,7 +133,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 给诗添加一个tag
     public static synchronized boolean addTagToPoem(String tag, int pid) {
-        SQLiteDatabase db = getDB();
+        init();
 
         int tid = getTagID(tag);
 
@@ -148,7 +143,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 // 诗已存在此tag
                 return false;
             } else {
-                db.execSQL("BEGIN");
+                mDb.execSQL("BEGIN");
 
                 // 添加到tag_map
                 addTagMap(pid, tid);
@@ -156,16 +151,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 int count = MyDatabaseHelper.getTagCount(tid);
                 updateTagCount(tid, count + 1);
 
-                db.execSQL("COMMIT");
+                mDb.execSQL("COMMIT");
             }
         } else {
             // 没在tag表
-            db.execSQL("BEGIN");
+            mDb.execSQL("BEGIN");
 
             tid = MyDatabaseHelper.addTag(tag);
             MyDatabaseHelper.addTagMap(pid, tid);
 
-            db.execSQL("COMMIT");
+            mDb.execSQL("COMMIT");
         }
 
         return true;
@@ -173,14 +168,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 删除一个tag
     public static synchronized boolean delTagFromPoem(int pid, TagInfo info) {
-        SQLiteDatabase db = getDB();
+        init();
 
         if (!poemHasTagID(pid, info.getId())) {
             // 没有
             return false;
         }
 
-        db.execSQL("BEGIN");
+        mDb.execSQL("BEGIN");
 
         // 从tag_map表删除
         delFromTagMap(pid, info.getId());
@@ -188,16 +183,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         int count = MyDatabaseHelper.getTagCount(info.getId());
         updateTagCount(info.getId(), count - 1);
 
-        db.execSQL("COMMIT");
+        mDb.execSQL("COMMIT");
 
         return true;
     }
 
     // 从tag_map删除
     private static void delFromTagMap(int pid, int tid) {
-        SQLiteDatabase db = getDB();
-
-        db.delete("tag_map",
+        mDb.delete("tag_map",
                 "pid=? AND tid=?",
                 new String[]{String.valueOf(pid), String.valueOf(tid)});
     }
@@ -205,10 +198,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 返回tag id，-1为没有
     private static int getTagID(String tag) {
-        SQLiteDatabase db = getDB();
-
         String sql = "SELECT id FROM tag WHERE name=?";
-        Cursor c = db.rawQuery(sql, new String[]{tag});
+        Cursor c = mDb.rawQuery(sql, new String[]{tag});
         if (!c.moveToFirst()) {
             c.close();
             return -1;
@@ -221,10 +212,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 诗是否有tag id
     private static boolean poemHasTagID(int pid, int tid) {
-        SQLiteDatabase db = getDB();
-
         String sql = "SELECT * FROM tag_map WHERE pid=? AND tid=?";
-        Cursor c = db.rawQuery(sql,
+        Cursor c = mDb.rawQuery(sql,
                 new String[]{String.valueOf(pid), String.valueOf(tid)}
         );
         if (!c.moveToFirst()) {
@@ -238,21 +227,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 添加到tag表，count设为1，返回tag id
     private static int addTag(String tag) {
-        SQLiteDatabase db = getDB();
-
         ContentValues cv = new ContentValues();
         cv.put("name", tag);
         cv.put("count", 1);
 
-        return (int) db.insert("tag", null, cv);
+        return (int) mDb.insert("tag", null, cv);
     }
 
     // 得到tag count，-1为不存在
     private static int getTagCount(int tid) {
-        SQLiteDatabase db = getDB();
-
         String sql = "SELECT count FROM tag WHERE id=?";
-        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(tid)});
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(tid)});
         if (!c.moveToFirst()) {
             c.close();
             return -1;
@@ -265,23 +250,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 更新tag count
     private static void updateTagCount(int tid, int count) {
-        SQLiteDatabase db = getDB();
-
-        ContentValues cv = new ContentValues();
-        cv.put("count", count);
-
-        db.update("tag", cv, "id=?", new String[]{String.valueOf(tid)});
+        String sql = "UPDATE tag SET count=? WHERE id=?";
+        mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
     }
 
     // 添加到tag_map
     private static int addTagMap(int pid, int tid) {
-        SQLiteDatabase db = getDB();
-
         ContentValues cv = new ContentValues();
         cv.put("pid", pid);
         cv.put("tid", tid);
 
-        return (int) db.insert("tag_map", null, cv);
+        return (int) mDb.insert("tag_map", null, cv);
     }
 
     @Override
