@@ -53,7 +53,6 @@ public class Poem {
     }
 
     public void setMode(int mode) {
-        assert 0 <= mode && mode <= 2;
         this.mode = mode;
 
         if (mode == 1 && s_title == null) {
