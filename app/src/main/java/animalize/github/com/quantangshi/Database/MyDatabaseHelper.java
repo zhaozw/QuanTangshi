@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Data.RecentInfo;
@@ -18,12 +19,13 @@ import animalize.github.com.quantangshi.MyApplication;
 
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "MyDatabaseHelper";
+
     private static final String DATABASE_NAME = "data.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // 检查数据库版本，sqlite数据库版本小于此值时，重新解压
     private static final int CHECK_TANGSHI_VERSION = 1;
-    private static final String TAG = "MyDatabaseHelper";
 
     // 静态变量
     private static MyDatabaseHelper mHelper;
@@ -82,6 +84,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             c.close();
         }
         return mPoemCount;
+    }
+
+    // 随机一首
+    public static synchronized Poem randomPoem() {
+        int poemCount = MyDatabaseHelper.getPoemCount();
+        int id = new Random().nextInt(poemCount - 1) + 1;
+
+        Poem p;
+        do {
+            p = MyDatabaseHelper.getPoemById(id);
+        } while (p.getText() == "");
+
+        return p;
     }
 
     // 得到指定id的诗
@@ -316,7 +331,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return l;
     }
 
+    // 添加到最近列表
     public static synchronized void addToRecentList(Poem p, int limit) {
+        // 已有的话，先删
+        String sql = "SELECT * " +
+                "FROM recent " +
+                "WHERE pid=?";
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(p.getId())});
+        if (c.moveToFirst()) {
+            mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
+        }
+
         // add
         ContentValues cv = new ContentValues();
         cv.put("pid", p.getId());
@@ -326,8 +351,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         mDb.insert("recent", null, cv);
 
         // get count
-        String sql = "SELECT count(*) FROM recent";
-        Cursor c = mDb.rawQuery(sql, null);
+        sql = "SELECT count(*) FROM recent";
+        c = mDb.rawQuery(sql, null);
         c.moveToFirst();
         int count = c.getInt(0);
         c.close();
@@ -382,18 +407,25 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "author TEXT, " +
                 "time INTEGER);";
         db.execSQL(sql);
+
+        sql = "CREATE INDEX recent_pid_idx ON recent(pid);";
+        db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String sql;
         if (oldVersion == 1) {
             // recent表
-            String sql = "CREATE TABLE recent (" +
+            sql = "CREATE TABLE recent (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "pid INTEGER, " +
                     "title TEXT, " +
                     "author TEXT, " +
                     "time INTEGER);";
+            db.execSQL(sql);
+        } else if (oldVersion == 2) {
+            sql = "CREATE INDEX recent_pid_idx ON recent(pid);";
             db.execSQL(sql);
         }
     }

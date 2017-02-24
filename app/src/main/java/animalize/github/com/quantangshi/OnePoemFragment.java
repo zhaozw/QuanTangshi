@@ -17,10 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import animalize.github.com.quantangshi.Data.Poem;
-import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 
 public class OnePoemFragment extends Fragment {
     private static final String TAG = "OnePoemFragment";
@@ -63,19 +61,10 @@ public class OnePoemFragment extends Fragment {
         return v;
     }
 
-    // 随机一首诗
-    public Poem randomPoem() {
-        int poemCount = MyDatabaseHelper.getPoemCount();
-        int id = new Random().nextInt(poemCount - 1) + 1;
-        mP = MyDatabaseHelper.getPoemById(id);
+    public void setPoem(Poem p) {
+        mP = p;
         mP.setMode(mMode);
         refreshPoem(true);
-
-        return mP;
-    }
-
-    public int getMode() {
-        return mMode;
     }
 
     public void setMode(int mode) {

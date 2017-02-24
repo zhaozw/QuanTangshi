@@ -126,18 +126,37 @@ public class OnePoemActivity extends AppCompatActivity {
 
     private void randomPoem() {
         // 随机一首诗
-        currentPoem = poemFragment.randomPoem();
+        currentPoem = MyDatabaseHelper.randomPoem();
+        updateUIForPoem();
+    }
 
-        // 添加
-        MyDatabaseHelper.addToRecentList(currentPoem, 30);
+    public void toPoemByID(int id) {
+        currentPoem = MyDatabaseHelper.getPoemById(id);
+        updateUIForPoem();
+    }
 
-        updateUI(poemFragment.getMode());
+    private void updateUIForPoem() {
+        // 更新本活动的ui
         mPIDText.setText(String.valueOf(currentPoem.getId()));
+
+        // 显示此诗
+        poemFragment.setPoem(currentPoem);
+
+        // 显示tag
         tagFragment.setPoemId(currentPoem.getId());
 
-        // 最近列表
+        // 添加 到 最近列表
+        MyDatabaseHelper.addToRecentList(currentPoem, 30);
+
+        // 刷新最近列表
         ArrayList<RecentInfo> recent_list = MyDatabaseHelper.getRecentList();
         recentAdapter.setArrayList(recent_list);
+    }
+
+    public void closeDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawers();
+        }
     }
 
     private void updateUI(int mode) {
@@ -156,7 +175,7 @@ public class OnePoemActivity extends AppCompatActivity {
         }
     }
 
-    public static class RecentAdapter
+    public class RecentAdapter
             extends RecyclerView.Adapter<RecentAdapter.MyHolder> {
 
         private static final String TAG = "RecentAdapter";
@@ -172,7 +191,19 @@ public class OnePoemActivity extends AppCompatActivity {
             View v = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.recent_list_item, parent, false);
-            MyHolder holder = new MyHolder(v);
+            final MyHolder holder = new MyHolder(v);
+
+            holder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int posi = holder.getAdapterPosition();
+                    RecentInfo ri = mRecentList.get(posi);
+
+                    OnePoemActivity.this.toPoemByID(ri.getId());
+                    OnePoemActivity.this.closeDrawer();
+                }
+            });
+
             return holder;
         }
 
@@ -196,7 +227,7 @@ public class OnePoemActivity extends AppCompatActivity {
             return mRecentList.size();
         }
 
-        public static class MyHolder extends RecyclerView.ViewHolder {
+        public class MyHolder extends RecyclerView.ViewHolder {
             private LinearLayout root;
             private TextView order;
             private TextView title;
