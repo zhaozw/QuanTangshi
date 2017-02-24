@@ -66,8 +66,7 @@ public class OnePoemFragment extends Fragment {
     // 随机一首诗
     public int randomPoem() {
         int poemCount = MyDatabaseHelper.getPoemCount();
-        //int id = new Random().nextInt(poemCount - 1) + 1;
-        int id = new Random().nextInt(100) + 2400;
+        int id = new Random().nextInt(poemCount - 1) + 1;
         mP = MyDatabaseHelper.getPoemById(id);
         mP.setMode(mMode);
         refreshPoem(true);
