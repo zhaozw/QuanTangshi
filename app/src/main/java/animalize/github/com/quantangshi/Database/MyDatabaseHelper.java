@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RecentInfo;
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.MyApplication;
 
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "data.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // 检查数据库版本，sqlite数据库版本小于此值时，重新解压
     private static final int CHECK_TANGSHI_VERSION = 1;
@@ -289,6 +290,62 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return (int) mDb.insert("tag_map", null, cv);
     }
 
+    // 得到最近列表
+    public static synchronized ArrayList<RecentInfo> getRecentList() {
+        init();
+
+        String sql = "SELECT pid, title, author, time " +
+                "FROM recent " +
+                "ORDER BY id DESC";
+        Cursor c = mDb.rawQuery(sql, null);
+
+        ArrayList<RecentInfo> l = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                RecentInfo ri = new RecentInfo(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getInt(3)
+                );
+                l.add(ri);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return l;
+    }
+
+    public static synchronized void addToRecentList(Poem p, int limit) {
+        // add
+        ContentValues cv = new ContentValues();
+        cv.put("pid", p.getId());
+        cv.put("title", p.getTitle());
+        cv.put("author", p.getAuthor());
+        cv.put("time", (int) (System.currentTimeMillis() / 1000));
+        mDb.insert("recent", null, cv);
+
+        // get count
+        String sql = "SELECT count(*) FROM recent";
+        Cursor c = mDb.rawQuery(sql, null);
+        c.moveToFirst();
+        int count = c.getInt(0);
+        c.close();
+
+        if (count <= limit) {
+            return;
+        }
+
+        // del old
+        sql = "DELETE FROM recent " +
+                "WHERE ID IN (SELECT ID " +
+                "FROM recent " +
+                "ORDER BY ID ASC " +
+                "LIMIT ?);";
+        int deltop = count - limit;
+        mDb.execSQL(sql, new String[]{String.valueOf(deltop)});
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // tag表
@@ -316,9 +373,28 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         sql = "CREATE INDEX tid_idx ON tag_map(tid);";
         db.execSQL(sql);
+
+        // recent表, add in db ver 2
+        sql = "CREATE TABLE recent (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "pid INTEGER, " +
+                "title TEXT, " +
+                "author TEXT, " +
+                "time INTEGER);";
+        db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1) {
+            // recent表
+            String sql = "CREATE TABLE recent (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "pid INTEGER, " +
+                    "title TEXT, " +
+                    "author TEXT, " +
+                    "time INTEGER);";
+            db.execSQL(sql);
+        }
     }
 }
