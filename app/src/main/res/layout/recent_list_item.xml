@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ellipsize="end"
+        android:maxLines="2"
         android:textSize="25sp" />
 
     <TextView

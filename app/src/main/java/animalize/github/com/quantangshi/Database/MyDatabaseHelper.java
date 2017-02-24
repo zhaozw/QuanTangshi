@@ -341,6 +341,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
         }
+        c.close();
 
         // add
         ContentValues cv = new ContentValues();

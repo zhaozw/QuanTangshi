@@ -2,6 +2,7 @@ package animalize.github.com.quantangshi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,8 @@ import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 
 
 public class OnePoemActivity extends AppCompatActivity {
+    final static int recentLimit = 50;
+
     private Poem currentPoem;
 
     private OnePoemFragment poemFragment;
@@ -58,6 +61,7 @@ public class OnePoemActivity extends AppCompatActivity {
 
         // 最近列表
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         // RecyclerView
         recentList = (RecyclerView) findViewById(R.id.recent_list);
         // 布局管理
@@ -72,7 +76,13 @@ public class OnePoemActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawers();
+                    ((Button) v).setText("最近");
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                    ((Button) v).setText("返回");
+                }
             }
         });
 
@@ -85,7 +95,7 @@ public class OnePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 poemFragment.setMode(0);
-                updateUI(0);
+                setPoemMode(0);
             }
         });
         mSButton = (Button) findViewById(R.id.button_s);
@@ -93,7 +103,7 @@ public class OnePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 poemFragment.setMode(1);
-                updateUI(1);
+                setPoemMode(1);
             }
         });
         mSpButton = (Button) findViewById(R.id.button_sp);
@@ -101,7 +111,7 @@ public class OnePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 poemFragment.setMode(2);
-                updateUI(2);
+                setPoemMode(2);
             }
         });
 
@@ -111,17 +121,35 @@ public class OnePoemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 randomPoem();
+                recentList.scrollToPosition(0);
             }
         });
 
-        randomPoem();
+        setPoemMode(2);
+        // load上回的
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        int id = pref.getInt("poem_id", -1);
+        if (id != -1) {
+            toPoemByID(id);
+        } else {
+            randomPoem();
+        }
 
-        // 最近列表
-        ArrayList<RecentInfo> recent_list = MyDatabaseHelper.getRecentList();
-        recentAdapter.setArrayList(recent_list);
-
+        TextView tv = (TextView) findViewById(R.id.recent_title);
+        tv.setText("最近" + recentLimit + "条");
         // 配置SlidingUpPanelLayout
         //SlidingUpPanelLayout slide = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (currentPoem != null) {
+            SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+            editor.putInt("poem_id", currentPoem.getId());
+            editor.apply();
+        }
+
+        super.onDestroy();
     }
 
     private void randomPoem() {
@@ -136,17 +164,17 @@ public class OnePoemActivity extends AppCompatActivity {
     }
 
     private void updateUIForPoem() {
-        // 更新本活动的ui
-        mPIDText.setText(String.valueOf(currentPoem.getId()));
-
         // 显示此诗
         poemFragment.setPoem(currentPoem);
+
+        // 更新本活动的ui
+        mPIDText.setText(String.valueOf(currentPoem.getId()));
 
         // 显示tag
         tagFragment.setPoemId(currentPoem.getId());
 
         // 添加 到 最近列表
-        MyDatabaseHelper.addToRecentList(currentPoem, 30);
+        MyDatabaseHelper.addToRecentList(currentPoem, recentLimit);
 
         // 刷新最近列表
         ArrayList<RecentInfo> recent_list = MyDatabaseHelper.getRecentList();
@@ -159,7 +187,9 @@ public class OnePoemActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(int mode) {
+    private void setPoemMode(int mode) {
+        poemFragment.setMode(mode);
+
         if (mode == 0) {
             mTButton.setTextColor(Color.BLUE);
             mSButton.setTextColor(Color.BLACK);
@@ -201,6 +231,7 @@ public class OnePoemActivity extends AppCompatActivity {
 
                     OnePoemActivity.this.toPoemByID(ri.getId());
                     OnePoemActivity.this.closeDrawer();
+                    OnePoemActivity.this.recentList.scrollToPosition(0);
                 }
             });
 

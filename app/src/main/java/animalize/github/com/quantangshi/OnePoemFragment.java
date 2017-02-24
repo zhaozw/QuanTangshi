@@ -71,9 +71,8 @@ public class OnePoemFragment extends Fragment {
         mMode = mode;
         if (mP != null) {
             mP.setMode(mode);
+            refreshPoem(false);
         }
-
-        refreshPoem(false);
     }
 
     private void refreshPoem(boolean toTop) {
