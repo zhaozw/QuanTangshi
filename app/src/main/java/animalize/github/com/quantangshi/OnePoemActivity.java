@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,16 @@ public class OnePoemActivity extends AppCompatActivity {
 
     private Poem currentPoem;
 
+    private SlidingUpPanelLayout slider;
+    private FrameLayout swichFrame;
+
     private OnePoemFragment poemFragment;
+
+    private LinearLayout recentView;
+    private LinearLayout tagView;
+
     private TagFragment tagFragment;
-    private DrawerLayout drawerLayout;
+
     private RecyclerView recentList;
     private RecentAdapter recentAdapter;
 
@@ -59,8 +68,35 @@ public class OnePoemActivity extends AppCompatActivity {
         poemFragment = (OnePoemFragment) fm.findFragmentById(R.id.fragment_one_poem);
         tagFragment = (TagFragment) fm.findFragmentById(R.id.fragment_tag);
 
+        slider = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                    Rect r = new Rect();
+                    if (swichFrame.getGlobalVisibleRect(r)) {
+                        swichFrame.getLayoutParams().height = r.height();
+                        swichFrame.requestLayout();
+                    }
+                } else {
+                    swichFrame.setLayoutParams(
+                            new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.MATCH_PARENT)
+                    );
+                }
+            }
+        });
+        swichFrame = (FrameLayout) findViewById(R.id.switch_frame);
+
         // 最近列表
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        recentView = (LinearLayout) findViewById(R.id.recent_view);
+        tagView = (LinearLayout) findViewById(R.id.tag_view);
 
         // RecyclerView
         recentList = (RecyclerView) findViewById(R.id.recent_list);
@@ -76,13 +112,28 @@ public class OnePoemActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawers();
-                    ((Button) v).setText("最近");
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                    ((Button) v).setText("返回");
+                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
                 }
+                slider.setScrollableView(recentList);
+
+                tagView.setVisibility(View.GONE);
+                recentView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // 显示tag
+        b = (Button) findViewById(R.id.show_tag);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                }
+                slider.setScrollableView(null);
+
+                recentView.setVisibility(View.GONE);
+                tagView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -181,11 +232,6 @@ public class OnePoemActivity extends AppCompatActivity {
         recentAdapter.setArrayList(recent_list);
     }
 
-    public void closeDrawer() {
-        if (drawerLayout != null) {
-            drawerLayout.closeDrawers();
-        }
-    }
 
     private void setPoemMode(int mode) {
         poemFragment.setMode(mode);
@@ -230,7 +276,6 @@ public class OnePoemActivity extends AppCompatActivity {
                     RecentInfo ri = mRecentList.get(posi);
 
                     OnePoemActivity.this.toPoemByID(ri.getId());
-                    OnePoemActivity.this.closeDrawer();
                     OnePoemActivity.this.recentList.scrollToPosition(0);
                 }
             });

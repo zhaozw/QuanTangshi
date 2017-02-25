@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="animalize.github.com.quantangshi.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        app:titleTextColor="@android:color/white"
-        android:title="唐诗-原型程序">
+        android:title="唐诗-原型程序"
+        app:titleTextColor="@android:color/white">
     </android.support.v7.widget.Toolbar>
 
     <Button
@@ -22,7 +22,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textAllCaps="false"
-        android:text="test"/>
+        android:text="共xxxx首诗"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/main_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="标签管理"
+        android:textAllCaps="false" />
 
 </LinearLayout>

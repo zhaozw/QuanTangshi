@@ -35,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
                 OnePoemActivity.actionStart(MainActivity.this);
             }
         });
+
+        bt = (Button) findViewById(R.id.main_tag);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TagActivity.actionStart(MainActivity.this);
+            }
+        });
     }
 
 }
