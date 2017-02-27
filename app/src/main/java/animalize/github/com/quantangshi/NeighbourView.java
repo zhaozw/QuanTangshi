@@ -2,6 +2,7 @@ package animalize.github.com.quantangshi;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,54 +16,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 
 /**
  * Created by anima on 17-2-27.
  */
 
-public class RecentView extends LinearLayout {
-    final static int recentLimit = 50;
-
+public class NeighbourView extends LinearLayout {
     private PoemController mController;
+    private int mId;
 
-    private RecyclerView mRecentList;
-    private RVAdapter mRecentAdapter;
+    private RecyclerView neighbourList;
+    private RVAdapter neighbourAdapter;
 
-    public RecentView(Context context, AttributeSet attrs) {
+
+    public NeighbourView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.view_recent, this);
+        LayoutInflater.from(context).inflate(R.layout.view_neighbour, this);
 
-        // 最近的RecyclerView
-        mRecentList = (RecyclerView) findViewById(R.id.recent_list);
 
+        // 邻近的RecyclerView
+        neighbourList = (RecyclerView) findViewById(R.id.neighbour_list);
         // 布局管理
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
-        mRecentList.setLayoutManager(lm);
+        neighbourList.setLayoutManager(lm);
         // adapter
-        mRecentAdapter = new RVAdapter();
-        mRecentList.setAdapter(mRecentAdapter);
-
-        TextView tv = (TextView) findViewById(R.id.recent_title);
-        tv.setText("最近" + recentLimit + "条");
+        neighbourAdapter = new RVAdapter();
+        neighbourList.setAdapter(neighbourAdapter);
     }
 
     public void setPoemController(PoemController controller) {
         mController = controller;
     }
 
+    public void setPoemID(int id) {
+        mId = id;
+    }
+
     public void scrollToTop() {
-        mRecentList.scrollToPosition(0);
+        neighbourList.scrollToPosition(0);
     }
 
-    public void setPoem(Poem poem) {
-        MyDatabaseHelper.addToRecentList(poem, recentLimit);
+    public void loadNeighbour() {
+        new LoadNeighbourList().execute(mId, 80);
     }
 
-    public void LoadRecentList() {
-        ArrayList<InfoItem> recent_list = MyDatabaseHelper.getRecentList();
-        mRecentAdapter.setArrayList(recent_list);
+    public void clear() {
+        neighbourAdapter.clear();
+    }
+
+
+    class LoadNeighbourList extends AsyncTask<Integer, Integer, ArrayList<InfoItem>> {
+
+        @Override
+        protected ArrayList<InfoItem> doInBackground(Integer... params) {
+            int id = params[0];
+            int window = params[1];
+            return MyDatabaseHelper.getNeighbourList(id, window);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<InfoItem> infoItems) {
+            neighbourAdapter.setArrayList(infoItems);
+            neighbourAdapter.centerPosition(mId);
+        }
     }
 
     public class RVAdapter
@@ -76,12 +93,23 @@ public class RecentView extends LinearLayout {
             notifyDataSetChanged();
         }
 
+        public void clear() {
+            mRecentList = null;
+            notifyDataSetChanged();
+        }
+
+        public void centerPosition(int id) {
+            NeighbourView.this.neighbourList.scrollToPosition(
+                    id - mRecentList.get(0).getId()
+            );
+        }
+
         @Override
         public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.recent_list_item, parent, false);
-            final RVAdapter.MyHolder holder = new RVAdapter.MyHolder(v);
+            final MyHolder holder = new MyHolder(v);
 
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,8 +117,8 @@ public class RecentView extends LinearLayout {
                     int posi = holder.getAdapterPosition();
                     InfoItem ri = mRecentList.get(posi);
 
-                    mController.setPoemID(ri.getId());
-                    RecentView.this.scrollToTop();
+                    NeighbourView.this.mController.setPoemID(ri.getId());
+                    NeighbourView.this.scrollToTop();
                 }
             });
 
@@ -98,7 +126,7 @@ public class RecentView extends LinearLayout {
         }
 
         @Override
-        public void onBindViewHolder(RVAdapter.MyHolder holder, int position) {
+        public void onBindViewHolder(MyHolder holder, int position) {
             InfoItem ri = mRecentList.get(position);
 
             if (position % 2 == 0) {

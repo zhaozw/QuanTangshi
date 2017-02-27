@@ -5,15 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,10 +16,6 @@ import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 
@@ -42,13 +33,7 @@ public class OnePoemActivity
     private PoemView poemView;
     private TagView tagView;
     private RecentView recentView;
-
-    // 切换功能
-    private LinearLayout neighbourPalace;
-
-    // 邻近
-    private RecyclerView neighbourList;
-    private RVAdapter neighbourAdapter;
+    private NeighbourView neighbourView;
 
     private TextView mPIDText;
     private Button mTButton;
@@ -72,6 +57,10 @@ public class OnePoemActivity
 
         recentView = (RecentView) findViewById(R.id.recent_view);
         recentView.setPoemController(this);
+
+        neighbourView = (NeighbourView) findViewById(R.id.neighbour_view);
+        neighbourView.setPoemController(this);
+
 
         slider = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -99,18 +88,6 @@ public class OnePoemActivity
         });
         swichFrame = (FrameLayout) findViewById(R.id.switch_frame);
 
-        // 供切换的功能界面
-        neighbourPalace = (LinearLayout) findViewById(R.id.neighbour_palace);
-
-
-        // 邻近的RecyclerView
-        neighbourList = (RecyclerView) findViewById(R.id.neighbour_list);
-        // 布局管理
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        neighbourList.setLayoutManager(lm);
-        // adapter
-        neighbourAdapter = new RVAdapter();
-        neighbourList.setAdapter(neighbourAdapter);
 
         // 显示tag
         Button b = (Button) findViewById(R.id.show_tag);
@@ -123,7 +100,7 @@ public class OnePoemActivity
                 slider.setScrollableView(tagView);
 
                 recentView.setVisibility(View.GONE);
-                neighbourPalace.setVisibility(View.GONE);
+                neighbourView.setVisibility(View.GONE);
                 tagView.setVisibility(View.VISIBLE);
             }
         });
@@ -139,7 +116,7 @@ public class OnePoemActivity
                 slider.setScrollableView(recentView);
 
                 tagView.setVisibility(View.GONE);
-                neighbourPalace.setVisibility(View.GONE);
+                neighbourView.setVisibility(View.GONE);
                 recentView.setVisibility(View.VISIBLE);
             }
         });
@@ -149,16 +126,16 @@ public class OnePoemActivity
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LoadNeighbourList().execute(currentPoem.getId(), 80);
+                neighbourView.loadNeighbour();
 
                 if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
                 }
-                slider.setScrollableView(neighbourPalace);
+                slider.setScrollableView(neighbourView);
 
                 tagView.setVisibility(View.GONE);
                 recentView.setVisibility(View.GONE);
-                neighbourPalace.setVisibility(View.VISIBLE);
+                neighbourView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -253,7 +230,8 @@ public class OnePoemActivity
         recentView.LoadRecentList();
 
         // 清空邻近
-        neighbourAdapter.clear();
+        neighbourView.setPoemID(currentPoem.getId());
+        neighbourView.loadNeighbour();
     }
 
     private void setPoemMode(int mode) {
@@ -274,104 +252,4 @@ public class OnePoemActivity
         }
     }
 
-    class LoadNeighbourList extends AsyncTask<Integer, Integer, ArrayList<InfoItem>> {
-
-        @Override
-        protected ArrayList<InfoItem> doInBackground(Integer... params) {
-            int id = params[0];
-            int window = params[1];
-            return MyDatabaseHelper.getNeighbourList(id, window);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<InfoItem> infoItems) {
-            neighbourAdapter.setArrayList(infoItems);
-            neighbourList.scrollToPosition(
-                    neighbourAdapter.centerPosition(currentPoem.getId()));
-        }
-    }
-
-    public class RVAdapter
-            extends RecyclerView.Adapter<RVAdapter.MyHolder> {
-
-        private static final String TAG = "RVAdapter";
-        private List<InfoItem> mRecentList;
-
-        public void setArrayList(ArrayList<InfoItem> al) {
-            mRecentList = al;
-            notifyDataSetChanged();
-        }
-
-        public void clear() {
-            mRecentList = null;
-            notifyDataSetChanged();
-        }
-
-        public int centerPosition(int id) {
-            return id - mRecentList.get(0).getId();
-        }
-
-        @Override
-        public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.recent_list_item, parent, false);
-            final MyHolder holder = new MyHolder(v);
-
-            holder.root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int posi = holder.getAdapterPosition();
-                    InfoItem ri = mRecentList.get(posi);
-
-                    OnePoemActivity.this.toPoemByID(ri.getId());
-                    OnePoemActivity.this.recentView.scrollToTop();
-                }
-            });
-
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyHolder holder, int position) {
-            InfoItem ri = mRecentList.get(position);
-
-            if (position % 2 == 0) {
-                holder.root.setBackgroundColor(Color.rgb(0xff, 0xcc, 0xcc));
-            } else {
-                holder.root.setBackgroundColor(Color.rgb(0xcc, 0xcc, 0xff));
-            }
-
-            holder.order.setText(String.valueOf(position + 1));
-            holder.title.setText(ri.getTitle());
-            holder.author.setText(ri.getAuthor());
-            holder.id.setText("" + ri.getId());
-        }
-
-        @Override
-        public int getItemCount() {
-            if (mRecentList == null) {
-                return 0;
-            }
-            return mRecentList.size();
-        }
-
-        public class MyHolder extends RecyclerView.ViewHolder {
-            private LinearLayout root;
-            private TextView order;
-            private TextView title;
-            private TextView author;
-            private TextView id;
-
-            public MyHolder(View itemView) {
-                super(itemView);
-
-                root = (LinearLayout) itemView.findViewById(R.id.recent_item);
-                order = (TextView) itemView.findViewById(R.id.recent_item_order);
-                title = (TextView) itemView.findViewById(R.id.recent_item_title);
-                author = (TextView) itemView.findViewById(R.id.recent_item_author);
-                id = (TextView) itemView.findViewById(R.id.recent_item_id);
-            }
-        }
-    }
 }
