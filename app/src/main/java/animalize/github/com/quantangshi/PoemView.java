@@ -1,17 +1,18 @@
 package animalize.github.com.quantangshi;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,72 +21,51 @@ import java.util.ArrayList;
 
 import animalize.github.com.quantangshi.Data.Poem;
 
-public class OnePoemFragment extends Fragment {
-    private static final String TAG = "OnePoemFragment";
 
-    private Poem mP;
-    private int mMode = 2;
+public class PoemView extends LinearLayout {
+    private Poem mPoem;
+    private int mChineseMode = 2;
 
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
     private ScrollView mScroller;
 
-    public OnePoemFragment() {
-        // Required empty public constructor
+    public PoemView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        LayoutInflater.from(context).inflate(R.layout.view_poem, this);
+
+        mTitle = (TextView) findViewById(R.id.poem_title);
+        mAuthor = (TextView) findViewById(R.id.poem_author);
+        mText = (TextView) findViewById(R.id.poem_text);
+        mScroller = (ScrollView) findViewById(R.id.poem_scroller);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_one_poem, container, false);
-
-        // title
-        mTitle = (TextView) v.findViewById(R.id.poem_title);
-
-        // author
-        mAuthor = (TextView) v.findViewById(R.id.poem_author);
-
-        // text
-        mText = (TextView) v.findViewById(R.id.poem_text);
-
-        // scroller
-        mScroller = (ScrollView) v.findViewById(R.id.poem_scroller);
-
-        return v;
-    }
-
-    public void setPoem(Poem p) {
-        mP = p;
-        mP.setMode(mMode);
+    public void setPoem(Poem poem) {
+        mPoem = poem;
+        mPoem.setMode(mChineseMode);
         refreshPoem(true);
     }
 
     public void setMode(int mode) {
-        mMode = mode;
-        if (mP != null) {
-            mP.setMode(mode);
+        mChineseMode = mode;
+        if (mPoem != null) {
+            mPoem.setMode(mode);
             refreshPoem(false);
         }
     }
 
     private void refreshPoem(boolean toTop) {
-        mTitle.setText(mP.getTitle());
-        mAuthor.setText(mP.getAuthor());
+        mTitle.setText(mPoem.getTitle());
+        mAuthor.setText(mPoem.getAuthor());
 
-        if (mMode == 0) {
-            mText.setText(mP.getText());
-        } else if (mMode == 1) {
-            mText.setText(mP.getText());
+        if (mChineseMode == 0) {
+            mText.setText(mPoem.getText());
+        } else if (mChineseMode == 1) {
+            mText.setText(mPoem.getText());
         } else {
-            ArrayList<Poem.CodepointPosition> lst = mP.getPosiText();
-            SpannableString ss = new SpannableString(mP.getText());
+            ArrayList<Poem.CodepointPosition> lst = mPoem.getPosiText();
+            SpannableString ss = new SpannableString(mPoem.getText());
             for (final Poem.CodepointPosition p : lst) {
                 ss.setSpan(new ClickableSpan() {
                                @Override

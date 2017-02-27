@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="36sp" />
+
     <TextView
         android:id="@+id/poem_author"
         android:layout_width="wrap_content"
@@ -24,16 +26,15 @@
         android:layout_gravity="right"
         android:paddingRight="20dp"
         android:textAllCaps="false"
-        android:textSize="24sp"
-        />
+        android:textSize="24sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="#006600"
-        />
+        android:background="#006600" />
+
     <ScrollView
         android:id="@+id/poem_scroller"
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:fadeScrollbars="false"
         android:scrollbarSize="10dp"
         android:verticalScrollbarPosition="left">
+
         <TextView
             android:id="@+id/poem_text"
             android:layout_width="match_parent"

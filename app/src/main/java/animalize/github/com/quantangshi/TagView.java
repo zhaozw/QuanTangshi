@@ -1,13 +1,12 @@
 package animalize.github.com.quantangshi;
 
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -16,15 +15,12 @@ import java.util.List;
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import co.lujun.androidtagview.TagContainerLayout;
-import co.lujun.androidtagview.TagView;
-
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by anima on 17-2-27.
  */
-public class TagFragment extends Fragment {
 
-    private static final String TAG = "TagFragment";
+public class TagView extends LinearLayout {
     private int mPid;
 
     private List<TagInfo> mTagList;
@@ -37,21 +33,13 @@ public class TagFragment extends Fragment {
     private Button mAddTag;
     private Button mDelTag;
 
+    public TagView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        LayoutInflater.from(context).inflate(R.layout.view_tag, this);
 
-    public TagFragment() {
-        // Required empty public constructor
-    }
+        mEdit = (EditText) findViewById(R.id.tag_edit);
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tag, container, false);
-
-        mEdit = (EditText) v.findViewById(R.id.tag_edit);
-
-        mAddTag = (Button) v.findViewById(R.id.tag_add);
+        mAddTag = (Button) findViewById(R.id.tag_add);
         mAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +55,7 @@ public class TagFragment extends Fragment {
             }
         });
 
-        mDelTag = (Button) v.findViewById(R.id.tag_del);
+        mDelTag = (Button) findViewById(R.id.tag_del);
         mDelTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,8 +67,8 @@ public class TagFragment extends Fragment {
         });
 
         // tag
-        mPoemTags = (TagContainerLayout) v.findViewById(R.id.poem_tags);
-        mPoemTags.setOnTagClickListener(new TagView.OnTagClickListener() {
+        mPoemTags = (TagContainerLayout) findViewById(R.id.poem_tags);
+        mPoemTags.setOnTagClickListener(new co.lujun.androidtagview.TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
 
@@ -94,14 +82,14 @@ public class TagFragment extends Fragment {
             @Override
             public void onTagCrossClick(int position) {
                 TagInfo info = mTagList.get(position);
-                TagFragment.this.removeTag(info);
+                TagView.this.removeTag(info);
             }
         });
 
-        mAllTags = (TagContainerLayout) v.findViewById(R.id.all_tags);
+        mAllTags = (TagContainerLayout) findViewById(R.id.all_tags);
 
-        return v;
     }
+
 
     public void setDelState() {
         if (mRemoving) {
@@ -118,7 +106,7 @@ public class TagFragment extends Fragment {
     public void removeTag(TagInfo info) {
         MyDatabaseHelper.delTagFromPoem(mPid, info);
 
-        Toast.makeText(getActivity(),
+        Toast.makeText(getContext(),
                 "删除: " + info.getName(),
                 Toast.LENGTH_SHORT).show();
 

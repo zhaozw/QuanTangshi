@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.Poem;
-import animalize.github.com.quantangshi.Data.RecentInfo;
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.MyApplication;
 
@@ -26,6 +26,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 检查数据库版本，sqlite数据库版本小于此值时，重新解压
     private static final int CHECK_TANGSHI_VERSION = 1;
+    private static final String ENCODING = "utf-16LE";
 
     // 静态变量
     private static MyDatabaseHelper mHelper;
@@ -110,9 +111,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         try {
             p = new Poem(
                     c.getInt(c.getColumnIndex("id")),
-                    new String(c.getBlob(c.getColumnIndex("title")), "utf-16LE"),
-                    new String(c.getBlob(c.getColumnIndex("author")), "utf-16LE"),
-                    new String(c.getBlob(c.getColumnIndex("txt")), "utf-16LE")
+                    new String(c.getBlob(c.getColumnIndex("title")), ENCODING),
+                    new String(c.getBlob(c.getColumnIndex("author")), ENCODING),
+                    new String(c.getBlob(c.getColumnIndex("txt")), ENCODING)
             );
         } catch (UnsupportedEncodingException e) {
             //e.printStackTrace();
@@ -306,22 +307,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 得到最近列表
-    public static synchronized ArrayList<RecentInfo> getRecentList() {
+    public static synchronized ArrayList<InfoItem> getRecentList() {
         init();
 
-        String sql = "SELECT pid, title, author, time " +
+        String sql = "SELECT pid, title, author " +
                 "FROM recent " +
                 "ORDER BY id DESC";
         Cursor c = mDb.rawQuery(sql, null);
 
-        ArrayList<RecentInfo> l = new ArrayList<>();
+        ArrayList<InfoItem> l = new ArrayList<>();
         if (c.moveToFirst()) {
             do {
-                RecentInfo ri = new RecentInfo(
+                InfoItem ri = new InfoItem(
                         c.getInt(0),
                         c.getString(1),
-                        c.getString(2),
-                        c.getInt(3)
+                        c.getString(2)
                 );
                 l.add(ri);
             } while (c.moveToNext());
@@ -334,14 +334,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // 添加到最近列表
     public static synchronized void addToRecentList(Poem p, int limit) {
         // 已有的话，先删
-        String sql = "SELECT * " +
-                "FROM recent " +
-                "WHERE pid=?";
-        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(p.getId())});
-        if (c.moveToFirst()) {
-            mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
-        }
-        c.close();
+        mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
 
         // add
         ContentValues cv = new ContentValues();
@@ -352,8 +345,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         mDb.insert("recent", null, cv);
 
         // get count
-        sql = "SELECT count(*) FROM recent";
-        c = mDb.rawQuery(sql, null);
+        String sql = "SELECT count(*) FROM recent";
+        Cursor c = mDb.rawQuery(sql, null);
         c.moveToFirst();
         int count = c.getInt(0);
         c.close();
@@ -370,6 +363,40 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "LIMIT ?);";
         int deltop = count - limit;
         mDb.execSQL(sql, new String[]{String.valueOf(deltop)});
+    }
+
+    // 得到邻近的
+    public static synchronized ArrayList<InfoItem> getNeighbourList(int id,
+                                                                    int window) {
+        init();
+
+        int left = id - window / 2;
+        int right = id + window / 2;
+
+        String sql = "SELECT id,title,author FROM tangshi.poem " +
+                "WHERE ? <= id AND id <= ? " +
+                "ORDER BY id";
+        Cursor c = mDb.rawQuery(sql, new String[]{
+                String.valueOf(left),
+                String.valueOf(right)});
+
+        ArrayList<InfoItem> l = new ArrayList<>();
+        if (c.moveToFirst()) do {
+            InfoItem ri;
+            try {
+                ri = new InfoItem(
+                        c.getInt(0),
+                        new String(c.getBlob(1), ENCODING),
+                        new String(c.getBlob(2), ENCODING)
+                );
+                l.add(ri);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } while (c.moveToNext());
+        c.close();
+
+        return l;
     }
 
     @Override

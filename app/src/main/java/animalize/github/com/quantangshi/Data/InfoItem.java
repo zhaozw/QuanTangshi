@@ -1,17 +1,15 @@
 package animalize.github.com.quantangshi.Data;
 
 
-public class RecentInfo {
+public class InfoItem {
     private int id;
     private String title;
     private String author;
-    private int time;
 
-    public RecentInfo(int id, String title, String author, int time) {
+    public InfoItem(int id, String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.time = time;
     }
 
     public int getId() {
@@ -26,7 +24,4 @@ public class RecentInfo {
         return author;
     }
 
-    public int getTime() {
-        return time;
-    }
 }
