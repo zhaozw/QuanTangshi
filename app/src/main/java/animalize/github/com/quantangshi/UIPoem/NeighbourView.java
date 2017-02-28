@@ -134,7 +134,9 @@ public class NeighbourView extends LinearLayout {
         public void onBindViewHolder(MyHolder holder, int position) {
             InfoItem ri = mRecentList.get(position);
 
-            if (position % 2 == 0) {
+            if (position == NeighbourView.this.mId - mRecentList.get(0).getId()) {
+                holder.root.setBackgroundColor(Color.rgb(0x99, 0xcc, 0x99));
+            } else if (position % 2 == 0) {
                 holder.root.setBackgroundColor(Color.rgb(0xff, 0xcc, 0xcc));
             } else {
                 holder.root.setBackgroundColor(Color.rgb(0xcc, 0xcc, 0xff));

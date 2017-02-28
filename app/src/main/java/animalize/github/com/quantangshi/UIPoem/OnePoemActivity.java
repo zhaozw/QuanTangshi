@@ -62,6 +62,7 @@ public class OnePoemActivity
         neighbourView = (NeighbourView) findViewById(R.id.neighbour_view);
         neighbourView.setPoemController(this);
 
+        swichFrame = (FrameLayout) findViewById(R.id.switch_frame);
 
         slider = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -87,8 +88,6 @@ public class OnePoemActivity
                 }
             }
         });
-        swichFrame = (FrameLayout) findViewById(R.id.switch_frame);
-
 
         // 显示tag
         Button b = (Button) findViewById(R.id.show_tag);
@@ -98,8 +97,6 @@ public class OnePoemActivity
                 if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
                 }
-                slider.setScrollableView(tagView);
-
                 recentView.setVisibility(View.GONE);
                 neighbourView.setVisibility(View.GONE);
                 tagView.setVisibility(View.VISIBLE);
@@ -114,8 +111,6 @@ public class OnePoemActivity
                 if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
                 }
-                slider.setScrollableView(recentView);
-
                 tagView.setVisibility(View.GONE);
                 neighbourView.setVisibility(View.GONE);
                 recentView.setVisibility(View.VISIBLE);
@@ -132,8 +127,6 @@ public class OnePoemActivity
                 if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
                 }
-                slider.setScrollableView(neighbourView);
-
                 tagView.setVisibility(View.GONE);
                 recentView.setVisibility(View.GONE);
                 neighbourView.setVisibility(View.VISIBLE);

@@ -24,7 +24,7 @@ import animalize.github.com.quantangshi.R;
  */
 
 public class RecentView extends LinearLayout {
-    final static int recentLimit = 50;
+    final static int recentLimit = 60;
 
     private PoemController mController;
 

@@ -13,6 +13,7 @@
     sothree:umanoOverlay="false"
     sothree:umanoPanelHeight="52dp"
     sothree:umanoParallaxOffset="100dp"
+    sothree:umanoScrollableView="@+id/switch_frame"
     sothree:umanoShadowHeight="4dp">
 
     <!-- 主界面 - 诗 -->
@@ -36,7 +37,7 @@
         android:orientation="vertical">
 
         <!-- 固定按钮 -->
-        <include layout="@layout/drag_panel" />
+        <include layout="@layout/panel_drag" />
 
         <FrameLayout
             android:id="@+id/switch_frame"

@@ -28,13 +28,15 @@
         <TextView
             android:id="@+id/recent_item_author"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="0dp" />
 
         <TextView
             android:id="@+id/recent_item_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp" />
+            android:minHeight="0dp"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>
