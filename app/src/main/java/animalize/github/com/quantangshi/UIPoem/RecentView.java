@@ -11,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.Poem;
-import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.Database.RecentAgent;
 import animalize.github.com.quantangshi.R;
 
 /**
@@ -25,6 +24,8 @@ import animalize.github.com.quantangshi.R;
 
 public class RecentView extends LinearLayout {
     final static int recentLimit = 60;
+
+    private Poem currentPoem;
 
     private PoemController mController;
 
@@ -53,18 +54,16 @@ public class RecentView extends LinearLayout {
         mController = controller;
     }
 
-    public void scrollToTop() {
-        mRecentList.scrollToPosition(0);
-    }
-
     public void setPoem(Poem poem) {
-        MyDatabaseHelper.addToRecentList(poem, recentLimit);
+        RecentAgent.addToRecent(poem, recentLimit);
     }
 
     public void LoadRecentList() {
-        ArrayList<InfoItem> recent_list = MyDatabaseHelper.getRecentList();
-        mRecentAdapter.setArrayList(recent_list);
+        List<InfoItem> infoItems = RecentAgent.getRecentList();
+        mRecentAdapter.setArrayList(infoItems);
+        mRecentList.scrollToPosition(0);
     }
+
 
     public class RVAdapter
             extends RecyclerView.Adapter<RVAdapter.MyHolder> {
@@ -72,7 +71,7 @@ public class RecentView extends LinearLayout {
         private static final String TAG = "RVAdapter";
         private List<InfoItem> mRecentList;
 
-        public void setArrayList(ArrayList<InfoItem> al) {
+        public void setArrayList(List<InfoItem> al) {
             mRecentList = al;
             notifyDataSetChanged();
         }
@@ -91,7 +90,6 @@ public class RecentView extends LinearLayout {
                     InfoItem ri = mRecentList.get(posi);
 
                     mController.setPoemID(ri.getId());
-                    RecentView.this.scrollToTop();
                 }
             });
 

@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:container_border_radius="0dp"
+        app:tag_cross_color="#999999"
+        app:tag_enable_cross="true"
         app:tag_horizontal_padding="12dp"
         app:tag_text_size="18sp"
         app:tag_vertical_padding="10dp" />
@@ -32,13 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="添加"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/tag_del"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="删除"
             android:textAllCaps="false" />
     </LinearLayout>
 

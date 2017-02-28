@@ -48,6 +48,10 @@ public class PoemView extends LinearLayout {
         refreshPoem(true);
     }
 
+    public int getMode() {
+        return mChineseMode;
+    }
+
     public void setMode(int mode) {
         mChineseMode = mode;
         if (mPoem != null) {

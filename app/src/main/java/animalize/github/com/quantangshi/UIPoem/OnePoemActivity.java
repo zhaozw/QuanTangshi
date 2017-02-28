@@ -122,7 +122,7 @@ public class OnePoemActivity
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                neighbourView.loadNeighbour();
+                neighbourView.centerPosition();
 
                 if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
@@ -168,7 +168,6 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 randomPoem();
-                recentView.scrollToTop();
             }
         });
 
@@ -204,10 +203,16 @@ public class OnePoemActivity
     }
 
     private void updateUIForPoem() {
-        // 写入
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-        editor.putInt("poem_id", currentPoem.getId());
-        editor.apply();
+        // 诗的模式
+        currentPoem.setMode(poemView.getMode());
+
+        // 最近
+        recentView.setPoem(currentPoem);
+        recentView.LoadRecentList();
+
+        // 邻近
+        neighbourView.setPoem(currentPoem);
+        neighbourView.loadNeighbour();
 
         // 显示此诗
         poemView.setPoem(currentPoem);
@@ -218,14 +223,10 @@ public class OnePoemActivity
         // 显示tag
         tagView.setPoemId(currentPoem.getId());
 
-        // 添加已有诗
-        recentView.setPoem(currentPoem);
-        // 刷新最近列表
-        recentView.LoadRecentList();
-
-        // 清空邻近
-        neighbourView.setPoemID(currentPoem.getId());
-        neighbourView.loadNeighbour();
+        // 写入
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putInt("poem_id", currentPoem.getId());
+        editor.apply();
     }
 
     private void setPoemMode(int mode) {

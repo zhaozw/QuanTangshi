@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
+import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
 
@@ -25,7 +26,7 @@ import animalize.github.com.quantangshi.R;
 
 public class NeighbourView extends LinearLayout {
     private PoemController mController;
-    private int mId;
+    private Poem poem;
 
     private RecyclerView neighbourList;
     private RVAdapter neighbourAdapter;
@@ -51,23 +52,21 @@ public class NeighbourView extends LinearLayout {
     }
 
     public int getPoemID() {
-        return mId;
+        return poem.getId();
     }
 
-    public void setPoemID(int id) {
-        mId = id;
+    public void setPoem(Poem poem) {
+        this.poem = poem;
     }
 
-    public void scrollToTop() {
-        neighbourList.scrollToPosition(0);
+    public void centerPosition() {
+        NeighbourView.this.neighbourList.scrollToPosition(
+                poem.getId() - neighbourAdapter.getFirstId()
+        );
     }
 
     public void loadNeighbour() {
-        new LoadNeighbourList().execute(mId, 80);
-    }
-
-    public void clear() {
-        neighbourAdapter.clear();
+        new LoadNeighbourList().execute(poem.getId(), 80);
     }
 
 
@@ -83,30 +82,18 @@ public class NeighbourView extends LinearLayout {
         @Override
         protected void onPostExecute(ArrayList<InfoItem> infoItems) {
             neighbourAdapter.setArrayList(infoItems);
-            neighbourAdapter.centerPosition(mId);
+            centerPosition();
         }
     }
 
     public class RVAdapter
             extends RecyclerView.Adapter<RVAdapter.MyHolder> {
 
-        private static final String TAG = "RVAdapter";
         private List<InfoItem> mRecentList;
 
         public void setArrayList(ArrayList<InfoItem> al) {
             mRecentList = al;
             notifyDataSetChanged();
-        }
-
-        public void clear() {
-            mRecentList = null;
-            notifyDataSetChanged();
-        }
-
-        public void centerPosition(int id) {
-            NeighbourView.this.neighbourList.scrollToPosition(
-                    id - mRecentList.get(0).getId()
-            );
         }
 
         @Override
@@ -123,7 +110,6 @@ public class NeighbourView extends LinearLayout {
                     InfoItem ri = mRecentList.get(posi);
 
                     NeighbourView.this.mController.setPoemID(ri.getId());
-                    NeighbourView.this.scrollToTop();
                 }
             });
 
@@ -134,7 +120,8 @@ public class NeighbourView extends LinearLayout {
         public void onBindViewHolder(MyHolder holder, int position) {
             InfoItem ri = mRecentList.get(position);
 
-            if (position == NeighbourView.this.mId - mRecentList.get(0).getId()) {
+            if (position == NeighbourView.this.poem.getId() -
+                    mRecentList.get(0).getId()) {
                 holder.root.setBackgroundColor(Color.rgb(0x99, 0xcc, 0x99));
             } else if (position % 2 == 0) {
                 holder.root.setBackgroundColor(Color.rgb(0xff, 0xcc, 0xcc));
@@ -156,6 +143,13 @@ public class NeighbourView extends LinearLayout {
                 return 0;
             }
             return mRecentList.size();
+        }
+
+        public int getFirstId() {
+            if (mRecentList == null) {
+                return -1;
+            }
+            return mRecentList.get(0).getId();
         }
 
         public class MyHolder extends RecyclerView.ViewHolder {

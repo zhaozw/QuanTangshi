@@ -1,6 +1,8 @@
 package animalize.github.com.quantangshi.UIPoem;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +19,6 @@ import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
 import co.lujun.androidtagview.TagContainerLayout;
 
-/**
- * Created by anima on 17-2-27.
- */
 
 public class TagView extends LinearLayout {
     private int mPid;
@@ -28,11 +27,9 @@ public class TagView extends LinearLayout {
     private TagContainerLayout mPoemTags;
     private TagContainerLayout mAllTags;
 
-    private boolean mRemoving = false;
     private EditText mEdit;
 
     private Button mAddTag;
-    private Button mDelTag;
 
     public TagView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,17 +53,6 @@ public class TagView extends LinearLayout {
             }
         });
 
-        mDelTag = (Button) findViewById(R.id.tag_del);
-        mDelTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDelState();
-
-                List<String> t = mPoemTags.getTags();
-                mPoemTags.setTags(t);
-            }
-        });
-
         // tag
         mPoemTags = (TagContainerLayout) findViewById(R.id.poem_tags);
         mPoemTags.setOnTagClickListener(new co.lujun.androidtagview.TagView.OnTagClickListener() {
@@ -82,26 +68,29 @@ public class TagView extends LinearLayout {
 
             @Override
             public void onTagCrossClick(int position) {
-                TagInfo info = mTagList.get(position);
-                TagView.this.removeTag(info);
+                final TagInfo info = mTagList.get(position);
+
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("确认删除: " + info.getName() + "?");
+                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TagView.this.removeTag(info);
+                    }
+                });
+                builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
             }
         });
 
         mAllTags = (TagContainerLayout) findViewById(R.id.all_tags);
 
-    }
-
-
-    public void setDelState() {
-        if (mRemoving) {
-            mPoemTags.setEnableCross(false);
-            mRemoving = false;
-            mDelTag.setText("删除");
-        } else {
-            mPoemTags.setEnableCross(true);
-            mRemoving = true;
-            mDelTag.setText("返回");
-        }
     }
 
     public void removeTag(TagInfo info) {
@@ -111,8 +100,6 @@ public class TagView extends LinearLayout {
                 "删除: " + info.getName(),
                 Toast.LENGTH_SHORT).show();
 
-        mRemoving = false;
-        setDelState();
         setPoemId(mPid);
     }
 
@@ -133,8 +120,6 @@ public class TagView extends LinearLayout {
         }
 
         mTagList = tagsinfo;
-
-        mPoemTags.setEnableCross(mRemoving);
         mPoemTags.setTags(tags);
 
         setAllTags();
