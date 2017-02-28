@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!-- 主界面 -->
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoAnchorPoint="0.6"
+    sothree:umanoDragView="@+id/drag_view"
+    sothree:umanoOverlay="false"
+    sothree:umanoPanelHeight="52dp"
+    sothree:umanoParallaxOffset="100dp"
+    sothree:umanoShadowHeight="4dp">
+
+    <!-- 主界面 - 诗 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <animalize.github.com.quantangshi.UIPoem.PoemView
+            android:id="@+id/poem_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- 副界面 - 滑动面板 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <!-- 固定按钮 -->
+        <include layout="@layout/drag_panel" />
+
+        <FrameLayout
+            android:id="@+id/switch_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 标签 -->
+            <animalize.github.com.quantangshi.UIPoem.TagView
+                android:id="@+id/tag_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 最近列表 -->
+            <animalize.github.com.quantangshi.UIPoem.RecentView
+                android:id="@+id/recent_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <!-- 邻近 -->
+            <animalize.github.com.quantangshi.UIPoem.NeighbourView
+                android:id="@+id/neighbour_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

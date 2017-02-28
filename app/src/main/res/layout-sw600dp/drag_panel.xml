@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drag_view"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:layout_gravity="bottom"
+    android:layout_weight="0"
+    android:background="#6666cc"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/button_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:minWidth="30dp"
+        android:text="繁" />
+
+    <Button
+        android:id="@+id/button_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:minWidth="30dp"
+        android:text="简" />
+
+    <Button
+        android:id="@+id/button_sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:minWidth="30dp"
+        android:text="简+" />
+
+    <Button
+        android:id="@+id/next_random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="随机" />
+
+    <TextView
+        android:id="@+id/textview_poem_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/show_neighbour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="邻近" />
+
+    <Button
+        android:id="@+id/show_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="最近" />
+
+    <Button
+        android:id="@+id/show_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="标签" />
+
+</LinearLayout>
