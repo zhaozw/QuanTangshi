@@ -1,4 +1,4 @@
-package animalize.github.com.quantangshi;
+package animalize.github.com.quantangshi.UIPoem;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import java.util.List;
 import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.R;
 
 /**
  * Created by anima on 17-2-27.

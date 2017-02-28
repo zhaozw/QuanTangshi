@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OnePoemActivity"
+            android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask"></activity>
         <activity
             android:name=".TagActivity"

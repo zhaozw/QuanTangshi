@@ -1,4 +1,4 @@
-package animalize.github.com.quantangshi;
+package animalize.github.com.quantangshi.UIPoem;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import animalize.github.com.quantangshi.Data.Poem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.R;
 
 
 public class OnePoemActivity

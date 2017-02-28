@@ -9,6 +9,7 @@ import android.widget.Button;
 import java.util.Random;
 
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
 
 
 public class MainActivity extends AppCompatActivity {

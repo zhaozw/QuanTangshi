@@ -1,4 +1,4 @@
-package animalize.github.com.quantangshi;
+package animalize.github.com.quantangshi.UIPoem;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.R;
 import co.lujun.androidtagview.TagContainerLayout;
 
 /**

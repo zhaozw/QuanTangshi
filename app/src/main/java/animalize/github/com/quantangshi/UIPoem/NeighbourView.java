@@ -1,4 +1,4 @@
-package animalize.github.com.quantangshi;
+package animalize.github.com.quantangshi.UIPoem;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.R;
 
 /**
  * Created by anima on 17-2-27.
@@ -47,6 +48,10 @@ public class NeighbourView extends LinearLayout {
 
     public void setPoemController(PoemController controller) {
         mController = controller;
+    }
+
+    public int getPoemID() {
+        return mId;
     }
 
     public void setPoemID(int id) {
@@ -135,7 +140,9 @@ public class NeighbourView extends LinearLayout {
                 holder.root.setBackgroundColor(Color.rgb(0xcc, 0xcc, 0xff));
             }
 
-            holder.order.setText(String.valueOf(position + 1));
+            holder.order.setText("" +
+                    (ri.getId() - NeighbourView.this.getPoemID())
+            );
             holder.title.setText(ri.getTitle());
             holder.author.setText(ri.getAuthor());
             holder.id.setText("" + ri.getId());
