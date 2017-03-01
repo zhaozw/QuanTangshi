@@ -34,18 +34,19 @@ public class RecentAgent {
         );
 
         // 进数据库
-        new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 MyDatabaseHelper.addToRecentList(poem, limit);
             }
-        }.run();
+        }).start();
     }
 
     public static synchronized List<InfoItem> getRecentList() {
         if (recentList == null) {
             loadRecentList();
         }
+
         List<InfoItem> t = new ArrayList<>(recentList.values());
 
         // 反转
@@ -57,6 +58,10 @@ public class RecentAgent {
         recentList = new MyLinkedHashMap();
 
         ArrayList<InfoItem> tempList = MyDatabaseHelper.getRecentList();
+        // 反转
+        Collections.reverse(tempList);
+
+        // 添加到本地
         for (InfoItem info : tempList) {
             recentList.put(info.getId(), info);
         }
