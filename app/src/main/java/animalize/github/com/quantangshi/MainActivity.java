@@ -5,16 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-
-import java.util.Random;
+import android.widget.EditText;
 
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Random mRand = new Random();
     private int mPoemCount = -1;
+
+    private EditText idEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +37,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bt = (Button) findViewById(R.id.main_tag);
+        idEdit = (EditText) findViewById(R.id.jump_edit);
+        bt = (Button) findViewById(R.id.jump_button);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TagActivity.actionStart(MainActivity.this);
+                try {
+                    int id = Integer.parseInt(idEdit.getText().toString());
+                    if (1 <= id && id <= mPoemCount && mPoemCount != -1) {
+                        OnePoemActivity.actionStart(MainActivity.this, id);
+                    }
+                } catch (NumberFormatException e) {
+                }
+            }
+        });
+
+        bt = (Button) findViewById(R.id.jump_clear);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                idEdit.setText("");
             }
         });
     }

@@ -15,7 +15,7 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
-        android:textSize="26sp" />
+        android:textSize="36sp" />
 
     <TextView
         android:id="@+id/poem_author"
@@ -24,7 +24,7 @@
         android:layout_gravity="right"
         android:paddingRight="20dp"
         android:textAllCaps="false"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
     <View
         android:layout_width="match_parent"

@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:title="唐诗-原型程序"
-        app:titleTextColor="@android:color/white">
-    </android.support.v7.widget.Toolbar>
+        app:titleTextColor="@android:color/white"></android.support.v7.widget.Toolbar>
 
     <Button
         android:id="@+id/main_test"
@@ -25,12 +24,32 @@
         android:text="共xxxx首诗"
         android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/main_tag"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="标签管理"
-        android:textAllCaps="false" />
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/jump_edit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/jump_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跳转到"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/jump_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空"
+            android:textAllCaps="false" />
+    </LinearLayout>
 
 </LinearLayout>

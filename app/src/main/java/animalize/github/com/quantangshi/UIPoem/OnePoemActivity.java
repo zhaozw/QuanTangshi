@@ -46,11 +46,20 @@ public class OnePoemActivity
         context.startActivity(i);
     }
 
+    public static void actionStart(Context context, int id) {
+        Intent i = new Intent(context, OnePoemActivity.class);
+        i.putExtra("poem_id", id);
+        context.startActivity(i);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.poem_main);
+
+        // intent
+        Intent intent = getIntent();
+        int intentID = intent.getIntExtra("poem_id", -1);
 
         // 得到 诗view
         poemView = (PoemView) findViewById(R.id.poem_view);
@@ -172,13 +181,18 @@ public class OnePoemActivity
         });
 
         setPoemMode(2);
-        // load上回的
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        int id = pref.getInt("poem_id", -1);
-        if (id != -1) {
-            toPoemByID(id);
+
+        if (intentID != -1) {
+            toPoemByID(intentID);
         } else {
-            randomPoem();
+            // load上回的
+            SharedPreferences pref = getPreferences(MODE_PRIVATE);
+            int id = pref.getInt("poem_id", -1);
+            if (id != -1) {
+                toPoemByID(id);
+            } else {
+                randomPoem();
+            }
         }
 
         // 配置SlidingUpPanelLayout

@@ -19,10 +19,6 @@
         <activity
             android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask"></activity>
-        <activity
-            android:name=".TagActivity"
-            android:label="@string/title_activity_tag"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
