@@ -27,10 +27,11 @@ import animalize.github.com.quantangshi.R;
 
 public class PoemView extends LinearLayout {
     private PoemWrapper mPoemWrapper;
-    private Typeset mTypeset = new Typeset();
+    private Typeset mTypeset = Typeset.getInstance();
 
     private int mChineseMode = 2;
 
+    private TextView mId;
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mText;
@@ -40,6 +41,7 @@ public class PoemView extends LinearLayout {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_poem, this);
 
+        mId = (TextView) findViewById(R.id.poem_id);
         mTitle = (TextView) findViewById(R.id.poem_title);
         mAuthor = (TextView) findViewById(R.id.poem_author);
         mText = (TextView) findViewById(R.id.poem_text);
@@ -51,10 +53,6 @@ public class PoemView extends LinearLayout {
         refreshPoem(true);
     }
 
-    public int getMode() {
-        return mChineseMode;
-    }
-
     public void setMode(int mode) {
         mChineseMode = mode;
         if (mPoemWrapper != null) {
@@ -62,10 +60,31 @@ public class PoemView extends LinearLayout {
         }
     }
 
+    public Typeset getTypeset() {
+        return mTypeset;
+    }
+
+
+    public void updateTypeset() {
+        mPoemWrapper.setLineBreak(mTypeset.getLineBreak());
+
+        mTitle.setLines(mTypeset.getTitleLines());
+        mTitle.setTextSize(mTypeset.getTitleSize());
+
+        int temp = (int) (mTypeset.getTitleSize() * 0.618);
+        mId.setTextSize(temp);
+        mAuthor.setTextSize(temp);
+
+        mText.setTextSize(mTypeset.getTextSize());
+
+        refreshPoem(false);
+    }
+
     private void refreshPoem(boolean toTop) {
         mTitle.setTextSize(mTypeset.getTitleSize());
         mTitle.setText(mPoemWrapper.getTitle(mChineseMode));
 
+        mId.setText("" + mPoemWrapper.getID());
         mAuthor.setText(mPoemWrapper.getAuthor(mChineseMode));
 
         mText.setTextSize(mTypeset.getTextSize());

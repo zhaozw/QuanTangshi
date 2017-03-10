@@ -32,6 +32,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static MyDatabaseHelper mHelper;
     private static SQLiteDatabase mDb;
     private static int mPoemCount = -1;
+    private static RawPoem mCachePoem;
 
     private MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -102,6 +103,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 得到指定id的诗
     public static synchronized RawPoem getPoemById(int id) {
+        if (mCachePoem != null && mCachePoem.getId() == id) {
+            return mCachePoem;
+        }
+
         init();
 
         String sql = "SELECT * FROM tangshi.poem WHERE id=?";
@@ -120,6 +125,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         c.close();
 
+        mCachePoem = p;
         return p;
     }
 

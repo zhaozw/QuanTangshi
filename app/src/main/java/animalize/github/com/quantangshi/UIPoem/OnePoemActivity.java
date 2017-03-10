@@ -12,13 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
+import animalize.github.com.quantangshi.TranslateActivity;
 
 
 public class OnePoemActivity
@@ -36,7 +36,7 @@ public class OnePoemActivity
     private RecentView recentView;
     private NeighbourView neighbourView;
 
-    private TextView mPIDText;
+    private Button mDicButton;
     private Button mTButton;
     private Button mSButton;
     private Button mSpButton;
@@ -142,8 +142,14 @@ public class OnePoemActivity
             }
         });
 
-        // 诗id
-        mPIDText = (TextView) findViewById(R.id.textview_poem_id);
+        // 查询
+        mDicButton = (Button) findViewById(R.id.start_dic);
+        mDicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TranslateActivity.actionStart(OnePoemActivity.this, currentPoem.getId());
+            }
+        });
 
         // 繁体、简体、简体+
         mTButton = (Button) findViewById(R.id.button_t);
@@ -151,7 +157,7 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 poemView.setMode(0);
-                setPoemMode(0);
+                setPoemModeSave(0);
             }
         });
         mSButton = (Button) findViewById(R.id.button_s);
@@ -159,7 +165,7 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 poemView.setMode(1);
-                setPoemMode(1);
+                setPoemModeSave(1);
             }
         });
         mSpButton = (Button) findViewById(R.id.button_sp);
@@ -167,7 +173,7 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 poemView.setMode(2);
-                setPoemMode(2);
+                setPoemModeSave(2);
             }
         });
 
@@ -180,14 +186,18 @@ public class OnePoemActivity
             }
         });
 
-        setPoemMode(2);
+        // 读取配置
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        int id = pref.getInt("poem_id", -1);
+        int mode = pref.getInt("mode", 2);
+
+        // 模式
+        setPoemMode(mode);
 
         if (intentID != -1) {
             toPoemByID(intentID);
         } else {
             // load上回的
-            SharedPreferences pref = getPreferences(MODE_PRIVATE);
-            int id = pref.getInt("poem_id", -1);
             if (id != -1) {
                 toPoemByID(id);
             } else {
@@ -229,15 +239,20 @@ public class OnePoemActivity
         // 显示此诗
         poemView.setPoem(currentPoem);
 
-        // 更新本活动的ui
-        mPIDText.setText(String.valueOf(currentPoem.getId()));
-
         // 显示tag
         tagView.setPoemId(currentPoem.getId());
 
         // 写入
         SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
         editor.putInt("poem_id", currentPoem.getId());
+        editor.apply();
+    }
+
+    private void setPoemModeSave(int mode) {
+        setPoemMode(mode);
+
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putInt("mode", mode);
         editor.apply();
     }
 
@@ -259,4 +274,12 @@ public class OnePoemActivity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (slider.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            slider.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

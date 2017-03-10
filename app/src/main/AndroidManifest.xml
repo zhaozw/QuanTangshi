@@ -19,7 +19,8 @@
         <activity
             android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".OptionActivity"></activity>
+        <activity android:name=".OptionActivity" />
+        <activity android:name=".TranslateActivity"></activity>
     </application>
 
 </manifest>

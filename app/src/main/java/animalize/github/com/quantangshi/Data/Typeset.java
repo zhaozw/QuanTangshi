@@ -1,20 +1,56 @@
 package animalize.github.com.quantangshi.Data;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import animalize.github.com.quantangshi.MyApplication;
+
 /**
  * Created by anima on 17-3-10.
  */
 
 public class Typeset {
+    private static Typeset singleTong;
+
     private int titleLines;
     private int titleSize;
     private int textSize;
     private int lineBreak;
 
-    public Typeset() {
-        titleLines = 2;
-        titleSize = 26;
-        textSize = 26;
-        lineBreak = 5;
+    private Typeset() {
+        loadConfig();
+    }
+
+    public static Typeset getInstance() {
+        if (singleTong == null) {
+            singleTong = new Typeset();
+        }
+        return singleTong;
+    }
+
+    public void loadConfig() {
+        Context c = MyApplication.getContext();
+        SharedPreferences sp = c.getSharedPreferences(
+                "typeset",
+                Context.MODE_PRIVATE);
+
+        titleLines = sp.getInt("title_lines", 2);
+        titleSize = sp.getInt("title_size", 26);
+        textSize = sp.getInt("text_size", 26);
+        lineBreak = sp.getInt("line_break", 5);
+    }
+
+    public void saveConfig() {
+        Context c = MyApplication.getContext();
+        SharedPreferences.Editor editor = c.getSharedPreferences(
+                "typeset",
+                Context.MODE_PRIVATE).edit();
+
+        editor.putInt("title_lines", titleLines);
+        editor.putInt("title_size", titleSize);
+        editor.putInt("text_size", textSize);
+        editor.putInt("line_break", lineBreak);
+        editor.apply();
     }
 
     public int getTitleLines() {

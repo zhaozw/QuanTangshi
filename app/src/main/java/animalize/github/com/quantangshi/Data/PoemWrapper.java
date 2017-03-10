@@ -39,6 +39,10 @@ public class PoemWrapper {
         text = poem.getText().replaceAll(pattern, "$1\n");
     }
 
+    public int getID() {
+        return poem.getId();
+    }
+
     /* 模式
      * 0: 繁体
      * 1: 简体

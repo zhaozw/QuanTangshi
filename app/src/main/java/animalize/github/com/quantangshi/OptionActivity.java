@@ -13,7 +13,6 @@ import animalize.github.com.quantangshi.UIPoem.PoemView;
 
 public class OptionActivity extends AppCompatActivity {
 
-    private Typeset typeset = new Typeset();
     private RawPoem samplePoem = new RawPoem(
             666,
             "诗的标题，很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
@@ -21,8 +20,18 @@ public class OptionActivity extends AppCompatActivity {
             "北斗七星高，哥舒夜带刀。\n故人西辞黄鹤楼，烟花三月下扬州。\n头上何所有，翠微盍叶垂鬓唇。\n朝避猛虎，夕避长蛇。"
     );
     private PoemView poemView;
+
     private TextView titleLinesTextView;
     private SeekBar titleLinesSeekbar;
+
+    private TextView titleSizeTextView;
+    private SeekBar titleSizeSeekbar;
+
+    private TextView textSizeTextView;
+    private SeekBar textSizeSeekbar;
+
+    private TextView lineBreakTextView;
+    private SeekBar lineBreakSeekbar;
 
     public static void actionStart(Context context) {
         Intent i = new Intent(context, OptionActivity.class);
@@ -35,16 +44,21 @@ public class OptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_option);
 
         poemView = (PoemView) findViewById(R.id.poem_view);
+        poemView.setPoem(samplePoem);
 
+        // 标题行数
         titleLinesTextView = (TextView) findViewById(R.id.title_lines_text);
         titleLinesSeekbar = (SeekBar) findViewById(R.id.title_lines_seekbar);
         titleLinesSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int max = progress + 1;
-                titleLinesTextView.setText("标题最大行数: " + max);
-                typeset.setTitleLines(max);
-                poemView.setPoem(samplePoem);
+                titleLinesTextView.setText("标题最大行数: " + progress);
+
+                Typeset typeset = poemView.getTypeset();
+                typeset.setTitleLines(progress);
+                typeset.saveConfig();
+
+                poemView.updateTypeset();
             }
 
             @Override
@@ -57,5 +71,87 @@ public class OptionActivity extends AppCompatActivity {
 
             }
         });
+        titleLinesSeekbar.setProgress(poemView.getTypeset().getTitleLines());
+
+        // 标题字体
+        titleSizeTextView = (TextView) findViewById(R.id.title_size_text);
+        titleSizeSeekbar = (SeekBar) findViewById(R.id.title_size_seekbar);
+        titleSizeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                titleSizeTextView.setText("标题字体: " + progress);
+
+                Typeset typeset = poemView.getTypeset();
+                typeset.setTitleSize(progress);
+                typeset.saveConfig();
+
+                poemView.updateTypeset();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        titleSizeSeekbar.setProgress(poemView.getTypeset().getTitleSize());
+
+        // 诗文字体
+        textSizeTextView = (TextView) findViewById(R.id.text_size_text);
+        textSizeSeekbar = (SeekBar) findViewById(R.id.text_size_seekbar);
+        textSizeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textSizeTextView.setText("诗文字体: " + progress);
+
+                Typeset typeset = poemView.getTypeset();
+                typeset.setTextSize(progress);
+                typeset.saveConfig();
+
+                poemView.updateTypeset();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        textSizeSeekbar.setProgress(poemView.getTypeset().getTextSize());
+
+        // 换行
+        lineBreakTextView = (TextView) findViewById(R.id.line_break_text);
+        lineBreakSeekbar = (SeekBar) findViewById(R.id.line_break_seekbar);
+        lineBreakSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                lineBreakTextView.setText("换行: " + progress);
+
+                Typeset typeset = poemView.getTypeset();
+                typeset.setLineBreak(progress);
+                typeset.saveConfig();
+
+                poemView.updateTypeset();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        lineBreakSeekbar.setProgress(poemView.getTypeset().getLineBreak());
     }
 }
