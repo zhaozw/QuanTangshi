@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
 
@@ -25,7 +25,7 @@ public class OnePoemActivity
         extends AppCompatActivity
         implements PoemController {
 
-    private Poem currentPoem;
+    private RawPoem currentPoem;
 
     private SlidingUpPanelLayout slider;
     // 供ANCHORED时调整height用
@@ -217,8 +217,6 @@ public class OnePoemActivity
     }
 
     private void updateUIForPoem() {
-        // 诗的模式
-        currentPoem.setMode(poemView.getMode());
 
         // 最近
         recentView.setPoem(currentPoem);

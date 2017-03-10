@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.MyApplication;
 
@@ -88,11 +88,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 随机一首
-    public static synchronized Poem randomPoem() {
+    public static synchronized RawPoem randomPoem() {
         int poemCount = MyDatabaseHelper.getPoemCount();
         int id = new Random().nextInt(poemCount - 1) + 1;
 
-        Poem p;
+        RawPoem p;
         do {
             p = MyDatabaseHelper.getPoemById(id);
         } while (p.getText() == "");
@@ -101,15 +101,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 得到指定id的诗
-    public static synchronized Poem getPoemById(int id) {
+    public static synchronized RawPoem getPoemById(int id) {
         init();
 
         String sql = "SELECT * FROM tangshi.poem WHERE id=?";
         Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(id)});
         c.moveToFirst();
-        Poem p = null;
+        RawPoem p = null;
         try {
-            p = new Poem(
+            p = new RawPoem(
                     c.getInt(c.getColumnIndex("id")),
                     new String(c.getBlob(c.getColumnIndex("title")), ENCODING),
                     new String(c.getBlob(c.getColumnIndex("author")), ENCODING),
@@ -332,7 +332,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 添加到最近列表
-    public static synchronized void addToRecentList(Poem p, int limit) {
+    public static synchronized void addToRecentList(RawPoem p, int limit) {
         // 已有的话，先删
         mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
 

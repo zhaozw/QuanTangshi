@@ -7,14 +7,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RawPoem;
 
 
 public class RecentAgent {
     private static MyLinkedHashMap recentList;
     private static int limit = 0xffff;
 
-    public static synchronized void addToRecent(final Poem poem, final int limit) {
+    public static synchronized void addToRecent(final RawPoem poem, final int limit) {
         if (recentList == null) {
             loadRecentList();
         }

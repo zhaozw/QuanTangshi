@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
 
@@ -26,7 +26,7 @@ import animalize.github.com.quantangshi.R;
 
 public class NeighbourView extends LinearLayout {
     private PoemController mController;
-    private Poem poem;
+    private RawPoem poem;
 
     private RecyclerView neighbourList;
     private RVAdapter neighbourAdapter;
@@ -55,7 +55,7 @@ public class NeighbourView extends LinearLayout {
         return poem.getId();
     }
 
-    public void setPoem(Poem poem) {
+    public void setPoem(RawPoem poem) {
         this.poem = poem;
     }
 

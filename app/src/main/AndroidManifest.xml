@@ -18,7 +18,8 @@
         </activity>
         <activity
             android:name=".UIPoem.OnePoemActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
+        <activity android:name=".OptionActivity"></activity>
     </application>
 
 </manifest>

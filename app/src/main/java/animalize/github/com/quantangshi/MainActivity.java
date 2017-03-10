@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(tb);
 
 
+        // 打开诗
         mPoemCount = MyDatabaseHelper.getPoemCount();
-
         Button bt = (Button) findViewById(R.id.main_test);
         bt.setText("共" + mPoemCount + "首诗");
         bt.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 跳转指定ID
         idEdit = (EditText) findViewById(R.id.jump_edit);
         bt = (Button) findViewById(R.id.jump_button);
         bt.setOnClickListener(new View.OnClickListener() {
@@ -52,11 +53,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 清空ID
         bt = (Button) findViewById(R.id.jump_clear);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 idEdit.setText("");
+            }
+        });
+
+        // 设置
+        bt = (Button) findViewById(R.id.main_option);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OptionActivity.actionStart(MainActivity.this);
             }
         });
     }

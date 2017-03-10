@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.PoemWrapper;
 import animalize.github.com.quantangshi.MyApplication;
 
 public class T2s {
@@ -64,7 +64,7 @@ public class T2s {
      lst: null表示繁->简，否则是繁->简+
     * */
     public static String t2s(String s,
-                             ArrayList<Poem.CodepointPosition> lst) {
+                             ArrayList<PoemWrapper.CodepointPosition> lst) {
         getT2s();
 
         StringBuilder sb = new StringBuilder();
@@ -105,7 +105,7 @@ public class T2s {
                         codepoint = temp_codepoint;
                     } else if (codepoint != temp_codepoint) {
                         // 在集合，并且不是简->简，而是繁->简
-                        Poem.CodepointPosition p = new Poem.CodepointPosition(temp_i,
+                        PoemWrapper.CodepointPosition p = new PoemWrapper.CodepointPosition(temp_i,
                                 temp_i + (codepoint > 0xffff ? 2 : 1),
                                 temp_codepoint);
                         lst.add(p);

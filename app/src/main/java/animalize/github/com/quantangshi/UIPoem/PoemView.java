@@ -19,12 +19,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.PoemWrapper;
+import animalize.github.com.quantangshi.Data.RawPoem;
+import animalize.github.com.quantangshi.Data.Typeset;
 import animalize.github.com.quantangshi.R;
 
 
 public class PoemView extends LinearLayout {
-    private Poem mPoem;
+    private PoemWrapper mPoemWrapper;
+    private Typeset mTypeset = new Typeset();
+
     private int mChineseMode = 2;
 
     private TextView mTitle;
@@ -42,9 +46,8 @@ public class PoemView extends LinearLayout {
         mScroller = (ScrollView) findViewById(R.id.poem_scroller);
     }
 
-    public void setPoem(Poem poem) {
-        mPoem = poem;
-        mPoem.setMode(mChineseMode);
+    public void setPoem(RawPoem poem) {
+        mPoemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
         refreshPoem(true);
     }
 
@@ -54,24 +57,24 @@ public class PoemView extends LinearLayout {
 
     public void setMode(int mode) {
         mChineseMode = mode;
-        if (mPoem != null) {
-            mPoem.setMode(mode);
+        if (mPoemWrapper != null) {
             refreshPoem(false);
         }
     }
 
     private void refreshPoem(boolean toTop) {
-        mTitle.setText(mPoem.getTitle());
-        mAuthor.setText(mPoem.getAuthor());
+        mTitle.setTextSize(mTypeset.getTitleSize());
+        mTitle.setText(mPoemWrapper.getTitle(mChineseMode));
 
-        if (mChineseMode == 0) {
-            mText.setText(mPoem.getText());
-        } else if (mChineseMode == 1) {
-            mText.setText(mPoem.getText());
+        mAuthor.setText(mPoemWrapper.getAuthor(mChineseMode));
+
+        mText.setTextSize(mTypeset.getTextSize());
+        if (mChineseMode == 0 || mChineseMode == 1) {
+            mText.setText(mPoemWrapper.getText(mChineseMode));
         } else {
-            ArrayList<Poem.CodepointPosition> lst = mPoem.getPosiText();
-            SpannableString ss = new SpannableString(mPoem.getText());
-            for (final Poem.CodepointPosition p : lst) {
+            ArrayList<PoemWrapper.CodepointPosition> lst = mPoemWrapper.getCodeList();
+            SpannableString ss = new SpannableString(mPoemWrapper.getText(mChineseMode));
+            for (final PoemWrapper.CodepointPosition p : lst) {
                 ss.setSpan(new ClickableSpan() {
                                @Override
                                public void updateDrawState(TextPaint ds) {

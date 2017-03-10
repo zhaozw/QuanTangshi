@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.Poem;
+import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Database.RecentAgent;
 import animalize.github.com.quantangshi.R;
 
@@ -25,7 +25,7 @@ import animalize.github.com.quantangshi.R;
 public class RecentView extends LinearLayout {
     final static int recentLimit = 60;
 
-    private Poem currentPoem;
+    private RawPoem currentPoem;
 
     private PoemController mController;
 
@@ -54,7 +54,7 @@ public class RecentView extends LinearLayout {
         mController = controller;
     }
 
-    public void setPoem(Poem poem) {
+    public void setPoem(RawPoem poem) {
         RecentAgent.addToRecent(poem, recentLimit);
     }
 
