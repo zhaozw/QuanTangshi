@@ -15,6 +15,7 @@ public class Typeset {
     private int titleLines;
     private int titleSize;
     private int textSize;
+    private int lineSpace;
     private int lineBreak;
 
     private Typeset() {
@@ -37,6 +38,7 @@ public class Typeset {
         titleLines = sp.getInt("title_lines", 2);
         titleSize = sp.getInt("title_size", 26);
         textSize = sp.getInt("text_size", 26);
+        lineSpace = sp.getInt("line_space", 8);
         lineBreak = sp.getInt("line_break", 5);
     }
 
@@ -49,6 +51,7 @@ public class Typeset {
         editor.putInt("title_lines", titleLines);
         editor.putInt("title_size", titleSize);
         editor.putInt("text_size", textSize);
+        editor.putInt("line_space", lineSpace);
         editor.putInt("line_break", lineBreak);
         editor.apply();
     }
@@ -83,5 +86,13 @@ public class Typeset {
 
     public void setLineBreak(int lineBreak) {
         this.lineBreak = lineBreak;
+    }
+
+    public int getLineSpace() {
+        return lineSpace;
+    }
+
+    public void setLineSpace(int lineSpace) {
+        this.lineSpace = lineSpace;
     }
 }

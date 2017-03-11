@@ -82,7 +82,9 @@ public class OnePoemActivity
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                if (newState == SlidingUpPanelLayout.PanelState.DRAGGING) {
+                    return;
+                } else if (newState == SlidingUpPanelLayout.PanelState.ANCHORED) {
                     Rect r = new Rect();
                     if (swichFrame.getGlobalVisibleRect(r)) {
                         swichFrame.getLayoutParams().height = r.height();
@@ -204,9 +206,6 @@ public class OnePoemActivity
                 randomPoem();
             }
         }
-
-        // 配置SlidingUpPanelLayout
-        //SlidingUpPanelLayout slide = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     }
 
     @Override

@@ -30,6 +30,9 @@ public class OptionActivity extends AppCompatActivity {
     private TextView textSizeTextView;
     private SeekBar textSizeSeekbar;
 
+    private TextView lineSpaceTextView;
+    private SeekBar lineSpaceSeekbar;
+
     private TextView lineBreakTextView;
     private SeekBar lineBreakSeekbar;
 
@@ -126,6 +129,33 @@ public class OptionActivity extends AppCompatActivity {
             }
         });
         textSizeSeekbar.setProgress(poemView.getTypeset().getTextSize());
+
+        // 行间距
+        lineSpaceTextView = (TextView) findViewById(R.id.line_space_text);
+        lineSpaceSeekbar = (SeekBar) findViewById(R.id.line_space_seekbar);
+        lineSpaceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                lineSpaceTextView.setText("行间距: " + progress);
+
+                Typeset typeset = poemView.getTypeset();
+                typeset.setLineSpace(progress);
+                typeset.saveConfig();
+
+                poemView.updateTypeset();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        lineSpaceSeekbar.setProgress(poemView.getTypeset().getLineSpace());
 
         // 换行
         lineBreakTextView = (TextView) findViewById(R.id.line_break_text);

@@ -8,6 +8,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,12 @@ public class PoemView extends LinearLayout {
     }
 
     public void setPoem(RawPoem poem) {
+        boolean first = mPoemWrapper == null;
         mPoemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
+
+        if (first) {
+            updateTypeset();
+        }
         refreshPoem(true);
     }
 
@@ -68,7 +74,7 @@ public class PoemView extends LinearLayout {
     public void updateTypeset() {
         mPoemWrapper.setLineBreak(mTypeset.getLineBreak());
 
-        mTitle.setLines(mTypeset.getTitleLines());
+        mTitle.setMaxLines(mTypeset.getTitleLines());
         mTitle.setTextSize(mTypeset.getTitleSize());
 
         int temp = (int) (mTypeset.getTitleSize() * 0.618);
@@ -76,18 +82,19 @@ public class PoemView extends LinearLayout {
         mAuthor.setTextSize(temp);
 
         mText.setTextSize(mTypeset.getTextSize());
-
-        refreshPoem(false);
+        mText.setLineSpacing(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                mTypeset.getLineSpace(),
+                getResources().getDisplayMetrics()),
+                1.0f);
     }
 
     private void refreshPoem(boolean toTop) {
-        mTitle.setTextSize(mTypeset.getTitleSize());
         mTitle.setText(mPoemWrapper.getTitle(mChineseMode));
 
         mId.setText("" + mPoemWrapper.getID());
         mAuthor.setText(mPoemWrapper.getAuthor(mChineseMode));
 
-        mText.setTextSize(mTypeset.getTextSize());
         if (mChineseMode == 0 || mChineseMode == 1) {
             mText.setText(mPoemWrapper.getText(mChineseMode));
         } else {
