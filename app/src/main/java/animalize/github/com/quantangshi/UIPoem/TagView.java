@@ -24,6 +24,7 @@ public class TagView extends LinearLayout {
     private int mPid;
 
     private List<TagInfo> mTagList;
+    private List<TagInfo> mAllTagList;
     private TagContainerLayout mPoemTags;
     private TagContainerLayout mAllTags;
 
@@ -90,7 +91,31 @@ public class TagView extends LinearLayout {
         });
 
         mAllTags = (TagContainerLayout) findViewById(R.id.all_tags);
+        mAllTags.setIsTagViewClickable(true);
+        mAllTags.setOnTagClickListener(new co.lujun.androidtagview.TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
 
+                String tag = mAllTagList.get(position).getName();
+                ArrayList<Integer> l = MyDatabaseHelper.getPoemIDByTag(tag);
+
+                for (int id : l) {
+                    Toast.makeText(getContext(),
+                            String.valueOf(id),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onTagLongClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+
+            }
+        });
     }
 
     public void removeTag(TagInfo info) {
@@ -127,6 +152,8 @@ public class TagView extends LinearLayout {
 
     public void setAllTags() {
         List<TagInfo> tagsinfo = MyDatabaseHelper.getTopTags(20);
+        mAllTagList = tagsinfo;
+
         List<String> tags = new ArrayList<>();
         for (TagInfo info : tagsinfo) {
             String s;

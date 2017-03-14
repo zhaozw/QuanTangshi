@@ -312,6 +312,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return (int) mDb.insert("tag_map", null, cv);
     }
 
+    // XXX 从tag得到所有诗id
+    public static synchronized ArrayList<Integer> getPoemIDByTag(String tag) {
+        init();
+
+        String sql = "SELECT id FROM tag WHERE name=?";
+        Cursor c = mDb.rawQuery(sql, new String[]{tag});
+        c.moveToFirst();
+        int tagid = c.getInt(0);
+        c.close();
+
+        sql = "SELECT pid FROM tag_map WHERE tid=?";
+        c = mDb.rawQuery(sql, new String[]{String.valueOf(tagid)});
+
+        ArrayList<Integer> l = new ArrayList<>();
+        if (c.moveToFirst()) {
+            do {
+                int temp = c.getInt(0);
+                l.add(temp);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return l;
+    }
+
     // 得到最近列表
     public static synchronized ArrayList<InfoItem> getRecentList() {
         init();

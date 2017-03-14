@@ -1,52 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/repeat_bg"
-        android:orientation="vertical">
+        android:background="#E1E1E1"
+        android:verticalScrollbarPosition="left">
 
-        <TextView
-            android:id="@+id/poem_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:padding="9dp"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:textSize="26sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/poem_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:paddingRight="20dp"
-            android:textAllCaps="false"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/poem_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:padding="9dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="28sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="#006600" />
+            <TextView
+                android:id="@+id/poem_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingRight="20dp"
+                android:textAllCaps="false"
+                android:textSize="28sp" />
 
-        <ScrollView
-            android:id="@+id/poem_scroller"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="10dp"
-            android:verticalScrollbarPosition="left">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="#006600" />
 
             <TextView
                 android:id="@+id/poem_text"
@@ -57,14 +53,114 @@
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="26sp" />
-        </ScrollView>
-    </LinearLayout>
+                android:textSize="28sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"></LinearLayout>
+        android:background="#EBEBEB"
+        android:orientation="vertical">
+
+        <!-- 繁体、简体 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="繁体" />
+
+            <Button
+                android:id="@+id/button_s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="简体" />
+        </LinearLayout>
+
+        <!-- 添加 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <EditText
+                android:id="@+id/item_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/edit_space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="空格" />
+
+            <Button
+                android:id="@+id/edit_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回退" />
+
+            <Button
+                android:id="@+id/add_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加"
+                android:textColor="#990000" />
+        </LinearLayout>
+
+        <co.lujun.androidtagview.TagContainerLayout
+            android:id="@+id/items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:container_border_radius="0dp"
+            app:tag_corner_radius="0dp"
+            app:tag_enable_cross="true"
+            app:tag_horizontal_padding="12dp"
+            app:tag_text_size="18sp"
+            app:tag_vertical_padding="10dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="搜索方式"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/search_baidu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="百度" />
+
+            <RadioButton
+                android:id="@+id/search_baiduhanyu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="汉语" />
+
+            <RadioButton
+                android:id="@+id/search_baidubaike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="百科搜索" />
+
+            <RadioButton
+                android:id="@+id/search_baidubaike_direct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="百科词条" />
+        </RadioGroup>
+
+
+    </LinearLayout>
 
 </LinearLayout>

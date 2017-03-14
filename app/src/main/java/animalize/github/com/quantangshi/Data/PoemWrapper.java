@@ -25,8 +25,12 @@ public class PoemWrapper {
 
     public PoemWrapper(RawPoem poem, int lineBreak) {
         this.poem = poem;
-
         setLineBreak(lineBreak);
+    }
+
+    public PoemWrapper(RawPoem poem) {
+        this.poem = poem;
+        text = poem.getText();
     }
 
     public void setLineBreak(int lineBreak) {

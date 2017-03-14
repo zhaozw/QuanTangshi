@@ -9,7 +9,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +22,9 @@
             android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask" />
         <activity android:name=".OptionActivity" />
-        <activity android:name=".TranslateActivity"></activity>
+        <activity
+            android:name=".TranslateActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
