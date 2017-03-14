@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#E1E1E1"
+        android:background="@drawable/repeat_bg"
+        android:fadeScrollbars="false"
         android:verticalScrollbarPosition="left">
 
         <LinearLayout
@@ -100,6 +101,8 @@
                 android:id="@+id/edit_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:minWidth="30dp"
                 android:text="空格" />
 
             <Button
@@ -115,17 +118,6 @@
                 android:text="添加"
                 android:textColor="#990000" />
         </LinearLayout>
-
-        <co.lujun.androidtagview.TagContainerLayout
-            android:id="@+id/items"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:container_border_radius="0dp"
-            app:tag_corner_radius="0dp"
-            app:tag_enable_cross="true"
-            app:tag_horizontal_padding="12dp"
-            app:tag_text_size="18sp"
-            app:tag_vertical_padding="10dp" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -160,6 +152,23 @@
                 android:text="百科词条" />
         </RadioGroup>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:verticalScrollbarPosition="left">
+
+            <co.lujun.androidtagview.TagContainerLayout
+                android:id="@+id/items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:container_border_radius="0dp"
+                app:tag_corner_radius="0dp"
+                app:tag_enable_cross="true"
+                app:tag_horizontal_padding="12dp"
+                app:tag_text_size="18sp"
+                app:tag_vertical_padding="10dp" />
+        </ScrollView>
 
     </LinearLayout>
 

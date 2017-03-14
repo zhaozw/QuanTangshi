@@ -18,7 +18,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.R;
-import animalize.github.com.quantangshi.TranslateActivity;
+import animalize.github.com.quantangshi.StudyActivity;
 
 
 public class OnePoemActivity
@@ -149,7 +149,7 @@ public class OnePoemActivity
         mDicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TranslateActivity.actionStart(OnePoemActivity.this, currentPoem.getId());
+                StudyActivity.actionStart(OnePoemActivity.this, currentPoem.getId());
             }
         });
 

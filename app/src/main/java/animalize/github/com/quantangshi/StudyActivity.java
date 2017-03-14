@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -27,7 +28,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
 
-public class TranslateActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener {
+public class StudyActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener, RadioGroup.OnCheckedChangeListener {
 
     private PoemWrapper poemWrapper;
 
@@ -44,7 +45,7 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
     private RadioGroup engines;
 
     public static void actionStart(Context context, int id) {
-        Intent i = new Intent(context, TranslateActivity.class);
+        Intent i = new Intent(context, StudyActivity.class);
         i.putExtra("id", id);
         context.startActivity(i);
     }
@@ -52,7 +53,7 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_translate);
+        setContentView(R.layout.activity_study);
 
         int id = -1;
         if (savedInstanceState != null) {
@@ -88,11 +89,22 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
         items.setIsTagViewClickable(true);
         items.setOnTagClickListener(this);
 
-        engines = (RadioGroup) findViewById(R.id.radioGroup);
-
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
         int mode = pref.getInt("mode", 1);
+        int engine = pref.getInt("engine", 0);
+
+        engines = (RadioGroup) findViewById(R.id.radioGroup);
+        if (engine == 0) {
+            engines.check(R.id.search_baidu);
+        } else if (engine == 1) {
+            engines.check(R.id.search_baiduhanyu);
+        } else if (engine == 2) {
+            engines.check(R.id.search_baidubaike);
+        } else if (engine == 3) {
+            engines.check(R.id.search_baidubaike_direct);
+        }
+        engines.setOnCheckedChangeListener(this);
 
         changeMode(mode, false);
     }
@@ -115,6 +127,9 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
         for (int i = 0; i < str.length(); i++) {
             final int temp_i = i;
             final char c = str.charAt(temp_i);
+            if (c == '\n') {
+                continue;
+            }
 
             if (Character.isHighSurrogate(c) &&
                     temp_i + 1 < str.length() &&
@@ -129,9 +144,6 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
         SpannableString ss = new SpannableString(str);
         for (final Position p : list) {
             final String s = str.substring(p.begin, p.end);
-            if (s == "\n") {
-                continue;
-            }
 
             ClickableSpan clickable = new ClickableSpan() {
                 @Override
@@ -143,7 +155,7 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
                 @Override
                 public void onClick(View widget) {
-                    TranslateActivity.this.addToItem(s);
+                    StudyActivity.this.addToItem(s);
                 }
             };
             ss.setSpan(clickable, p.begin, p.end,
@@ -204,10 +216,20 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
             case R.id.edit_back:
                 s = String.valueOf(edit_item.getText());
-                if (s != "" && s.length() >= 1) {
-                    s = s.substring(0, s.length() - 1);
-                    edit_item.setText(s);
+                if (s.length() == 0) {
+                    break;
                 }
+
+                char c = s.charAt(s.length() - 1);
+                if (Character.isLowSurrogate(c) &&
+                        s.length() >= 2 &&
+                        Character.isHighSurrogate(s.charAt(s.length() - 2))) {
+                    s = s.substring(0, s.length() - 2);
+                } else {
+                    s = s.substring(0, s.length() - 1);
+                }
+
+                edit_item.setText(s);
                 break;
         }
     }
@@ -247,6 +269,29 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onTagCrossClick(int position) {
         items.removeTag(position);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        int engine = 0;
+        switch (checkedId) {
+            case R.id.search_baidu:
+                engine = 0;
+                break;
+            case R.id.search_baiduhanyu:
+                engine = 1;
+                break;
+            case R.id.search_baidubaike:
+                engine = 2;
+                break;
+            case R.id.search_baidubaike_direct:
+                engine = 3;
+                break;
+        }
+
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putInt("engine", engine);
+        editor.apply();
     }
 
     private static class Position {

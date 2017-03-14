@@ -23,7 +23,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".OptionActivity" />
         <activity
-            android:name=".TranslateActivity"
+            android:name=".StudyActivity"
             android:launchMode="singleTask" />
     </application>
 
