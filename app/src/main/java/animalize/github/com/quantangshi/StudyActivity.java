@@ -79,10 +79,18 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         // 编辑按钮
         Button b = (Button) findViewById(R.id.add_item);
         b.setOnClickListener(this);
-        b = (Button) findViewById(R.id.edit_space);
-        b.setOnClickListener(this);
         b = (Button) findViewById(R.id.edit_back);
         b.setOnClickListener(this);
+
+        b = (Button) findViewById(R.id.edit_space);
+        if (b != null) {
+            b.setOnClickListener(this);
+        }
+
+        b = (Button) findViewById(R.id.edit_clear);
+        if (b != null) {
+            b.setOnClickListener(this);
+        }
 
         edit_item = (EditText) findViewById(R.id.item_edit);
         items = (TagContainerLayout) findViewById(R.id.items);
@@ -170,6 +178,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         String t = String.valueOf(edit_item.getText());
         t = t + s;
         edit_item.setText(t);
+        edit_item.setSelection(t.length());
     }
 
     public void changeMode(int mode, boolean save) {
@@ -204,14 +213,18 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.add_item:
-                s = String.valueOf(edit_item.getText());
-                items.addTag(s);
+                s = String.valueOf(edit_item.getText()).trim();
+                if (!s.equals("")) {
+                    items.addTag(s);
+                }
+
                 edit_item.setText("");
                 break;
 
             case R.id.edit_space:
                 s = String.valueOf(edit_item.getText());
                 edit_item.setText(s + " ");
+                edit_item.setSelection(edit_item.getText().length());
                 break;
 
             case R.id.edit_back:
@@ -230,6 +243,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 edit_item.setText(s);
+                edit_item.setSelection(edit_item.getText().length());
+                break;
+
+            case R.id.edit_clear:
+                edit_item.setText("");
                 break;
         }
     }

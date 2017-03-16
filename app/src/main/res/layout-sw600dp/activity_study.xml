@@ -82,6 +82,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="简体" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/edit_space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="空格" />
+
+            <Button
+                android:id="@+id/edit_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回退" />
+
+            <Button
+                android:id="@+id/edit_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清空" />
         </LinearLayout>
 
         <!-- 添加 -->
@@ -96,12 +119,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/edit_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="回退" />
 
             <Button
                 android:id="@+id/add_item"
@@ -123,25 +140,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="百度" />
+                android:text="百度"
+                android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/search_baiduhanyu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="汉语" />
+                android:text="汉语"
+                android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/search_baidubaike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="百科搜索" />
+                android:text="百科搜索"
+                android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/search_baidubaike_direct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="百科词条" />
+                android:text="百科词条"
+                android:textSize="18sp" />
         </RadioGroup>
 
         <ScrollView
