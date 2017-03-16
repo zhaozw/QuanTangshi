@@ -2,6 +2,7 @@ package animalize.github.com.quantangshi.T2sMap;
 
 
 import android.content.Context;
+import android.util.SparseIntArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,10 +12,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
@@ -24,7 +23,7 @@ public class T2s {
     private static final String TAG = "T2s";
 
     private static T2s mT2s;
-    private static Map<Integer, Integer> map;
+    private static SparseIntArray map;
     private static Set<Integer> set;
 
     private T2s(Context context) {
@@ -37,7 +36,7 @@ public class T2s {
             JSONObject jmap = two.getJSONObject(0);
             JSONArray jset = two.getJSONArray(1);
 
-            map = new HashMap<>();
+            map = new SparseIntArray();
             set = new HashSet<>();
 
             // 繁->简
@@ -95,8 +94,8 @@ public class T2s {
             }
 
             // 转换
-            final Integer temp_codepoint = map.get(codepoint);
-            if (temp_codepoint != null) {
+            final Integer temp_codepoint = map.get(codepoint, -1);
+            if (temp_codepoint != -1) {
                 // 可转换
                 if (lst != null) {
                     // 简体+ 模式

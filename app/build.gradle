@@ -42,6 +42,6 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     compile 'co.lujun:androidtagview:1.1.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
 }

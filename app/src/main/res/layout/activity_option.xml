@@ -99,7 +99,7 @@
         <animalize.github.com.quantangshi.UIPoem.PoemView
             android:id="@+id/poem_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </ScrollView>
 
 </LinearLayout>
