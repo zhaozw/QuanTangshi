@@ -81,13 +81,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         b.setOnClickListener(this);
         b = (Button) findViewById(R.id.edit_back);
         b.setOnClickListener(this);
+        b = (Button) findViewById(R.id.edit_clear);
+        b.setOnClickListener(this);
 
         b = (Button) findViewById(R.id.edit_space);
-        if (b != null) {
-            b.setOnClickListener(this);
-        }
-
-        b = (Button) findViewById(R.id.edit_clear);
         if (b != null) {
             b.setOnClickListener(this);
         }
