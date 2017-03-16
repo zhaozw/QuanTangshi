@@ -7,14 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
-import animalize.github.com.quantangshi.Data.RawPoem;
 
 
 public class RecentAgent {
     private static MyLinkedHashMap recentList;
     private static int limit = 0xffff;
 
-    public static synchronized void addToRecent(final RawPoem poem, final int limit) {
+    public static synchronized void addToRecent(final InfoItem info, final int limit) {
         if (recentList == null) {
             loadRecentList();
         }
@@ -22,22 +21,16 @@ public class RecentAgent {
         RecentAgent.limit = limit;
 
         // 删已有的
-        recentList.remove(poem.getId());
+        recentList.remove(info.getId());
 
         // 添新的，会自动删过量的
-        recentList.put(poem.getId(),
-                new InfoItem(
-                        poem.getId(),
-                        poem.getTitle(),
-                        poem.getAuthor()
-                )
-        );
+        recentList.put(info.getId(), info);
 
         // 进数据库
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MyDatabaseHelper.addToRecentList(poem, limit);
+                MyDatabaseHelper.addToRecentList(info, limit);
             }
         }).start();
     }

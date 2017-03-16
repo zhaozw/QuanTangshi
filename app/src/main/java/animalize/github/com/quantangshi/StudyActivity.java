@@ -94,6 +94,8 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         int mode = pref.getInt("mode", 1);
         int engine = pref.getInt("engine", 0);
 
+        changeMode(mode, false);
+
         engines = (RadioGroup) findViewById(R.id.radioGroup);
         if (engine == 0) {
             engines.check(R.id.search_baidu);
@@ -105,8 +107,6 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             engines.check(R.id.search_baidubaike_direct);
         }
         engines.setOnCheckedChangeListener(this);
-
-        changeMode(mode, false);
     }
 
     @Override

@@ -363,15 +363,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 添加到最近列表
-    public static synchronized void addToRecentList(RawPoem p, int limit) {
+    public static synchronized void addToRecentList(InfoItem info, int limit) {
         // 已有的话，先删
-        mDb.delete("recent", "pid=?", new String[]{String.valueOf(p.getId())});
+        mDb.delete("recent", "pid=?", new String[]{String.valueOf(info.getId())});
 
         // add
         ContentValues cv = new ContentValues();
-        cv.put("pid", p.getId());
-        cv.put("title", p.getTitle());
-        cv.put("author", p.getAuthor());
+        cv.put("pid", info.getId());
+        cv.put("title", info.getTitle());
+        cv.put("author", info.getAuthor());
         cv.put("time", (int) (System.currentTimeMillis() / 1000));
         mDb.insert("recent", null, cv);
 

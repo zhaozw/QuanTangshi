@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.PoemWrapper;
 import animalize.github.com.quantangshi.Data.RawPoem;
 import animalize.github.com.quantangshi.Data.Typeset;
@@ -70,6 +71,14 @@ public class PoemView extends LinearLayout {
         return mTypeset;
     }
 
+    public InfoItem getInfoItem() {
+        InfoItem item = new InfoItem(
+                mPoemWrapper.getID(),
+                mPoemWrapper.getTitle(mChineseMode),
+                mPoemWrapper.getAuthor(mChineseMode));
+
+        return item;
+    }
 
     public void updateTypeset() {
         mPoemWrapper.setLineBreak(mTypeset.getLineBreak());
@@ -87,6 +96,7 @@ public class PoemView extends LinearLayout {
                 mTypeset.getLineSpace(),
                 getResources().getDisplayMetrics()),
                 1.0f);
+        mText.setText(mPoemWrapper.getText(mChineseMode));
     }
 
     private void refreshPoem(boolean toTop) {

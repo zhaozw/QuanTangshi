@@ -226,17 +226,16 @@ public class OnePoemActivity
     }
 
     private void updateUIForPoem() {
+        // 显示此诗
+        poemView.setPoem(currentPoem);
 
         // 最近
-        recentView.setPoem(currentPoem);
+        recentView.setPoem(poemView.getInfoItem());
         recentView.LoadRecentList();
 
         // 邻近
         neighbourView.setPoem(currentPoem);
         neighbourView.loadNeighbour();
-
-        // 显示此诗
-        poemView.setPoem(currentPoem);
 
         // 显示tag
         tagView.setPoemId(currentPoem.getId());
