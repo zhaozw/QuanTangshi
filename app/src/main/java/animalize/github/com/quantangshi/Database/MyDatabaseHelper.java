@@ -211,15 +211,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    // 得到count前20位的tag
-    public static synchronized List<TagInfo> getTopTags(int top) {
+    // 得到所有tag
+    public static synchronized List<TagInfo> getTags() {
         init();
 
         String sql = "SELECT id, name, count " +
                 "FROM tag " +
-                "ORDER BY count DESC " +
-                "LIMIT ?";
-        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(top)});
+                "ORDER BY count DESC, id ASC";
+        Cursor c = mDb.rawQuery(sql, null);
 
         List<TagInfo> l = new ArrayList<>();
         if (c.moveToFirst()) {

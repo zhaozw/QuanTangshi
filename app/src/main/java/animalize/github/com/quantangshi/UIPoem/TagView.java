@@ -69,6 +69,7 @@ public class TagView extends LinearLayout {
 
             @Override
             public void onTagCrossClick(int position) {
+                mPoemTags.getTagText(position);
                 final TagInfo info = mTagList.get(position);
 
                 AlertDialog.Builder builder;
@@ -134,14 +135,7 @@ public class TagView extends LinearLayout {
         List<TagInfo> tagsinfo = MyDatabaseHelper.getTagsByPoem(pid);
         List<String> tags = new ArrayList<>();
         for (TagInfo info : tagsinfo) {
-            String s;
-
-            if (info.getCount() > 1) {
-                s = info.getName() + "(" + info.getCount() + ")";
-            } else {
-                s = info.getName();
-            }
-            tags.add(s);
+            tags.add(info.getName());
         }
 
         mTagList = tagsinfo;
@@ -151,7 +145,7 @@ public class TagView extends LinearLayout {
     }
 
     public void setAllTags() {
-        List<TagInfo> tagsinfo = MyDatabaseHelper.getTopTags(20);
+        List<TagInfo> tagsinfo = MyDatabaseHelper.getTags();
         mAllTagList = tagsinfo;
 
         List<String> tags = new ArrayList<>();
