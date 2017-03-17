@@ -361,8 +361,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "INNER JOIN tag t " +
                 "ON tm.tid = t.id " +
                 "WHERE t.name in (" + arg1 + ") " +
-                "GROUP BY p.id, p.title " +
-                "HAVING COUNT(DISTINCT t.id) = " + tags.size();
+                "GROUP BY p.id " +
+                "HAVING COUNT(DISTINCT t.id) = " + tags.size() + " " +
+                "ORDER BY tm.id DESC";
 
         Cursor c = mDb.rawQuery(sql, null);
         ArrayList<InfoItem> l = new ArrayList<>();

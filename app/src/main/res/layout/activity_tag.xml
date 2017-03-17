@@ -13,41 +13,62 @@
         android:layout_height="wrap_content"
         app:tag_enable_cross="true" />
 
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="开始搜索"
-        android:textAllCaps="false" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- 所有tag -->
-        <ScrollView
-            android:id="@+id/scroll_all_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <co.lujun.androidtagview.TagContainerLayout
-                android:id="@+id/all_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
-
-        <!-- 搜索结果 -->
-        <ScrollView
-            android:id="@+id/scroll_result"
+        <LinearLayout
+            android:id="@+id/layout_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="开始搜索"
+                android:textAllCaps="false" />
+
+            <!-- 所有tag -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <co.lujun.androidtagview.TagContainerLayout
+                    android:id="@+id/all_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- 搜索结果 -->
+        <LinearLayout
+            android:id="@+id/layout_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:visibility="invisible">
 
-            <android.support.v7.widget.RecyclerView
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="回退"
+                android:textAllCaps="false" />
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>
