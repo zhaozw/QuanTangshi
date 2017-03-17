@@ -58,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 标签管理 -------------------------
+        bt = (Button) findViewById(R.id.main_opentag);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TagActivity.actionStart(MainActivity.this);
+            }
+        });
+
         // 设置 ------------------------------
         bt = (Button) findViewById(R.id.main_option);
         bt.setOnClickListener(new View.OnClickListener() {

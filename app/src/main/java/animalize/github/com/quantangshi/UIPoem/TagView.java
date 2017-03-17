@@ -11,11 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import animalize.github.com.quantangshi.Data.TagInfo;
-import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
+import animalize.github.com.quantangshi.Database.TagAgent;
 import animalize.github.com.quantangshi.R;
 import co.lujun.androidtagview.TagContainerLayout;
 
@@ -47,7 +46,7 @@ public class TagView extends LinearLayout {
                     return;
                 }
 
-                MyDatabaseHelper.addTagToPoem(tag, mPid);
+                TagAgent.addTagToPoem(tag, mPid);
                 mEdit.setText("");
 
                 setPoemId(mPid);
@@ -69,7 +68,6 @@ public class TagView extends LinearLayout {
 
             @Override
             public void onTagCrossClick(int position) {
-                mPoemTags.getTagText(position);
                 final TagInfo info = mTagList.get(position);
 
                 AlertDialog.Builder builder;
@@ -98,7 +96,7 @@ public class TagView extends LinearLayout {
             public void onTagClick(int position, String text) {
 
                 String tag = mAllTagList.get(position).getName();
-                ArrayList<Integer> l = MyDatabaseHelper.getPoemIDByTag(tag);
+                List<Integer> l = TagAgent.getPoemIDByTag(tag);
 
                 for (int id : l) {
                     Toast.makeText(getContext(),
@@ -120,7 +118,7 @@ public class TagView extends LinearLayout {
     }
 
     public void removeTag(TagInfo info) {
-        MyDatabaseHelper.delTagFromPoem(mPid, info);
+        TagAgent.delTagFromPoem(mPid, info);
 
         Toast.makeText(getContext(),
                 "删除: " + info.getName(),
@@ -132,34 +130,16 @@ public class TagView extends LinearLayout {
     public void setPoemId(int pid) {
         mPid = pid;
 
-        List<TagInfo> tagsinfo = MyDatabaseHelper.getTagsByPoem(pid);
-        List<String> tags = new ArrayList<>();
-        for (TagInfo info : tagsinfo) {
-            tags.add(info.getName());
-        }
+        mTagList = TagAgent.getTagsInfo(pid);
 
-        mTagList = tagsinfo;
+        List<String> tags = TagAgent.getTagsNoCount(mTagList);
         mPoemTags.setTags(tags);
 
         setAllTags();
     }
 
     public void setAllTags() {
-        List<TagInfo> tagsinfo = MyDatabaseHelper.getTags();
-        mAllTagList = tagsinfo;
-
-        List<String> tags = new ArrayList<>();
-        for (TagInfo info : tagsinfo) {
-            String s;
-
-            if (info.getCount() > 1) {
-                s = info.getName() + "(" + info.getCount() + ")";
-            } else {
-                s = info.getName();
-            }
-            tags.add(s);
-        }
-
-        mAllTags.setTags(tags);
+        mAllTagList = TagAgent.getTagInfos();
+        mAllTags.setTags(TagAgent.getTagsHasCount(TagAgent.getTagInfos()));
     }
 }

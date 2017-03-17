@@ -52,6 +52,14 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/main_opentag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="标签管理"
+        android:textAllCaps="false" />
+
+    <Button
         android:id="@+id/main_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -336,6 +336,55 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return l;
     }
 
+    public static synchronized ArrayList<InfoItem> queryByTags(List<String> tags) {
+        init();
+
+        int max = tags.size() - 1;
+        if (max == -1) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; ; i++) {
+            sb.append('\'' + tags.get(i) + '\'');
+            if (i == max) {
+                break;
+            }
+            sb.append(',');
+        }
+        String arg1 = sb.toString();
+
+        String sql = "SELECT p.id, p.title, p.author " +
+                "FROM tangshi.poem p " +
+                "INNER JOIN tag_map tm " +
+                "ON p.id = tm.pid " +
+                "INNER JOIN tag t " +
+                "ON tm.tid = t.id " +
+                "WHERE t.name in (" + arg1 + ") " +
+                "GROUP BY p.id, p.title " +
+                "HAVING COUNT(DISTINCT t.id) = " + tags.size();
+
+        Cursor c = mDb.rawQuery(sql, null);
+        ArrayList<InfoItem> l = new ArrayList<>();
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    InfoItem ri = new InfoItem(
+                            c.getInt(0),
+                            new String(c.getBlob(1), ENCODING),
+                            new String(c.getBlob(2), ENCODING)
+                    );
+                    l.add(ri);
+                } while (c.moveToNext());
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        c.close();
+
+        return l;
+    }
+
     // 得到最近列表
     public static synchronized ArrayList<InfoItem> getRecentList() {
         init();
