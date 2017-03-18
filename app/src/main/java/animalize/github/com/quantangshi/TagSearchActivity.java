@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,10 @@ import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
-public class TagActivity extends AppCompatActivity {
+public class TagSearchActivity extends AppCompatActivity {
 
-    private List<TagInfo> mTagList = new ArrayList<>();
+    private boolean inResult = false;
+
     private List<TagInfo> mAllTagList;
     private TagContainerLayout searchTags;
     private TagContainerLayout allTags;
@@ -36,7 +38,7 @@ public class TagActivity extends AppCompatActivity {
     private RecyclerView rvResult;
 
     public static void actionStart(Context context) {
-        Intent i = new Intent(context, TagActivity.class);
+        Intent i = new Intent(context, TagSearchActivity.class);
         context.startActivity(i);
     }
 
@@ -60,7 +62,6 @@ public class TagActivity extends AppCompatActivity {
             @Override
             public void onTagCrossClick(int position) {
                 searchTags.removeTag(position);
-                mTagList.remove(position);
             }
         });
 
@@ -74,7 +75,7 @@ public class TagActivity extends AppCompatActivity {
             @Override
             public void onTagClick(int position, String text) {
                 TagInfo info = mAllTagList.get(position);
-                TagActivity.this.clickOneAllTag(info);
+                TagSearchActivity.this.clickOneAllTag(info);
             }
 
             @Override
@@ -94,6 +95,13 @@ public class TagActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 List<String> list = searchTags.getTags();
+                if (list.isEmpty()) {
+                    Toast.makeText(TagSearchActivity.this,
+                            "至少选择一个标签才能搜索",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ArrayList<InfoItem> l = MyDatabaseHelper.queryByTags(list);
 
                 resultAdapter.setArrayList(l);
@@ -104,6 +112,8 @@ public class TagActivity extends AppCompatActivity {
                 List<String> tags = searchTags.getTags();
                 searchTags.setEnableCross(false);
                 searchTags.setTags(tags);
+
+                inResult = true;
             }
         });
 
@@ -112,12 +122,7 @@ public class TagActivity extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutResult.setVisibility(View.INVISIBLE);
-                layoutAll.setVisibility(View.VISIBLE);
-
-                List<String> tags = searchTags.getTags();
-                searchTags.setEnableCross(true);
-                searchTags.setTags(tags);
+                resultToSearch();
             }
         });
 
@@ -134,19 +139,62 @@ public class TagActivity extends AppCompatActivity {
         resultAdapter = new RVAdapter() {
             @Override
             public void onItemClick(int pid) {
-                OnePoemActivity.actionStart(TagActivity.this, pid);
+                OnePoemActivity.actionStart(TagSearchActivity.this, pid);
             }
         };
         rvResult.setAdapter(resultAdapter);
     }
 
     public void clickOneAllTag(TagInfo info) {
-        if (mTagList.contains(info)) {
+        if (searchTags.getTags().contains(info.getName())) {
             return;
         }
 
-        mTagList.add(info);
         searchTags.addTag(info.getName());
     }
 
+    private void resultToSearch() {
+        // 所有标签
+        mAllTagList = TagAgent.getTagInfos();
+        allTags.setTags(TagAgent.getTagsHasCount(mAllTagList));
+
+        // 可能被删除的搜索标签
+        List<String> tmp = searchTags.getTags();
+        if (!tmp.isEmpty()) {
+            for (int posi = tmp.size() - 1; posi >= 0; posi--) {
+                boolean pass = true;
+                final String s = tmp.get(posi);
+
+                for (TagInfo info : mAllTagList) {
+                    if (s.equals(info.getName())) {
+                        pass = false;
+                        break;
+                    }
+                }
+                if (pass) {
+                    searchTags.removeTag(posi);
+                }
+            }
+        }
+
+        // 可见、不可见
+        layoutResult.setVisibility(View.INVISIBLE);
+        layoutAll.setVisibility(View.VISIBLE);
+
+        // tag上的叉
+        List<String> tags = searchTags.getTags();
+        searchTags.setEnableCross(true);
+        searchTags.setTags(tags);
+
+        inResult = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (inResult) {
+            resultToSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

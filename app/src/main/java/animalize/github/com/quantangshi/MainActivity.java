@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TagActivity.actionStart(MainActivity.this);
+                TagSearchActivity.actionStart(MainActivity.this);
             }
         });
 

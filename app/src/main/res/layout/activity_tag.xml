@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="animalize.github.com.quantangshi.TagActivity">
+    tools:context="animalize.github.com.quantangshi.TagSearchActivity">
 
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/search_tags"
