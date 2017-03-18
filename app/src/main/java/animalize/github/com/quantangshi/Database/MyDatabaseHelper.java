@@ -300,6 +300,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static void updateTagCount(int tid, int count) {
         String sql = "UPDATE tag SET count=? WHERE id=?";
         mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
+
+        // 当引用为0时删除
+        sql = "DELETE FROM tag WHERE id=? AND count=0";
+        mDb.execSQL(sql, new String[]{String.valueOf(tid)});
     }
 
     // 添加到tag_map
@@ -311,31 +315,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return (int) mDb.insert("tag_map", null, cv);
     }
 
-    // XXX 从tag得到所有诗id
-    public static synchronized ArrayList<Integer> getPoemIDByTag(String tag) {
-        init();
-
-        String sql = "SELECT id FROM tag WHERE name=?";
-        Cursor c = mDb.rawQuery(sql, new String[]{tag});
-        c.moveToFirst();
-        int tagid = c.getInt(0);
-        c.close();
-
-        sql = "SELECT pid FROM tag_map WHERE tid=?";
-        c = mDb.rawQuery(sql, new String[]{String.valueOf(tagid)});
-
-        ArrayList<Integer> l = new ArrayList<>();
-        if (c.moveToFirst()) {
-            do {
-                int temp = c.getInt(0);
-                l.add(temp);
-            } while (c.moveToNext());
-        }
-        c.close();
-
-        return l;
-    }
-
+    // 用tag列表搜索
     public static synchronized ArrayList<InfoItem> queryByTags(List<String> tags) {
         init();
 
@@ -352,7 +332,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             }
             sb.append(',');
         }
-        String arg1 = sb.toString();
 
         String sql = "SELECT p.id, p.title, p.author " +
                 "FROM tangshi.poem p " +
@@ -360,7 +339,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "ON p.id = tm.pid " +
                 "INNER JOIN tag t " +
                 "ON tm.tid = t.id " +
-                "WHERE t.name in (" + arg1 + ") " +
+                "WHERE t.name in (" + sb + ") " +
                 "GROUP BY p.id " +
                 "HAVING COUNT(DISTINCT t.id) = " + tags.size() + " " +
                 "ORDER BY tm.id DESC";

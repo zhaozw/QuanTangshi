@@ -2,17 +2,13 @@ package animalize.github.com.quantangshi;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +17,7 @@ import animalize.github.com.quantangshi.Data.InfoItem;
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.Database.TagAgent;
+import animalize.github.com.quantangshi.ListViewPack.RVAdapter;
 import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
@@ -132,8 +129,14 @@ public class TagActivity extends AppCompatActivity {
         // 布局管理
         LinearLayoutManager lm = new LinearLayoutManager(this);
         rvResult.setLayoutManager(lm);
+
         // adapter
-        resultAdapter = new RVAdapter();
+        resultAdapter = new RVAdapter() {
+            @Override
+            public void onItemClick(int pid) {
+                OnePoemActivity.actionStart(TagActivity.this, pid);
+            }
+        };
         rvResult.setAdapter(resultAdapter);
     }
 
@@ -146,76 +149,4 @@ public class TagActivity extends AppCompatActivity {
         searchTags.addTag(info.getName());
     }
 
-    public class RVAdapter
-            extends RecyclerView.Adapter<RVAdapter.MyHolder> {
-
-        private List<InfoItem> mList;
-
-        public void setArrayList(List<InfoItem> al) {
-            mList = al;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.recent_list_item, parent, false);
-            final MyHolder holder = new MyHolder(v);
-
-            holder.root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int posi = holder.getAdapterPosition();
-                    InfoItem ri = mList.get(posi);
-
-                    OnePoemActivity.actionStart(TagActivity.this, ri.getId());
-                }
-            });
-
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(RVAdapter.MyHolder holder, int position) {
-            InfoItem ri = mList.get(position);
-
-            if (position % 2 == 0) {
-                holder.root.setBackgroundColor(Color.rgb(0xff, 0xcc, 0xcc));
-            } else {
-                holder.root.setBackgroundColor(Color.rgb(0xcc, 0xcc, 0xff));
-            }
-
-            holder.order.setText(String.valueOf(position + 1));
-            holder.title.setText(ri.getTitle());
-            holder.author.setText(ri.getAuthor());
-            holder.id.setText("" + ri.getId());
-        }
-
-        @Override
-        public int getItemCount() {
-            if (mList == null) {
-                return 0;
-            }
-            return mList.size();
-        }
-
-        public class MyHolder extends RecyclerView.ViewHolder {
-            private LinearLayout root;
-            private TextView order;
-            private TextView title;
-            private TextView author;
-            private TextView id;
-
-            public MyHolder(View itemView) {
-                super(itemView);
-
-                root = (LinearLayout) itemView.findViewById(R.id.recent_item);
-                order = (TextView) itemView.findViewById(R.id.recent_item_order);
-                title = (TextView) itemView.findViewById(R.id.recent_item_title);
-                author = (TextView) itemView.findViewById(R.id.recent_item_author);
-                id = (TextView) itemView.findViewById(R.id.recent_item_id);
-            }
-        }
-    }
 }

@@ -23,13 +23,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/search_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="开始搜索"
-                android:textAllCaps="false" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="点击选择下列标签"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="开始搜索"
+                    android:textAllCaps="false" />
+            </LinearLayout>
 
             <!-- 所有tag -->
             <ScrollView
@@ -51,13 +65,27 @@
             android:orientation="vertical"
             android:visibility="invisible">
 
-            <Button
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="回退"
-                android:textAllCaps="false" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="点击回退重新搜索"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="回退"
+                    android:textAllCaps="false" />
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"

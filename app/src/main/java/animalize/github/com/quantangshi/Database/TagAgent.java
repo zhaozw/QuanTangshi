@@ -15,11 +15,11 @@ public class TagAgent {
         return MyDatabaseHelper.getTags();
     }
 
-    public static synchronized List<String> getTagsHasCount(List<TagInfo> list) {
+    public static List<String> getTagsHasCount(List<TagInfo> list) {
         List<String> tags = new ArrayList<>();
         for (TagInfo info : list) {
             String s = info.getName();
-            if (info.getCount() > 1) {
+            if (info.getCount() != 1) {
                 s += "(" + info.getCount() + ")";
             }
             tags.add(s);
@@ -27,7 +27,7 @@ public class TagAgent {
         return tags;
     }
 
-    public static synchronized List<String> getTagsNoCount(List<TagInfo> list) {
+    public static List<String> getTagsNoCount(List<TagInfo> list) {
         List<String> tags = new ArrayList<>();
         for (TagInfo info : list) {
             String s = info.getName();
@@ -47,9 +47,5 @@ public class TagAgent {
 
     public static synchronized boolean delTagFromPoem(int pid, TagInfo info) {
         return MyDatabaseHelper.delTagFromPoem(pid, info);
-    }
-
-    public static synchronized List<Integer> getPoemIDByTag(String tag) {
-        return MyDatabaseHelper.getPoemIDByTag(tag);
     }
 }

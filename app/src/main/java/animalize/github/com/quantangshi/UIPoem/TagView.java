@@ -45,11 +45,8 @@ public class TagView extends LinearLayout {
                 if (tag == "") {
                     return;
                 }
-
-                TagAgent.addTagToPoem(tag, mPid);
+                addTag(tag);
                 mEdit.setText("");
-
-                setPoemId(mPid);
             }
         });
 
@@ -94,15 +91,8 @@ public class TagView extends LinearLayout {
         mAllTags.setOnTagClickListener(new co.lujun.androidtagview.TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
-
                 String tag = mAllTagList.get(position).getName();
-                List<Integer> l = TagAgent.getPoemIDByTag(tag);
-
-                for (int id : l) {
-                    Toast.makeText(getContext(),
-                            String.valueOf(id),
-                            Toast.LENGTH_LONG).show();
-                }
+                addTag(tag);
             }
 
             @Override
@@ -115,6 +105,11 @@ public class TagView extends LinearLayout {
 
             }
         });
+    }
+
+    public void addTag(String tag) {
+        TagAgent.addTagToPoem(tag, mPid);
+        setPoemId(mPid);
     }
 
     public void removeTag(TagInfo info) {
