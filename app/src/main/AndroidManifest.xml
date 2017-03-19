@@ -25,7 +25,8 @@
         <activity
             android:name=".StudyActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".TagSearchActivity"></activity>
+        <activity android:name=".TagSearchActivity" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

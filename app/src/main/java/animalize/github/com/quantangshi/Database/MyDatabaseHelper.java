@@ -302,7 +302,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
 
         // 当引用为0时删除
-        sql = "DELETE FROM tag WHERE id=? AND count=0";
+        sql = "DELETE FROM tag WHERE id=? AND count<=0";
         mDb.execSQL(sql, new String[]{String.valueOf(tid)});
     }
 

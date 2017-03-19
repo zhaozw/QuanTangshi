@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">离线全唐诗</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="about"><![CDATA[访问本应用的源代码：<br><a href="https://github.com/animalize/QuanTangshi">https://github.com/animalize/QuanTangshi</a><br><br>使用的是jackeyGao网友整理的全唐诗数据库：<br><a href="https://github.com/jackeyGao/chinese-poetry">https://github.com/jackeyGao/chinese-poetry</a>]]></string>
 </resources>

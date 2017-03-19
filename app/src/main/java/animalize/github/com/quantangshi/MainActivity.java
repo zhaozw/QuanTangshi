@@ -11,7 +11,9 @@ import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements View.OnClickListener {
     private int mPoemCount = -1;
 
     private EditText idEdit;
@@ -27,54 +29,61 @@ public class MainActivity extends AppCompatActivity {
 
         // 打开诗 ------------------------------
         mPoemCount = MyDatabaseHelper.getPoemCount();
-        Button bt = (Button) findViewById(R.id.main_test);
+        Button bt = (Button) findViewById(R.id.main_viewpoem);
         bt.setText("共" + mPoemCount + "首诗");
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OnePoemActivity.actionStart(MainActivity.this);
-            }
-        });
+        bt.setOnClickListener(this);
 
         // 跳转指定ID ------------------------------
         idEdit = (EditText) findViewById(R.id.jump_edit);
         bt = (Button) findViewById(R.id.jump_button);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        bt.setOnClickListener(this);
+
+        // 清空ID
+        bt = (Button) findViewById(R.id.jump_clear);
+        bt.setOnClickListener(this);
+
+        // 标签管理 -------------------------
+        bt = (Button) findViewById(R.id.main_opentag);
+        bt.setOnClickListener(this);
+
+        // 设置 ------------------------------
+        bt = (Button) findViewById(R.id.main_option);
+        bt.setOnClickListener(this);
+
+        // 关于 ------------------------------
+        bt = (Button) findViewById(R.id.main_about);
+        bt.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_viewpoem:
+                OnePoemActivity.actionStart(MainActivity.this);
+                break;
+
+            case R.id.jump_button:
                 int id = Integer.parseInt(idEdit.getText().toString());
                 if (1 <= id && id <= mPoemCount && mPoemCount != -1) {
                     OnePoemActivity.actionStart(MainActivity.this, id);
                 }
-            }
-        });
+                break;
 
-        // 清空ID
-        bt = (Button) findViewById(R.id.jump_clear);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.jump_clear:
                 idEdit.setText("");
-            }
-        });
+                break;
 
-        // 标签管理 -------------------------
-        bt = (Button) findViewById(R.id.main_opentag);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.main_opentag:
                 TagSearchActivity.actionStart(MainActivity.this);
-            }
-        });
+                break;
 
-        // 设置 ------------------------------
-        bt = (Button) findViewById(R.id.main_option);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.main_option:
                 OptionActivity.actionStart(MainActivity.this);
-            }
-        });
-    }
+                break;
 
+            case R.id.main_about:
+                AboutActivity.actionStart(MainActivity.this);
+                break;
+        }
+    }
 }

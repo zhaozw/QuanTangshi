@@ -8,8 +8,9 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0 preview"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
