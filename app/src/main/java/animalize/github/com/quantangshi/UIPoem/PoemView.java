@@ -1,5 +1,7 @@
 package animalize.github.com.quantangshi.UIPoem;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
@@ -44,6 +46,32 @@ public class PoemView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.view_poem, this);
 
         mId = (TextView) findViewById(R.id.poem_id);
+        mId.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("标题：");
+                sb.append(mPoemWrapper.getTitle(mChineseMode));
+                sb.append('\n');
+
+                sb.append("作者：");
+                sb.append(mPoemWrapper.getAuthor(mChineseMode));
+                sb.append('\n');
+
+                sb.append("编号：");
+                sb.append(mPoemWrapper.getID());
+                sb.append("\n\n");
+
+                sb.append(mPoemWrapper.getText(mChineseMode));
+
+                ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboardManager.setPrimaryClip(ClipData.newPlainText(null, sb));
+
+                Toast.makeText(getContext(),
+                        "已复制本诗到剪贴板",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         mTitle = (TextView) findViewById(R.id.poem_title);
         mAuthor = (TextView) findViewById(R.id.poem_author);
         mText = (TextView) findViewById(R.id.poem_text);

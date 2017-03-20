@@ -25,7 +25,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
 
     // 检查数据库版本，sqlite数据库版本小于此值时，重新解压
-    private static final int CHECK_TANGSHI_VERSION = 2;
+    private static final int CHECK_TANGSHI_VERSION = 1;
     private static final String ENCODING = "utf-16LE";
 
     // 静态变量

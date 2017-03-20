@@ -6,7 +6,7 @@ import sqlite3
 from zipfile import ZipFile
 
 
-DATABASE_VER = "2"
+DATABASE_VER = "1"
 
 empty_count = 0
 yy_count = 0
@@ -137,10 +137,10 @@ def create_db():
            'txt BLOB);')
     db.execute(sql)
 
-    sql = ('CREATE TABLE author('
-           'author BLOB,'
-           'desc BLOB);')
-    db.execute(sql)
+#     sql = ('CREATE TABLE author('
+#            'author BLOB NOT NULL,'
+#            'info BLOB);')
+#     db.execute(sql)
 
     sql = ('CREATE TABLE dbinfo('
            'name TEXT,'
@@ -150,6 +150,9 @@ def create_db():
     # 索引
     sql = 'CREATE INDEX author_idx ON poem(author);'
     db.execute(sql)
+    
+#     sql = 'CREATE INDEX author_idx2 ON author(author);'
+#     db.execute(sql)
 
     return db
 
@@ -178,14 +181,14 @@ def main():
         db.execute(sql, p.get_tuple())
     db.commit()
 
-    # 作者
-    lst = load_author()
-
-    sql = 'INSERT INTO author VALUES(?,?);'
-    db.execute('BEGIN')
-    for a in lst:
-        db.execute(sql, a.get_tuple())
-    db.commit()
+#     # 作者
+#     lst = load_author()
+# 
+#     sql = 'INSERT INTO author VALUES(?,?);'
+#     db.execute('BEGIN')
+#     for a in lst:
+#         db.execute(sql, a.get_tuple())
+#     db.commit()
 
     # 数据库信息
     sql = 'INSERT INTO dbinfo VALUES(?,?);'
