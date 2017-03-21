@@ -67,8 +67,8 @@
         android:text="阅读设置"
         android:textAllCaps="false" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <View
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:visibility="invisible" />

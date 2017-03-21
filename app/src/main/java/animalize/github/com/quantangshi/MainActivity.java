@@ -71,6 +71,7 @@ public class MainActivity
 
             case R.id.jump_clear:
                 idEdit.setText("");
+                idEdit.clearFocus();
                 break;
 
             case R.id.main_opentag:

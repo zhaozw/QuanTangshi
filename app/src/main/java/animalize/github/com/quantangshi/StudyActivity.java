@@ -245,6 +245,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.edit_clear:
                 edit_item.setText("");
+                edit_item.clearFocus();
                 break;
         }
     }
