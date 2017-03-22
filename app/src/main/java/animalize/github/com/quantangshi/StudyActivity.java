@@ -198,6 +198,8 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void changeMode(int mode, boolean save) {
+        this.mode = mode;
+
         showPoem(mode);
 
         if (mode == 0) {
@@ -222,12 +224,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_t:
                 changeMode(0, true);
-                mode = 0;
                 break;
 
             case R.id.button_s:
                 changeMode(1, true);
-                mode = 1;
                 break;
 
             case R.id.add_item:
