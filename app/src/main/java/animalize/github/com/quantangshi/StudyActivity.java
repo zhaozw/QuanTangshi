@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
 import animalize.github.com.quantangshi.Data.RawPoem;
@@ -31,6 +32,7 @@ import co.lujun.androidtagview.TagView;
 public class StudyActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener, RadioGroup.OnCheckedChangeListener {
 
     private PoemWrapper poemWrapper;
+    private int mode;
 
     private TextView title;
     private TextView author;
@@ -55,20 +57,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study);
 
-        int id = -1;
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt("poem_id", -1);
-        }
-        if (id == -1) {
-            Intent intent = getIntent();
-            id = intent.getIntExtra("id", 1);
-        }
-        RawPoem poem = MyDatabaseHelper.getPoemById(id);
-        poemWrapper = new PoemWrapper(poem);
-
         title = (TextView) findViewById(R.id.poem_title);
         author = (TextView) findViewById(R.id.poem_author);
         text = (TextView) findViewById(R.id.poem_text);
+        edit_item = (EditText) findViewById(R.id.item_edit);
 
         button_t = (Button) findViewById(R.id.button_t);
         button_t.setOnClickListener(this);
@@ -89,14 +81,27 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             b.setOnClickListener(this);
         }
 
-        edit_item = (EditText) findViewById(R.id.item_edit);
         items = (TagContainerLayout) findViewById(R.id.items);
         items.setIsTagViewClickable(true);
         items.setOnTagClickListener(this);
 
+        // 参数
+        int id;
+        if (savedInstanceState != null) {
+            id = savedInstanceState.getInt("poem_id", 1);
+
+            ArrayList<String> tags = savedInstanceState.getStringArrayList("search_words");
+            items.setTags(tags);
+        } else {
+            Intent intent = getIntent();
+            id = intent.getIntExtra("id", 1);
+        }
+        RawPoem poem = MyDatabaseHelper.getPoemById(id);
+        poemWrapper = new PoemWrapper(poem);
+
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        int mode = pref.getInt("mode", 1);
+        mode = pref.getInt("mode", 1);
         int engine = pref.getInt("engine", 0);
 
         changeMode(mode, false);
@@ -117,7 +122,18 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("poem_id", poemWrapper.getID());
+
+        List<String> tags = items.getTags();
+        outState.putStringArrayList("search_words", (ArrayList<String>) tags);
+
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        showPoem(mode);
     }
 
     private void showPoem(int mode) {
@@ -160,20 +176,23 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
                 @Override
                 public void onClick(View widget) {
-                    StudyActivity.this.addToItem(s);
+                    addToItem(s);
                 }
             };
             ss.setSpan(clickable, p.begin, p.end,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
-        view.setMovementMethod(LinkMovementMethod.getInstance());
+        if (view.getMovementMethod() == null) {
+            view.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         view.setText(ss);
     }
 
     private void addToItem(String s) {
-        String t = String.valueOf(edit_item.getText());
+        String t = edit_item.getText().toString();
         t = t + s;
+
         edit_item.setText(t);
         edit_item.setSelection(t.length());
     }
@@ -203,14 +222,16 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_t:
                 changeMode(0, true);
+                mode = 0;
                 break;
 
             case R.id.button_s:
                 changeMode(1, true);
+                mode = 1;
                 break;
 
             case R.id.add_item:
-                s = String.valueOf(edit_item.getText()).trim();
+                s = edit_item.getText().toString().trim();
                 if (!s.equals("")) {
                     items.addTag(s);
                 }
@@ -219,13 +240,13 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.edit_space:
-                s = String.valueOf(edit_item.getText());
+                s = edit_item.getText().toString();
                 edit_item.setText(s + " ");
                 edit_item.setSelection(edit_item.getText().length());
                 break;
 
             case R.id.edit_back:
-                s = String.valueOf(edit_item.getText());
+                s = edit_item.getText().toString();
                 if (s.length() == 0) {
                     break;
                 }
