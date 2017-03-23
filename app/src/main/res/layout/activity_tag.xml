@@ -41,8 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="开始搜索"
-                    android:textAllCaps="false" />
+                    android:text="开始搜索" />
             </LinearLayout>
 
             <!-- 所有tag -->
@@ -83,8 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="回退"
-                    android:textAllCaps="false" />
+                    android:text="回退" />
             </LinearLayout>
 
             <ScrollView

@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:minHeight="0dp"
             android:minWidth="30dp"
-            android:text="繁"
-            android:textAllCaps="false" />
+            android:text="繁" />
 
         <Button
             android:id="@+id/button_s"
@@ -27,8 +26,7 @@
             android:layout_height="wrap_content"
             android:minHeight="0dp"
             android:minWidth="30dp"
-            android:text="简"
-            android:textAllCaps="false" />
+            android:text="简" />
 
         <Button
             android:id="@+id/button_sp"
@@ -36,8 +34,7 @@
             android:layout_height="wrap_content"
             android:minHeight="0dp"
             android:minWidth="30dp"
-            android:text="简+"
-            android:textAllCaps="false" />
+            android:text="简+" />
 
         <Button
             android:id="@+id/next_random"
@@ -46,15 +43,13 @@
             android:layout_gravity="right"
             android:layout_marginLeft="20dp"
             android:text="随机"
-            android:textAllCaps="false"
             android:textColor="#990000" />
 
         <Button
             android:id="@+id/start_dic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="学习"
-            android:textAllCaps="false" />
+            android:text="学习" />
 
     </LinearLayout>
 
@@ -67,22 +62,19 @@
             android:id="@+id/show_neighbour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="邻近"
-            android:textAllCaps="false" />
+            android:text="邻近" />
 
         <Button
             android:id="@+id/show_drawer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="最近"
-            android:textAllCaps="false" />
+            android:text="最近" />
 
         <Button
             android:id="@+id/show_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="标签"
-            android:textAllCaps="false" />
+            android:text="标签" />
 
     </LinearLayout>
 

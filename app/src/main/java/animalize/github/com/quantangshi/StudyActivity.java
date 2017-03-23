@@ -104,7 +104,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         mode = pref.getInt("mode", 1);
         int engine = pref.getInt("engine", 0);
 
-        changeMode(mode, false);
+        changeButtonMode(mode, false);
+        // 在重建时不显示诗，在onRestoreInstanceState之后显示
+        if (savedInstanceState == null) {
+            showPoem();
+        }
 
         engines = (RadioGroup) findViewById(R.id.radioGroup);
         if (engine == 0) {
@@ -133,10 +137,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        showPoem(mode);
+        showPoem();
     }
 
-    private void showPoem(int mode) {
+    private void showPoem() {
         setText(title, poemWrapper.getTitle(mode));
         setText(author, poemWrapper.getAuthor(mode));
         setText(text, poemWrapper.getText(mode));
@@ -197,10 +201,8 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         edit_item.setSelection(t.length());
     }
 
-    public void changeMode(int mode, boolean save) {
+    public void changeButtonMode(int mode, boolean save) {
         this.mode = mode;
-
-        showPoem(mode);
 
         if (mode == 0) {
             button_t.setTextColor(Color.BLUE);
@@ -223,11 +225,13 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
         switch (v.getId()) {
             case R.id.button_t:
-                changeMode(0, true);
+                changeButtonMode(0, true);
+                showPoem();
                 break;
 
             case R.id.button_s:
-                changeMode(1, true);
+                changeButtonMode(1, true);
+                showPoem();
                 break;
 
             case R.id.add_item:

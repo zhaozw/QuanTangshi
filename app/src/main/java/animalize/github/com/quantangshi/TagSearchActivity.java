@@ -65,6 +65,12 @@ public class TagSearchActivity extends AppCompatActivity {
             }
         });
 
+        // 由系统恢复activity
+        if (savedInstanceState != null) {
+            ArrayList<String> tags = savedInstanceState.getStringArrayList("search_tags");
+            searchTags.setTags(tags);
+        }
+
         // 所有tags 数组
         mAllTagList = TagAgent.getTagInfos();
 
@@ -187,6 +193,14 @@ public class TagSearchActivity extends AppCompatActivity {
         searchTags.setTags(tags);
 
         inResult = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        List<String> tags = searchTags.getTags();
+        outState.putStringArrayList("search_tags", (ArrayList<String>) tags);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override

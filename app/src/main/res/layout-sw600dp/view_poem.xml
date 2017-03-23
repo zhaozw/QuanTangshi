@@ -13,7 +13,7 @@
         android:maxLines="2"
         android:padding="9dp"
         android:textAlignment="center"
-        android:textAllCaps="false"
+
         android:textColor="@android:color/black"
         android:textSize="36sp" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:paddingLeft="20dp"
-            android:textAllCaps="false"
+
             android:textSize="20sp" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="20dp"
-            android:textAllCaps="false"
+
             android:textSize="20sp" />
 
     </RelativeLayout>
@@ -67,7 +67,7 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:textAlignment="center"
-            android:textAllCaps="false"
+
             android:textColor="@android:color/black"
             android:textSize="26sp" />
     </ScrollView>

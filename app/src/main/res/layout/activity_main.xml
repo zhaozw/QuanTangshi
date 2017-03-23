@@ -20,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="共xxxx首诗"
-        android:textAllCaps="false" />
+        android:text="共xxxx首诗" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,15 +39,13 @@
             android:id="@+id/jump_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="跳转到"
-            android:textAllCaps="false" />
+            android:text="跳转到" />
 
         <Button
             android:id="@+id/jump_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="清空"
-            android:textAllCaps="false" />
+            android:text="清空" />
     </LinearLayout>
 
     <Button
@@ -56,16 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="标签搜索"
-        android:textAllCaps="false" />
+        android:text="标签搜索" />
 
     <Button
         android:id="@+id/main_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="阅读设置"
-        android:textAllCaps="false" />
+        android:text="阅读设置" />
 
     <View
         android:layout_width="0dp"
@@ -78,7 +73,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="关于本应用"
-        android:textAllCaps="false" />
+        android:text="关于本应用" />
 
 </LinearLayout>
