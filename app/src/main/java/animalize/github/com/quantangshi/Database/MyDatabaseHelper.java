@@ -96,7 +96,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         RawPoem p;
         do {
             p = MyDatabaseHelper.getPoemById(id);
-        } while (p.getText() == "");
+        } while (p.getText().equals(""));
 
         return p;
     }
