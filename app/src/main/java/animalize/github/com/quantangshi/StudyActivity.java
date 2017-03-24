@@ -121,6 +121,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             engines.check(R.id.search_baidubaike);
         } else if (engine == 3) {
             engines.check(R.id.search_baidubaike_direct);
+        } else if (engine == 4 && findViewById(R.id.search_baiduimg) != null) {
+            engines.check(R.id.search_baiduimg);
+        } else {
+            // 正常情况下不会执行这里
+            engines.check(R.id.search_baidu);
         }
         engines.setOnCheckedChangeListener(this);
     }
@@ -273,7 +278,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
         switch (engine) {
             case R.id.search_baidu:
-                url = "https://www.baidu.com/s?wd=" + text;
+                url = "http://www.baidu.com/s?wd=" + text;
                 break;
             case R.id.search_baiduhanyu:
                 url = "http://hanyu.baidu.com/zici/s?wd=" + text;
@@ -283,6 +288,9 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.search_baidubaike_direct:
                 url = "http://baike.baidu.com/item/" + text;
+                break;
+            case R.id.search_baiduimg:
+                url = "http://image.baidu.com/search/wiseala?tn=wiseala&word=" + text;
                 break;
         }
 
@@ -318,6 +326,9 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.search_baidubaike_direct:
                 engine = 3;
+                break;
+            case R.id.search_baiduimg:
+                engine = 4;
                 break;
         }
 
