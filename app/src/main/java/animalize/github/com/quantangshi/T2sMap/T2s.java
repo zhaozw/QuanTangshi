@@ -28,7 +28,7 @@ public class T2s {
 
     private T2s(Context context) {
         String s = getFromAssets(context, "map.json");
-        if (s == "")
+        if ("".equals(s))
             return;
 
         try {

@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import animalize.github.com.quantangshi.Data.InfoItem;
@@ -139,32 +140,18 @@ public class PoemView extends LinearLayout {
             ArrayList<PoemWrapper.CodepointPosition> lst = mPoemWrapper.getCodeList();
             SpannableString ss = new SpannableString(mPoemWrapper.getText(mChineseMode));
             for (final PoemWrapper.CodepointPosition p : lst) {
-                ss.setSpan(new ClickableSpan() {
-                               @Override
-                               public void updateDrawState(TextPaint ds) {
-                                   super.updateDrawState(ds);
-                                   ds.setColor(Color.rgb(0x33, 0x33, 0x99));
-                                   ds.setUnderlineText(false);
-                               }
+                MyClickableSpan clickable = new MyClickableSpan(
+                        getContext(),
+                        String.valueOf(Character.toChars(p.s_codepoint))
+                );
 
-                               @Override
-                               public void onClick(View widget) {
-                                   String s = String.valueOf(Character.toChars(p.s_codepoint));
-                                   Toast t = Toast.makeText(getContext(), s, Toast.LENGTH_SHORT);
-                                   // 字体
-                                   ViewGroup group = (ViewGroup) t.getView();
-                                   TextView messageTextView = (TextView) group.getChildAt(0);
-                                   messageTextView.setTextSize(40);
-                                   // 居中
-                                   t.setGravity(Gravity.CENTER, 0, 0);
-                                   // 显示
-                                   t.show();
-                               }
-                           },
+                ss.setSpan(clickable,
                         p.begin, p.end,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            mText.setMovementMethod(LinkMovementMethod.getInstance());
+            if (mText.getMovementMethod() == null) {
+                mText.setMovementMethod(LinkMovementMethod.getInstance());
+            }
             mText.setText(ss);
         }
 
@@ -172,5 +159,38 @@ public class PoemView extends LinearLayout {
             mScroller.scrollTo(0, 0);
         }
 
+    }
+
+    private static class MyClickableSpan extends ClickableSpan {
+        private WeakReference<Context> weakRef;
+        private String s;
+
+        public MyClickableSpan(Context activity, String s) {
+            this.weakRef = new WeakReference<>(activity);
+            this.s = s;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.rgb(0x33, 0x33, 0x99));
+            ds.setUnderlineText(false);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Context context = weakRef.get();
+            if (context != null) {
+                Toast t = Toast.makeText(context, s, Toast.LENGTH_SHORT);
+                // 字体
+                ViewGroup group = (ViewGroup) t.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(40);
+                // 居中
+                t.setGravity(Gravity.CENTER, 0, 0);
+                // 显示
+                t.show();
+            }
+        }
     }
 }

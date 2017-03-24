@@ -1,6 +1,5 @@
 package animalize.github.com.quantangshi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,12 +24,8 @@ public class MainActivity
 
         // 防止从安装器打开出现问题
         if (!isTaskRoot()) {
-            Intent intent = getIntent();
-            String action = intent.getAction();
-            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
-                finish();
-                return;
-            }
+            finish();
+            return;
         }
 
         setContentView(R.layout.activity_main);

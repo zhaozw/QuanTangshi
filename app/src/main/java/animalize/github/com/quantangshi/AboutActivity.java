@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class AboutActivity extends AppCompatActivity {
         String versionName = "版本：" + BuildConfig.VERSION_NAME + '\n';
 
         Date buildDate = new Date(BuildConfig.TIMESTAMP);
-        DateFormat df = new SimpleDateFormat("编译于：yyyy-MM-dd HH:mm");
+        DateFormat df = new SimpleDateFormat("编译于：yyyy-MM-dd E HH:mm", Locale.getDefault());
         tv.setText(versionName + df.format(buildDate));
 
         // html

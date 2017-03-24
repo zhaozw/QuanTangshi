@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import co.lujun.androidtagview.TagView;
 
 
 public class StudyActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener, RadioGroup.OnCheckedChangeListener {
+    private final static String SAVE_ID = "poem_id";
+    private final static String SAVE_WORDS = "search_words";
 
     private PoemWrapper poemWrapper;
     private int mode;
@@ -88,9 +91,9 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         // 参数
         int id;
         if (savedInstanceState != null) {
-            id = savedInstanceState.getInt("poem_id", 1);
+            id = savedInstanceState.getInt(SAVE_ID, 1);
 
-            ArrayList<String> tags = savedInstanceState.getStringArrayList("search_words");
+            ArrayList<String> tags = savedInstanceState.getStringArrayList(SAVE_WORDS);
             items.setTags(tags);
         } else {
             Intent intent = getIntent();
@@ -105,7 +108,6 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         int engine = pref.getInt("engine", 0);
 
         changeButtonMode(mode, false);
-        // 在重建时不显示诗，在onRestoreInstanceState之后显示
         if (savedInstanceState == null) {
             showPoem();
         }
@@ -125,10 +127,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("poem_id", poemWrapper.getID());
+        // 保存信息
+        outState.putInt(SAVE_ID, poemWrapper.getID());
 
         List<String> tags = items.getTags();
-        outState.putStringArrayList("search_words", (ArrayList<String>) tags);
+        outState.putStringArrayList(SAVE_WORDS, (ArrayList<String>) tags);
 
         super.onSaveInstanceState(outState);
     }
@@ -167,22 +170,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         }
 
         SpannableString ss = new SpannableString(str);
-        for (final Position p : list) {
-            final String s = str.substring(p.begin, p.end);
+        for (Position p : list) {
+            String s = str.substring(p.begin, p.end);
+            MyClickableSpan clickable = new MyClickableSpan(StudyActivity.this, s);
 
-            ClickableSpan clickable = new ClickableSpan() {
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setColor(Color.rgb(0, 0, 0));
-                    ds.setUnderlineText(false);
-                }
-
-                @Override
-                public void onClick(View widget) {
-                    addToItem(s);
-                }
-            };
             ss.setSpan(clickable, p.begin, p.end,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -341,6 +332,31 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         public Position(int begin, int end) {
             this.begin = begin;
             this.end = end;
+        }
+    }
+
+    private static class MyClickableSpan extends ClickableSpan {
+        private WeakReference<StudyActivity> weakRef;
+        private String s;
+
+        public MyClickableSpan(StudyActivity activity, String s) {
+            this.weakRef = new WeakReference<>(activity);
+            this.s = s;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.rgb(0, 0, 0));
+            ds.setUnderlineText(false);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            StudyActivity activity = weakRef.get();
+            if (activity != null) {
+                activity.addToItem(s);
+            }
         }
     }
 }

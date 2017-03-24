@@ -42,7 +42,7 @@ public class TagView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 String tag = mEdit.getText().toString().trim();
-                if (tag == "") {
+                if ("".equals(tag)) {
                     return;
                 }
                 addTag(tag);

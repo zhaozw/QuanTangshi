@@ -280,4 +280,11 @@ public class OnePoemActivity
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        poemView.setPoem(currentPoem);
+    }
 }
