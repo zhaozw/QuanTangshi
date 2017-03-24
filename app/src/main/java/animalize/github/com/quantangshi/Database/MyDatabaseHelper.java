@@ -326,9 +326,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; ; i++) {
-            sb.append('\\');
+            sb.append('\'');
             sb.append(tags.get(i));
-            sb.append('\\');
+            sb.append('\'');
             if (i == max) {
                 break;
             }
