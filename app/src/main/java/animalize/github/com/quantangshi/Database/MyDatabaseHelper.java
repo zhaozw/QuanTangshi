@@ -95,7 +95,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         RawPoem p;
         do {
-            int id = rand.nextInt(poemCount - 1) + 1;
+            int id = rand.nextInt(poemCount) + 1;
             p = MyDatabaseHelper.getPoemById(id);
         } while (p.getText().equals(""));
 
