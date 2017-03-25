@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:text="检查更新" />
+        android:text="检查版本" />
 
     <TextView
         android:id="@+id/ver_info"
