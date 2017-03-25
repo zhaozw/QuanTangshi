@@ -24,6 +24,22 @@
         android:gravity="center_horizontal"
         android:textColor="@android:color/black" />
 
+    <Button
+        android:id="@+id/check_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="检查更新" />
+
+    <TextView
+        android:id="@+id/ver_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/about_text"
         android:layout_width="wrap_content"

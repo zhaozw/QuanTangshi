@@ -69,6 +69,13 @@
         android:visibility="invisible" />
 
     <Button
+        android:id="@+id/main_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="使用帮助" />
+
+    <Button
         android:id="@+id/main_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

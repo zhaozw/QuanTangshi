@@ -57,6 +57,10 @@ public class MainActivity
         bt = (Button) findViewById(R.id.main_option);
         bt.setOnClickListener(this);
 
+        // 使用技巧 ---------------------------
+        bt = (Button) findViewById(R.id.main_tip);
+        bt.setOnClickListener(this);
+
         // 关于 ------------------------------
         bt = (Button) findViewById(R.id.main_about);
         bt.setOnClickListener(this);
@@ -87,6 +91,10 @@ public class MainActivity
 
             case R.id.main_option:
                 OptionActivity.actionStart(MainActivity.this);
+                break;
+
+            case R.id.main_tip:
+                TipActivity.actionStart(MainActivity.this);
                 break;
 
             case R.id.main_about:
