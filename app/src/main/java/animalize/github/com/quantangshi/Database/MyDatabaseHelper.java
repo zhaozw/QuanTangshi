@@ -91,10 +91,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // 随机一首
     public static synchronized RawPoem randomPoem() {
         int poemCount = MyDatabaseHelper.getPoemCount();
-        int id = new Random().nextInt(poemCount - 1) + 1;
+        Random rand = new Random();
 
         RawPoem p;
         do {
+            int id = rand.nextInt(poemCount - 1) + 1;
             p = MyDatabaseHelper.getPoemById(id);
         } while (p.getText().equals(""));
 
