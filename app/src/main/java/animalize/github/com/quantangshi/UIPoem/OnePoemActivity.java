@@ -185,6 +185,7 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 randomPoem();
+                updateUIForPoem(true);
             }
         });
 
@@ -196,6 +197,7 @@ public class OnePoemActivity
         // 模式
         setPoemMode(mode);
 
+        // 读取诗
         if (intentID != -1) {
             toPoemByID(intentID);
         } else {
@@ -206,28 +208,31 @@ public class OnePoemActivity
                 randomPoem();
             }
         }
+
+        // 各种UI
+        boolean showPoem = savedInstanceState == null;
+        updateUIForPoem(showPoem);
     }
 
     @Override
     public void setPoemID(int id) {
-        currentPoem = MyDatabaseHelper.getPoemById(id);
-        updateUIForPoem();
+        toPoemByID(id);
+
+        updateUIForPoem(true);
     }
 
     private void randomPoem() {
         // 随机一首诗
         currentPoem = MyDatabaseHelper.randomPoem();
-        updateUIForPoem();
     }
 
     public void toPoemByID(int id) {
         currentPoem = MyDatabaseHelper.getPoemById(id);
-        updateUIForPoem();
     }
 
-    private void updateUIForPoem() {
-        // 显示此诗
-        poemView.setPoem(currentPoem);
+    private void updateUIForPoem(boolean showPoem) {
+        // 诗
+        poemView.setPoem(currentPoem, showPoem);
 
         // 最近
         recentView.setPoem(poemView.getInfoItem());
@@ -285,6 +290,6 @@ public class OnePoemActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        poemView.setPoem(currentPoem);
+        poemView.setPoem(currentPoem, true);
     }
 }

@@ -47,7 +47,7 @@ public class OptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_option);
 
         poemView = (PoemView) findViewById(R.id.poem_view);
-        poemView.setPoem(samplePoem);
+        poemView.setPoem(samplePoem, true);
 
         // 标题行数
         titleLinesTextView = (TextView) findViewById(R.id.title_lines_text);

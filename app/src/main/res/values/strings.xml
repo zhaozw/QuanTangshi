@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">离线全唐诗</string>
     <string name="tip"><![CDATA[
-    1、诗界面底部的<font color=blue>蓝色条</font>可以向上拖动，拖动后可以进行更多操作。<br><br>
-    2、学习界面的使用：先点击诗中出现的<font color=black><b>字、词汇</b></font>，再点击<font color=black><b>添加</b></font>添加到标签，选中一个搜索引擎，然后点击<font color=black><b>标签</b></font>就可以调用系统浏览器搜索。]]></string>
+1、学习界面的使用：先点击诗中出现的<font color=black><b>字、词汇</b></font>，再点击<font color=black><b>添加按钮</b></font>保存到标签，选中一个搜索引擎，然后点击<font color=black><b>标签</b></font>就可以调用系统浏览器进行搜索。<br><br>
+2、诗界面底部的<font color="#6666cc"><b>蓝色按钮条</b></font>可以向上拖动，拖动后可以进行更多操作。<br><br>
+3、点击诗界面左上的数字编号，会把诗复制到剪贴板。]]></string>
 
     <string name="about"><![CDATA[访问本应用的源代码：<br><a href="https://github.com/animalize/QuanTangshi">https://github.com/animalize/QuanTangshi</a><br><br>使用的是jackeyGao网友整理的全唐诗数据库：<br><a href="https://github.com/jackeyGao/chinese-poetry">https://github.com/jackeyGao/chinese-poetry</a><br><br>原始数据库为繁体字，本应用参考了OpenCC提供的繁体->简体转换表：<br><a href="https://github.com/BYVoid/OpenCC">https://github.com/BYVoid/OpenCC</a>]]></string>
 </resources>

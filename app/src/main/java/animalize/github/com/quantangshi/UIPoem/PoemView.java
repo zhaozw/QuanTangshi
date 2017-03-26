@@ -79,14 +79,17 @@ public class PoemView extends LinearLayout {
         mScroller = (ScrollView) findViewById(R.id.poem_scroller);
     }
 
-    public void setPoem(RawPoem poem) {
+    public void setPoem(RawPoem poem, boolean showPoem) {
         boolean first = mPoemWrapper == null;
         mPoemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
 
         if (first) {
             updateTypeset();
         }
-        refreshPoem(true);
+
+        if (showPoem) {
+            refreshPoem(true);
+        }
     }
 
     public void setMode(int mode) {
