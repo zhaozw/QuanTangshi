@@ -133,7 +133,7 @@ public class T2s {
             InputStream is = context.getResources().getAssets().open(fileName);
             InputStreamReader inputReader = new InputStreamReader(is);
             BufferedReader bufReader = new BufferedReader(inputReader);
-            String line = "";
+            String line;
             String Result = "";
 
             while ((line = bufReader.readLine()) != null)

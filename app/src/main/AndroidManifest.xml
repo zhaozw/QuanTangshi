@@ -17,20 +17,25 @@
             android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask" />
+
         <activity android:name=".OptionActivity" />
+
         <activity
             android:name=".StudyActivity"
             android:launchMode="singleTask" />
+
         <activity android:name=".TagSearchActivity" />
+
         <activity android:name=".AboutActivity" />
-        <activity android:name=".TipActivity"></activity>
+
+        <activity android:name=".TipActivity" />
     </application>
 
 </manifest>
