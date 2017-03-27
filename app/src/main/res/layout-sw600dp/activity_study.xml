@@ -97,7 +97,7 @@
                 android:id="@+id/edit_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="回退" />
+                android:text="退格" />
 
             <Button
                 android:id="@+id/edit_clear"

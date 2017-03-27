@@ -191,10 +191,23 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
     private void addToItem(String s) {
         String t = edit_item.getText().toString();
-        t = t + s;
+        int p1 = edit_item.getSelectionStart();
 
-        edit_item.setText(t);
-        edit_item.setSelection(t.length());
+        if (p1 == -1) { // 无光标
+            t = t + s;
+
+            edit_item.setText(t);
+            edit_item.setSelection(t.length());
+        } else { // 有光标
+            int p2 = edit_item.getSelectionEnd();
+
+            // 处理：有、无选择
+            t = t.substring(0, p1) + s + t.substring(p2);
+            p1 += s.length();
+
+            edit_item.setText(t);
+            edit_item.setSelection(p1);
+        }
     }
 
     public void changeButtonMode(int mode, boolean save) {
@@ -218,6 +231,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         String s;
+        int p1, p2;
 
         switch (v.getId()) {
             case R.id.button_t:
@@ -241,27 +255,71 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.edit_space:
                 s = edit_item.getText().toString();
-                edit_item.setText(s + " ");
-                edit_item.setSelection(edit_item.getText().length());
+                p2 = edit_item.getSelectionEnd();
+
+                if (p2 == -1) {  // 没有光标
+                    s = s + " ";
+
+                    edit_item.setText(s);
+                    edit_item.setSelection(edit_item.getText().length());
+                } else {  // 有光标
+                    p1 = edit_item.getSelectionStart();
+                    s = s.substring(0, p1) + " " + s.substring(p2);
+
+                    edit_item.setText(s);
+                    edit_item.setSelection(p1 + 1);
+                }
+
                 break;
 
             case R.id.edit_back:
                 s = edit_item.getText().toString();
+
+                // 没有内容
                 if (s.length() == 0) {
                     break;
                 }
 
-                char c = s.charAt(s.length() - 1);
-                if (Character.isLowSurrogate(c) &&
-                        s.length() >= 2 &&
-                        Character.isHighSurrogate(s.charAt(s.length() - 2))) {
-                    s = s.substring(0, s.length() - 2);
-                } else {
-                    s = s.substring(0, s.length() - 1);
-                }
+                p2 = edit_item.getSelectionEnd();
 
-                edit_item.setText(s);
-                edit_item.setSelection(edit_item.getText().length());
+                if (p2 == -1) { // 没有光标，取最后一个字符
+                    char c = s.charAt(s.length() - 1);
+                    if (Character.isLowSurrogate(c) &&
+                            s.length() >= 2 &&
+                            Character.isHighSurrogate(s.charAt(s.length() - 2))) {
+                        s = s.substring(0, s.length() - 2);
+                    } else {
+                        s = s.substring(0, s.length() - 1);
+                    }
+
+                    edit_item.setText(s);
+                    edit_item.setSelection(edit_item.getText().length());
+                } else { // 有光标
+                    if (p2 == 0) {  // 在行首
+                        break;
+                    }
+
+                    p1 = edit_item.getSelectionStart();
+
+                    if (p1 != p2) {  // 有选择
+                        s = s.substring(0, p1) + s.substring(p2);
+                    } else {  // 无选择
+                        char c = s.charAt(p2 - 1);
+                        if (Character.isLowSurrogate(c) &&
+                                p2 >= 2 &&
+                                Character.isHighSurrogate(s.charAt(p2 - 2))) {
+                            s = s.substring(0, p2 - 2) + s.substring(p2);
+                            p1 = p2 - 2;
+                        } else {
+                            s = s.substring(0, p2 - 1) + s.substring(p2);
+                            p1 = p2 - 1;
+                        }
+                    }
+
+                    edit_item.setText(s);
+                    edit_item.setSelection(p1);
+                }
+                
                 break;
 
             case R.id.edit_clear:
