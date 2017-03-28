@@ -6,11 +6,9 @@ import sqlite3
 from zipfile import ZipFile
 
 
-DATABASE_VER = "1"
+DATABASE_VER = "2"
 
 empty_count = 0
-yy_count = 0
-
 
 class Poem:
     __slots__ = ('title', 'author', 'text')
@@ -20,6 +18,8 @@ class Poem:
         self.author = author
 
         text = re.sub(r'(？|！)', '\1\n', text)
+        text = re.sub(r'^YY', '', text, flags=re.M)
+        
         self.text = text
 
     def get_tuple(self):
@@ -106,12 +106,11 @@ def load_poem():
             text = process_paragraphs(paras)
 
             if not text:
+                #print(id, title, author)
                 global empty_count
                 empty_count += 1
-            elif 'YY' in text:
-                # print(id)
-                global yy_count
-                yy_count += 1
+            #elif 'YY' in text:
+            #    print(id, text)
 
             p = Poem(title, author, text)
 
@@ -203,7 +202,6 @@ def main():
         myzip.write('tangshi.db')
 
     print('无内容的记录%d条' % empty_count)
-    print('包含YY的记录%d条' % yy_count)
     print('运行完毕')
 
 main()

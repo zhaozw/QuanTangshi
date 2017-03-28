@@ -3,9 +3,13 @@ package animalize.github.com.quantangshi;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.UIPoem.OnePoemActivity;
@@ -75,8 +79,21 @@ public class MainActivity
 
             case R.id.jump_button:
                 int id = Integer.parseInt(idEdit.getText().toString());
-                if (1 <= id && id <= mPoemCount && mPoemCount != -1) {
+                if (1 <= id && id <= mPoemCount) {
                     OnePoemActivity.actionStart(MainActivity.this, id);
+                } else {
+                    Toast t = Toast.makeText(this,
+                            "请确保: 1<=编号<=" + mPoemCount,
+                            Toast.LENGTH_SHORT);
+
+                    // 字体
+                    ViewGroup group = (ViewGroup) t.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(18);
+                    // 居中
+                    t.setGravity(Gravity.CENTER, 0, 0);
+                    // 显示
+                    t.show();
                 }
                 break;
 
