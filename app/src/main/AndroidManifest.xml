@@ -3,6 +3,7 @@
     package="animalize.github.com.quantangshi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -11,31 +12,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".UIPoem.OnePoemActivity"
             android:launchMode="singleTask" />
-
         <activity android:name=".OptionActivity" />
-
         <activity
             android:name=".StudyActivity"
             android:launchMode="singleTask" />
-
         <activity android:name=".TagSearchActivity" />
-
         <activity android:name=".AboutActivity" />
-
         <activity android:name=".TipActivity" />
+        <activity android:name=".SettingActivity" />
     </application>
 
 </manifest>

@@ -1,30 +1,53 @@
 package animalize.github.com.quantangshi.Database;
 
 import android.os.Environment;
-import android.support.annotation.Nullable;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by anima on 17-3-23.
  */
 
 public class BackupUtil {
+    private final static String backupDir = "QuanTangshi";
+    private static String path;
 
-    // 得到SD卡路径
-    // 返回路径，SD卡不存在时返回null
-    @Nullable
-    public static String getSDPath() {
-        //判断sd卡是否存在
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);
+    // 返回备份路径
+    public static String getBackupDir() {
+        if (path == null) {
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File(sdCard, backupDir);
 
-        if (sdCardExist) {
-            //获取根目录
-            File sdDir = Environment.getExternalStorageDirectory();
-            return sdDir.getAbsolutePath();
-        } else {
-            return null;
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            path = dir.getAbsolutePath();
         }
+        return path;
     }
+
+    private static File getFile() {
+        String p = getBackupDir();
+
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMdd_HHmmss");
+        String fn = "QTS" + dateFormat.format(now) + ".db";
+
+        // 拼接
+        File path1 = new File(p);
+        File path2 = new File(path1, fn);
+
+        return path2;
+    }
+
+    public static File backup() {
+        File file = getFile();
+        MyDatabaseHelper.backup(file);
+
+        return file;
+    }
+
 }

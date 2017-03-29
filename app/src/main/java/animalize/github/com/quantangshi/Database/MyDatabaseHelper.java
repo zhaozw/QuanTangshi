@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -460,6 +465,56 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         return l;
     }
+
+    // 备份数据库
+    public static synchronized void backup(File target) {
+        String sql;
+
+        // VACUUM
+        sql = "VACUUM";
+        mDb.execSQL(sql);
+
+        // 关闭
+        mHelper.close();
+        mHelper = null;
+
+        // 复制文件
+        File dbFile = MyApplication
+                .getContext()
+                .getDatabasePath(DATABASE_NAME);
+
+        try {
+            if (!target.exists())
+                target.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        copyFile(dbFile, target);
+
+        // 重新打开
+        init();
+    }
+
+    private static void copyFile(File src, File dst) {
+        InputStream in;
+        try {
+            in = new FileInputStream(src);
+
+            OutputStream out = new FileOutputStream(dst);
+
+            byte[] buf = new byte[2048];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
