@@ -96,7 +96,22 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
 
         if (requestCode == FILE_SELECT_CODE) {
             Uri uri = data.getData();
-            final String path = URI2Path.getPath(this, uri);
+
+            // 提取路径
+            String temp = null;
+            try {
+                temp = URI2Path.getPath(this, uri);
+            } catch (Exception e) {
+            }
+            if (temp == null) {
+                Toast.makeText(this,
+                        "从Uri提取路径失败，请换一个文件浏览器再试。",
+                        Toast.LENGTH_SHORT).show();
+                super.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
+
+            final String path = temp;
             if (isDBFile(path)) {
                 AlertDialog.Builder d = new AlertDialog.Builder(this);
                 d.setTitle("确认还原操作");
