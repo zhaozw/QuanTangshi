@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -483,14 +482,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 .getContext()
                 .getDatabasePath(DATABASE_NAME);
 
-        try {
-            if (!target.exists())
-                target.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         copyFile(dbFile, target);
+
+        // 重新打开
+        init();
+    }
+
+    // 还原数据库
+    public static synchronized void restore(File source) {
+        String sql;
+
+        // 关闭
+        mHelper.close();
+        mHelper = null;
+
+        // 复制文件
+        File dbFile = MyApplication
+                .getContext()
+                .getDatabasePath(DATABASE_NAME);
+
+        copyFile(source, dbFile);
 
         // 重新打开
         init();
@@ -499,6 +510,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static void copyFile(File src, File dst) {
         InputStream in;
         try {
+            if (!dst.exists()) {
+                dst.createNewFile();
+            }
+
             in = new FileInputStream(src);
 
             OutputStream out = new FileOutputStream(dst);
@@ -508,6 +523,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
+
             in.close();
             out.close();
         } catch (Exception e) {

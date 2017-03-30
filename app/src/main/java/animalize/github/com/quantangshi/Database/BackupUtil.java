@@ -14,6 +14,10 @@ public class BackupUtil {
     private final static String backupDir = "QuanTangshi";
     private static String path;
 
+    public static String getDirName() {
+        return backupDir;
+    }
+
     // 返回备份路径
     public static String getBackupDir() {
         if (path == null) {
@@ -50,4 +54,8 @@ public class BackupUtil {
         return file;
     }
 
+    public static void Restore(String path) {
+        File file = new File(path);
+        MyDatabaseHelper.restore(file);
+    }
 }

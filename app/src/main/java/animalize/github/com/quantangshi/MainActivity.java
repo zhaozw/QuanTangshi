@@ -115,7 +115,7 @@ public class MainActivity
                 break;
 
             case R.id.main_setting:
-                SettingActivity.actionStart(MainActivity.this);
+                BackupActivity.actionStart(MainActivity.this);
                 break;
 
             case R.id.main_tip:

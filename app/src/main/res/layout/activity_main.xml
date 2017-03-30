@@ -56,6 +56,12 @@
         android:text="标签搜索" />
 
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123"
+        android:visibility="invisible" />
+
+    <Button
         android:id="@+id/main_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="设置" />
+        android:text="备份还原" />
 
     <View
         android:layout_width="0dp"
