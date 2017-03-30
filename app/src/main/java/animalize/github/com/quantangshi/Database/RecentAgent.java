@@ -47,6 +47,10 @@ public class RecentAgent {
         return t;
     }
 
+    public static synchronized void reload() {
+        recentList = null;
+    }
+
     private static void loadRecentList() {
         recentList = new MyLinkedHashMap();
 

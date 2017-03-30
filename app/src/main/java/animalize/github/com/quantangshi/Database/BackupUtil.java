@@ -57,5 +57,8 @@ public class BackupUtil {
     public static void Restore(String path) {
         File file = new File(path);
         MyDatabaseHelper.restore(file);
+
+        // 重载最近列表
+        RecentAgent.reload();
     }
 }
