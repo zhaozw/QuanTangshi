@@ -128,7 +128,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
 
         String s = "已保存到:" + f.getAbsolutePath() + "\n共"
                 + MyDatabaseHelper.getDBSize() + "字节";
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
     private void chooseFile() {

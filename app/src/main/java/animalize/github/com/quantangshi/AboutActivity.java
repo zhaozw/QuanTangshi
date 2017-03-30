@@ -2,6 +2,7 @@ package animalize.github.com.quantangshi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -57,9 +58,36 @@ public class AboutActivity extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("编译于：yyyy-MM-dd E HH:mm", Locale.getDefault());
         tv.setText(versionName + df.format(buildDate));
 
+        // mail
+        tv = (TextView) findViewById(R.id.about_mail);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<u>反馈意见 mal");
+        sb.append("incns@");
+        sb.append("163");
+        sb.append(".com</u>");
+        Spanned s = Utils.getFromHtml(sb.toString());
+        tv.setText(s);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent(Intent.ACTION_SENDTO);
+                StringBuilder sb = new StringBuilder();
+                sb.append("mail");
+                sb.append("to:");
+                sb.append("mal");
+                sb.append("incns@");
+                sb.append("163");
+                sb.append(".com");
+                data.setData(Uri.parse(sb.toString()));
+                data.putExtra(Intent.EXTRA_SUBJECT, "关于安卓应用《离线全唐诗》");
+                data.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(data);
+            }
+        });
+
         // html
         tv = (TextView) findViewById(R.id.about_text);
-        Spanned s = Utils.getFromHtml(getString(R.string.about));
+        s = Utils.getFromHtml(getString(R.string.about));
         tv.setMovementMethod(LinkMovementMethod.getInstance());
         tv.setText(s);
 
@@ -86,7 +114,7 @@ public class AboutActivity extends AppCompatActivity {
         if (s == null) {
             versionInfo.setText("检查失败");
         } else {
-            versionInfo.setText("最新版本: " + s);
+            versionInfo.setText("GitHub上最新版本: " + s);
         }
 
         versionInfo.setVisibility(View.VISIBLE);

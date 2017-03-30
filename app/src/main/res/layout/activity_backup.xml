@@ -20,14 +20,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
             android:background="#999999" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="备份 我的使用数据 到主存储器的这个目录：" />
+            android:text="将“我的使用数据”备份到主存储器的这个目录：" />
 
         <TextView
             android:id="@+id/loc_path"
@@ -44,8 +46,10 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
             android:background="#999999" />
 
         <TextView
@@ -56,7 +60,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="文件名的模式须为： QTS170329_162710.db" />
+            android:text="文件名的模式须为 QTS170329_162710.db" />
 
         <Button
             android:id="@+id/button_choose"
