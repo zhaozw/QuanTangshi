@@ -18,11 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import animalize.github.com.quantangshi.Database.BackupUtil;
+import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import animalize.github.com.quantangshi.UIPoem.URI2Path;
 
 public class BackupActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,19 +37,6 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         context.startActivity(i);
     }
 
-    private static int getFileSize(File file) {
-        try {
-            int size;
-            FileInputStream fis = new FileInputStream(file);
-            size = fis.available();
-            fis.close();
-            return size;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +47,10 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         path = "/" + BackupUtil.getDirName();
         locPath.setText(path);
 
-        Button bt = (Button) findViewById(R.id.button_backup);
+        Button bt = (Button) findViewById(R.id.button_vacuum);
         bt.setOnClickListener(this);
-
+        bt = (Button) findViewById(R.id.button_backup);
+        bt.setOnClickListener(this);
         bt = (Button) findViewById(R.id.button_choose);
         bt.setOnClickListener(this);
     }
@@ -70,6 +58,17 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.button_vacuum:
+                int s1, s2;
+                s1 = MyDatabaseHelper.getDBSize();
+                MyDatabaseHelper.vacuum();
+                s2 = MyDatabaseHelper.getDBSize();
+
+                Toast.makeText(this,
+                        "紧凑前文件大小：" + s1 + "\n紧凑后文件大小：" + s2,
+                        Toast.LENGTH_SHORT).show();
+                break;
+
             case R.id.button_backup:
                 if (!allowPermission()) {
                     requestPermission(1);
@@ -127,7 +126,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
     private void doBackup() {
         File f = BackupUtil.backup();
 
-        String s = "已保存到:" + f.getAbsolutePath() + "\n共" + getFileSize(f) + "字节";
+        String s = "已保存到:" + f.getAbsolutePath() + "\n共"
+                + MyDatabaseHelper.getDBSize() + "字节";
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 

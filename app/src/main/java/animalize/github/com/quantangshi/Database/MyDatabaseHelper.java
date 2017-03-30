@@ -465,12 +465,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return l;
     }
 
+    // vacuum
+    public static synchronized void vacuum() {
+        init();
+        mDb.execSQL("VACUUM");
+    }
+
     // 备份数据库
     public static synchronized void backup(File target) {
-        String sql;
+        init();
 
         // VACUUM
-        sql = "VACUUM";
+        String sql = "VACUUM";
         mDb.execSQL(sql);
 
         // 关闭
@@ -490,7 +496,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 还原数据库
     public static synchronized void restore(File source) {
-        String sql;
+        init();
 
         // 关闭
         mHelper.close();
@@ -505,6 +511,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         // 重新打开
         init();
+    }
+
+    public static synchronized int getDBSize() {
+        File dbFile = MyApplication
+                .getContext()
+                .getDatabasePath(DATABASE_NAME);
+
+        try {
+            int size;
+            FileInputStream fis = new FileInputStream(dbFile);
+            size = fis.available();
+            fis.close();
+            return size;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     private static void copyFile(File src, File dst) {
@@ -530,7 +553,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
