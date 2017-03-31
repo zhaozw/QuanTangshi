@@ -10,12 +10,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="整理数据库文件中的碎片：" />
+
         <Button
             android:id="@+id/button_vacuum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="紧凑当前数据库" />
+            android:text="紧凑数据库" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="通常不必执行此操作。" />
 
         <View
             android:layout_width="match_parent"
@@ -24,7 +34,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="6dp"
-            android:background="#999999" />
+            android:background="#663366" />
 
         <TextView
             android:layout_width="match_parent"
@@ -50,17 +60,12 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="6dp"
-            android:background="#999999" />
+            android:background="#663366" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="选择一个文件进行还原操作：" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="文件名的模式须为 QTS170329_162710.db" />
 
         <Button
             android:id="@+id/button_choose"
@@ -68,6 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="选择文件" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="文件名的模式须为QTS170329_162710.db，其中的数字表示备份时间。" />
 
     </LinearLayout>
 

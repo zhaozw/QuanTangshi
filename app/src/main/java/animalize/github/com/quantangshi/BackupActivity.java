@@ -65,7 +65,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                 s2 = MyDatabaseHelper.getDBSize();
 
                 Toast.makeText(this,
-                        "紧凑前文件大小：" + s1 + "\n紧凑后文件大小：" + s2,
+                        "紧凑前文件大小：" + s1 + "字节\n紧凑后文件大小：" + s2 + "字节",
                         Toast.LENGTH_SHORT).show();
                 break;
 

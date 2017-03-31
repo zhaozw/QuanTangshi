@@ -6,5 +6,5 @@
 3、诗界面底部的<font color="#6666cc"><b>蓝色按钮条</b></font>可以向上拖动，拖动后可以进行更多操作。<br><br>
 4、点击诗界面左上的数字编号，会把诗复制到剪贴板。]]></string>
 
-    <string name="about"><![CDATA[访问本应用的源代码：<br><a href="https://github.com/animalize/QuanTangshi">https://github.com/animalize/QuanTangshi</a><br><br>使用的是jackeyGao网友整理的全唐诗数据库：<br><a href="https://github.com/jackeyGao/chinese-poetry">https://github.com/jackeyGao/chinese-poetry</a><br><br>原始数据库为繁体字，本应用参考了OpenCC提供的繁体->简体转换表：<br><a href="https://github.com/BYVoid/OpenCC">https://github.com/BYVoid/OpenCC</a>]]></string>
+    <string name="about"><![CDATA[访问本应用的源代码：<br><a href="https://github.com/animalize/QuanTangshi">https://github.com/animalize/QuanTangshi</a><br><br>使用了jackeyGao网友整理的全唐诗数据库（原始数据为繁体字）：<br><a href="https://github.com/jackeyGao/chinese-poetry">https://github.com/jackeyGao/chinese-poetry</a><br><br>参考了OpenCC提供的繁体->简体转换表：<br><a href="https://github.com/BYVoid/OpenCC">https://github.com/BYVoid/OpenCC</a>]]></string>
 </resources>
