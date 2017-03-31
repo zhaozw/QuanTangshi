@@ -71,5 +71,28 @@ assert len(k_list) == len(v_list)
 
 multi_s.sort()
 
-with open('map.json', 'w') as f:
-    json.dump([k_list, v_list, multi_s], f, separators=(',', ':'))
+# java code
+def line(s):
+    s = regex.sub(r'([^\n]{0,60},)', r'\1\n', s)
+    return s
+
+with open('java.txt', 'w') as f:
+
+    s = "public final static int[] key = {\n" + \
+    ','.join(str(i) for i in k_list) + '};\n\n'
+    s = line(s)
+    f.write(s)
+
+    s = "public final static int[] value = {\n" + \
+        ','.join(str(i) for i in v_list) + '};\n\n'
+    s = line(s)
+    f.write(s)
+
+    s = "public final static int[] multi_s = {\n" + \
+        ','.join(str(i) for i in multi_s) + '};'
+    s = line(s)
+    f.write(s)
+    
+
+##with open('map.json', 'w') as f:
+##    json.dump([k_list, v_list, multi_s], f, separators=(',', ':'))

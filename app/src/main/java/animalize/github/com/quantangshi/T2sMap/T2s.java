@@ -1,20 +1,12 @@
 package animalize.github.com.quantangshi.T2sMap;
 
 
-import android.content.Context;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
-import animalize.github.com.quantangshi.MyApplication;
 
 public class T2s {
     private static final String TAG = "T2s";
@@ -23,31 +15,17 @@ public class T2s {
     private static SparseIntArray map;
     private static SparseBooleanArray set;
 
-    private T2s(Context context) {
-        String s = getFromAssets(context, "map.json");
-        if ("".equals(s))
-            return;
+    private T2s() {
+        // 繁->简
+        map = new SparseIntArray();
+        for (int i = 0; i < T2SData.key.length; i++) {
+            map.append(T2SData.key[i], T2SData.value[i]);
+        }
 
-        try {
-            JSONArray three = new JSONArray(s);
-            JSONArray jk = three.getJSONArray(0);
-            JSONArray jv = three.getJSONArray(1);
-            JSONArray jset = three.getJSONArray(2);
-
-            // 繁->简
-            map = new SparseIntArray();
-            for (int i = 0; i < jk.length(); i++) {
-                map.append(jk.getInt(i), jv.getInt(i));
-            }
-
-            // 多繁对一简
-            set = new SparseBooleanArray();
-            for (int i = 0; i < jset.length(); i++) {
-                set.append(jset.getInt(i), true);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        // 多繁对一简
+        set = new SparseBooleanArray();
+        for (int i = 0; i < T2SData.multi_s.length; i++) {
+            set.append(T2SData.multi_s[i], true);
         }
     }
 
@@ -117,28 +95,8 @@ public class T2s {
 
     private static void getT2s() {
         if (mT2s == null) {
-            mT2s = new T2s(MyApplication.getContext());
+            mT2s = new T2s();
         }
-    }
-
-    private static String getFromAssets(Context context, String fileName) {
-        try {
-            InputStream is = context.getResources().getAssets().open(fileName);
-            InputStreamReader inputReader = new InputStreamReader(is);
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line;
-            String Result = "";
-
-            while ((line = bufReader.readLine()) != null)
-                Result += line;
-
-            bufReader.close();
-
-            return Result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
 }
