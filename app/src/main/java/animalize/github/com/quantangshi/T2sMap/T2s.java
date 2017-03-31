@@ -2,6 +2,7 @@ package animalize.github.com.quantangshi.T2sMap;
 
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
@@ -24,7 +26,7 @@ public class T2s {
 
     private static T2s mT2s;
     private static SparseIntArray map;
-    private static Set<Integer> set;
+    private static SparseBooleanArray set;
 
     private T2s(Context context) {
         String s = getFromAssets(context, "map.json");
@@ -32,30 +34,41 @@ public class T2s {
             return;
 
         try {
-            JSONArray two = new JSONArray(s);
-            JSONObject jmap = two.getJSONObject(0);
-            JSONArray jset = two.getJSONArray(1);
-
-            map = new SparseIntArray();
-            set = new HashSet<>();
+            JSONArray three = new JSONArray(s);
+            JSONArray jk = three.getJSONArray(0);
+            JSONArray jv = three.getJSONArray(1);
+            JSONArray jset = three.getJSONArray(2);
 
             // 繁->简
-            Iterator<String> keysItr = jmap.keys();
-            while (keysItr.hasNext()) {
-                String key = keysItr.next();
-                Integer value = (Integer) jmap.get(key);
-                map.put(Integer.parseInt(key), value);
+            map = new SparseIntArray();
+            for (int i = 0; i < jk.length(); i++) {
+                map.append(jk.getInt(i), jv.getInt(i));
             }
 
             // 多繁对一简
+            set = new SparseBooleanArray();
             for (int i = 0; i < jset.length(); i++) {
                 Integer codepoint = jset.getInt(i);
-                set.add(codepoint);
+                set.append(codepoint, true);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private int[] getList(JSONArray ja) {
+        int[] ret = new int[ja.length()];
+
+        for (int i = 0; i < ja.length(); i++) {
+            try {
+                ret[i] = ja.getInt(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ret;
     }
 
     /*
@@ -99,7 +112,7 @@ public class T2s {
                 // 可转换
                 if (lst != null) {
                     // 简体+ 模式
-                    if (!set.contains(temp_codepoint)) {
+                    if (!set.get(temp_codepoint, false)) {
                         // 不在集合，直接采用结果
                         codepoint = temp_codepoint;
                     } else if (codepoint != temp_codepoint) {
@@ -147,4 +160,5 @@ public class T2s {
         }
         return "";
     }
+
 }
