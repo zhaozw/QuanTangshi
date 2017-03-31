@@ -67,6 +67,7 @@ v_list = []
 for k, v in l:
     k_list.append(k)
     v_list.append(v)
+assert len(k_list) == len(v_list)
 
 multi_s.sort()
 

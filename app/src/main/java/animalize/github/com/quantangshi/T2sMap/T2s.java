@@ -7,16 +7,11 @@ import android.util.SparseIntArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
 import animalize.github.com.quantangshi.MyApplication;
@@ -48,27 +43,12 @@ public class T2s {
             // 多繁对一简
             set = new SparseBooleanArray();
             for (int i = 0; i < jset.length(); i++) {
-                Integer codepoint = jset.getInt(i);
-                set.append(codepoint, true);
+                set.append(jset.getInt(i), true);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private int[] getList(JSONArray ja) {
-        int[] ret = new int[ja.length()];
-
-        for (int i = 0; i < ja.length(); i++) {
-            try {
-                ret[i] = ja.getInt(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return ret;
     }
 
     /*
