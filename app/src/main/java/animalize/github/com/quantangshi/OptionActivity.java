@@ -163,7 +163,7 @@ public class OptionActivity extends AppCompatActivity {
         lineBreakSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                lineBreakTextView.setText("换行: " + progress);
+                lineBreakTextView.setText("换行字数: " + progress);
 
                 Typeset typeset = poemView.getTypeset();
                 typeset.setLineBreak(progress);
