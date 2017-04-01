@@ -82,7 +82,7 @@
             android:id="@+id/line_break_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="换行:" />
+            android:text="换行字数:" />
 
         <SeekBar
             android:id="@+id/line_break_seekbar"
