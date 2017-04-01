@@ -150,12 +150,12 @@ public class PoemView extends LinearLayout {
 
                 ss.setSpan(clickable,
                         p.begin, p.end,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             }
             if (mText.getMovementMethod() == null) {
                 mText.setMovementMethod(LinkMovementMethod.getInstance());
             }
-            mText.setText(ss);
+            mText.setText(ss, TextView.BufferType.SPANNABLE);
         }
 
         if (toTop) {

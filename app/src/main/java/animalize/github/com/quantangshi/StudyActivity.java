@@ -180,13 +180,13 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             MyClickableSpan clickable = new MyClickableSpan(StudyActivity.this, s);
 
             ss.setSpan(clickable, p.begin, p.end,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }
 
         if (view.getMovementMethod() == null) {
             view.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        view.setText(ss);
+        view.setText(ss, TextView.BufferType.SPANNABLE);
     }
 
     private void addToItem(String s) {
@@ -319,7 +319,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                     edit_item.setText(s);
                     edit_item.setSelection(p1);
                 }
-                
+
                 break;
 
             case R.id.edit_clear:
