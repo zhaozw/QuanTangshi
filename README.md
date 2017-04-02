@@ -11,17 +11,15 @@
 5.  开放源代码。
 
 ### 截图
-阅读  
-<img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/1.png" width = "20%" />
-
-学习功能  
-<img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/2.png" width = "20%" />
-
-标签功能  
-<img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/3.png" width = "20%" />
-
-最近列表  
-<img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/4.png" width = "20%" />
+<table>
+<tr>
+<td>阅读</td><td>学习功能</td><td>标签功能</td><td>最近列表</td>
+</tr>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/1.png" width = "20%" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/2.png" width = "20%" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/3.png" width = "20%" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/4.png" width = "20%" /></td>
+</table>
 
 ### 感谢
 使用了jackeyGao网友整理的全唐诗数据库（原始数据为繁体字）：  
