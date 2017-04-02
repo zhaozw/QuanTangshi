@@ -26,7 +26,7 @@
 1.  下载原始的[全唐诗数据](https://github.com/jackeyGao/chinese-poetry)，此为json格式。
 2.  给电脑安装Python 3.x
 3.  把tools目录下的`ok_make_db.py`文件放到唐诗数据目录下，双击运行此脚本生成`tangshi.db.zip`文件。
-4.  把生成的`tangshi.db.zip`放到`\app\src\main\assets\databases`目录下，需要创建databases目录。
+4.  把生成的`tangshi.db.zip`放到`\app\src\main\assets\databases`目录下，此时需要手工创建databases目录。
 
 ### 感谢
 使用了jackeyGao网友整理的全唐诗数据库（原始数据为繁体字）：  
