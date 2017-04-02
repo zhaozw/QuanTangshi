@@ -1,4 +1,4 @@
-## Android程序《离线全唐诗》
+## Android应用《离线全唐诗》
 
 设计目的：利用碎片化时间，无障碍欣赏唐诗。这个应用是我自用的。  
 下载编译好的.apk安装文件：https://pan.baidu.com/s/1kVhtnl9
