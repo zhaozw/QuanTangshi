@@ -21,6 +21,10 @@
 <td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/4.png" /></td>
 </table>
 
+### 编译指南
+需要
+下载[全唐诗数据库](https://github.com/jackeyGao/chinese-poetry)，然后把tools目录下的`ok_make_db.py`文件放到该目录下，r
+
 ### 感谢
 使用了jackeyGao网友整理的全唐诗数据库（原始数据为繁体字）：  
 https://github.com/jackeyGao/chinese-poetry
@@ -28,4 +32,4 @@ https://github.com/jackeyGao/chinese-poetry
 参考了OpenCC提供的繁体->简体转换表：  
 https://github.com/BYVoid/OpenCC
 
-使用的开源项目：[标签控件](https://github.com/whilu/AndroidTagView)，[asset数据库](https://github.com/jgilfelt/android-sqlite-asset-helper) ，[okhttp](https://github.com/square/okhttp)。
+使用的其它开源项目：[标签控件](https://github.com/whilu/AndroidTagView)，[asset数据库](https://github.com/jgilfelt/android-sqlite-asset-helper) ，[okhttp](https://github.com/square/okhttp)。
