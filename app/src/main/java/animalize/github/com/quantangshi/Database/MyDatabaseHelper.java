@@ -28,8 +28,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "data.db";
     private static final int DATABASE_VERSION = 3;
 
-    // 检查数据库版本，sqlite数据库版本小于此值时，重新解压
-    private static final int CHECK_TANGSHI_VERSION = 2;
     private static final String ENCODING = "utf-16LE";
 
     // 静态变量
@@ -47,53 +45,37 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             Context context = MyApplication.getContext();
             mHelper = new MyDatabaseHelper(context);
 
-            // attach
+            // create or update
             String mQuantangshi = MyAssetsDatabaseHelper.getDBPath(context, false);
+
+            // attach
             mDb = mHelper.getWritableDatabase();
             mDb.execSQL("ATTACH DATABASE '" +
                     mQuantangshi + "' AS 'tangshi';");
-
-            // 检查版本
-            Cursor cursor = mDb.rawQuery("SELECT value FROM tangshi.dbinfo WHERE name='ver'", null);
-            cursor.moveToFirst();
-            int db_ver = Integer.parseInt(cursor.getString(0));
-            cursor.close();
-            //Log.i(TAG, "数据库版本: " + db_ver);
-
-            if (CHECK_TANGSHI_VERSION > db_ver) {
-                // detach
-                mDb.execSQL("DETACH DATABASE tangshi");
-
-                // del file
-                File file = new File(mQuantangshi);
-                file.delete();
-
-                // re create
-                MyAssetsDatabaseHelper.getDBPath(context, true);
-
-                // attach again
-                mDb.execSQL("ATTACH DATABASE '" +
-                        mQuantangshi + "' AS 'tangshi'");
-            }
         }
     }
 
     // 总共有多少首诗
     public static synchronized int getPoemCount() {
-        if (mPoemCount == -1) {
-            init();
-
-            String sql = "SELECT count(*) FROM tangshi.poem";
-            Cursor c = mDb.rawQuery(sql, null);
-            c.moveToFirst();
-            mPoemCount = c.getInt(0);
-            c.close();
+        if (mPoemCount != -1) {
+            return mPoemCount;
         }
+
+        init();
+
+        String sql = "SELECT count(*) FROM tangshi.poem";
+        Cursor c = mDb.rawQuery(sql, null);
+        c.moveToFirst();
+        mPoemCount = c.getInt(0);
+        c.close();
+
         return mPoemCount;
     }
 
     // 随机一首
     public static synchronized RawPoem randomPoem() {
+        init();
+
         int poemCount = MyDatabaseHelper.getPoemCount();
         Random rand = new Random();
 
@@ -399,6 +381,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 添加到最近列表
     public static synchronized void addToRecentList(InfoItem info, int limit) {
+        init();
+
         // 已有的话，先删
         mDb.delete("recent", "pid=?", new String[]{String.valueOf(info.getId())});
 
@@ -598,7 +582,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String sql;
-        if (oldVersion == 1) {
+
+        if (oldVersion < 2) {
             // recent表
             sql = "CREATE TABLE recent (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -607,7 +592,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     "author TEXT, " +
                     "time INTEGER);";
             db.execSQL(sql);
-        } else if (oldVersion == 2) {
+        }
+
+        if (oldVersion < 3) {
             sql = "CREATE INDEX recent_pid_idx ON recent(pid);";
             db.execSQL(sql);
         }

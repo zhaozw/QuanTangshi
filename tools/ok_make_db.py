@@ -5,10 +5,8 @@ import re
 import sqlite3
 from zipfile import ZipFile
 
-
-DATABASE_VER = "2"
-
 empty_count = 0
+
 
 class Poem:
     __slots__ = ('title', 'author', 'text')
@@ -19,7 +17,8 @@ class Poem:
 
         text = re.sub(r'(？|！)', '\1\n', text)
         text = re.sub(r'^YY', '', text, flags=re.M)
-        
+        assert 'YY' not in text, '出现YY字符'
+
         self.text = text
 
     def get_tuple(self):
@@ -109,7 +108,7 @@ def load_poem():
                 #print(id, title, author)
                 global empty_count
                 empty_count += 1
-            #elif 'YY' in text:
+            # elif 'YY' in text:
             #    print(id, text)
 
             p = Poem(title, author, text)
@@ -141,15 +140,10 @@ def create_db():
 #            'info BLOB);')
 #     db.execute(sql)
 
-    sql = ('CREATE TABLE dbinfo('
-           'name TEXT,'
-           'value TEXT);')
-    db.execute(sql)
-
     # 索引
     sql = 'CREATE INDEX author_idx ON poem(author);'
     db.execute(sql)
-    
+
 #     sql = 'CREATE INDEX author_idx2 ON author(author);'
 #     db.execute(sql)
 
@@ -182,16 +176,12 @@ def main():
 
 #     # 作者
 #     lst = load_author()
-# 
+#
 #     sql = 'INSERT INTO author VALUES(?,?);'
 #     db.execute('BEGIN')
 #     for a in lst:
 #         db.execute(sql, a.get_tuple())
 #     db.commit()
-
-    # 数据库信息
-    sql = 'INSERT INTO dbinfo VALUES(?,?);'
-    db.execute(sql, ('ver', DATABASE_VER))
 
     # 关闭数据库
     db.execute('VACUUM')
@@ -203,5 +193,6 @@ def main():
 
     print('无内容的记录%d条' % empty_count)
     print('运行完毕')
+
 
 main()

@@ -82,22 +82,17 @@ public class MainActivity
                 break;
 
             case R.id.jump_button:
-                int id = Integer.parseInt(idEdit.getText().toString());
+                String s = idEdit.getText().toString();
+                if (s.equals("")) {
+                    showToast("请输入编号");
+                    return;
+                }
+
+                int id = Integer.parseInt(s);
                 if (1 <= id && id <= mPoemCount) {
                     OnePoemActivity.actionStart(MainActivity.this, id);
                 } else {
-                    Toast t = Toast.makeText(this,
-                            "请确保: 1<=编号<=" + mPoemCount,
-                            Toast.LENGTH_SHORT);
-
-                    // 字体
-                    ViewGroup group = (ViewGroup) t.getView();
-                    TextView messageTextView = (TextView) group.getChildAt(0);
-                    messageTextView.setTextSize(18);
-                    // 居中
-                    t.setGravity(Gravity.CENTER, 0, 0);
-                    // 显示
-                    t.show();
+                    showToast("请确保: 1<=编号<=" + mPoemCount);
                 }
                 break;
 
@@ -126,5 +121,20 @@ public class MainActivity
                 AboutActivity.actionStart(MainActivity.this);
                 break;
         }
+    }
+
+    private void showToast(String s) {
+        Toast t = Toast.makeText(this,
+                s,
+                Toast.LENGTH_SHORT);
+
+        // 字体
+        ViewGroup group = (ViewGroup) t.getView();
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setTextSize(18);
+        // 居中
+        t.setGravity(Gravity.CENTER, 0, 0);
+        // 显示
+        t.show();
     }
 }

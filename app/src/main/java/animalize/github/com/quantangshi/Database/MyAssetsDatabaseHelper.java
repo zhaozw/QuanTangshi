@@ -4,11 +4,10 @@ import android.content.Context;
 
 public class MyAssetsDatabaseHelper extends com.readystatesoftware.sqliteasset.SQLiteAssetHelper {
 
-    private static final String TAG = "MyAssetsDatabaseHelper";
-    private static String mPath;
-
     private static final String DATABASE_NAME = "tangshi.db";
-    private static final int DATABASE_VERSION = 1;
+    // 更新数据库时，递增此变量
+    private static final int DATABASE_VERSION = 2;
+    private static String mPath;
 
     private MyAssetsDatabaseHelper(Context context) {
         super(context,
@@ -16,6 +15,7 @@ public class MyAssetsDatabaseHelper extends com.readystatesoftware.sqliteasset.S
                 context.getFilesDir().getAbsolutePath(),
                 null,
                 DATABASE_VERSION);
+        setForcedUpgrade();
     }
 
     public static String getDBPath(Context context, boolean reCreate) {
