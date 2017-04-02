@@ -4,7 +4,7 @@
 在这里下载编译好的.apk安装文件：[https://pan.baidu.com/s/1kVhtnl9](https://pan.baidu.com/s/1kVhtnl9)，需要Android 4.0+。
 ### 特性
 1.  离线全唐诗数据库，有5万余首唐诗。  
-2.  支持繁体、简体切换。  
+2.  支持繁体、简体切换。（注：原始数据为繁体）  
 3.  标签功能，可以给诗打标签，并通过标签进行检索。  
 4.  辅助学习功能，点击几下就可以搜索唐诗里的古代词汇、典故，让您无障碍欣赏唐诗。  
 5.  开放源代码。
@@ -28,7 +28,7 @@
 4.  把生成的`tangshi.db.zip`放到`\app\src\main\assets\databases`目录下，此时需要手工创建databases目录。
 
 ### 感谢
-使用了jackeyGao网友整理的全唐诗数据库（原始数据为繁体字）：  
+使用了jackeyGao网友整理的全唐诗数据库：  
 https://github.com/jackeyGao/chinese-poetry
 
 参考了OpenCC提供的繁体->简体转换表：  
