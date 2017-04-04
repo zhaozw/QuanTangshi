@@ -46,7 +46,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             mHelper = new MyDatabaseHelper(context);
 
             // create or update
-            String mQuantangshi = MyAssetsDatabaseHelper.getDBPath(context, false);
+            String mQuantangshi = MyAssetsDatabaseHelper.getDBPath(context);
 
             // attach
             mDb = mHelper.getWritableDatabase();

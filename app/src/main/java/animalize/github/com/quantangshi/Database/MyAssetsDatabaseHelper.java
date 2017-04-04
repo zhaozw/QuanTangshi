@@ -18,8 +18,8 @@ public class MyAssetsDatabaseHelper extends com.readystatesoftware.sqliteasset.S
         setForcedUpgrade();
     }
 
-    public static String getDBPath(Context context, boolean reCreate) {
-        if (mPath == null || reCreate) {
+    public static String getDBPath(Context context) {
+        if (mPath == null) {
             MyAssetsDatabaseHelper db = new MyAssetsDatabaseHelper(context.getApplicationContext());
             db.getReadableDatabase();
             db.close();
