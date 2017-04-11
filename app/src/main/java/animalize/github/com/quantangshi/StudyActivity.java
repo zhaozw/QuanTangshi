@@ -14,6 +14,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -232,6 +233,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         String s;
         int p1, p2;
+        InputMethodManager imm;
 
         switch (v.getId()) {
             case R.id.button_t:
@@ -251,6 +253,11 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 edit_item.setText("");
+                edit_item.clearFocus();
+
+                // 关闭输入法
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edit_item.getWindowToken(), 0);
                 break;
 
             case R.id.edit_space:
@@ -325,6 +332,10 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             case R.id.edit_clear:
                 edit_item.setText("");
                 edit_item.clearFocus();
+
+                // 关闭输入法
+                imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edit_item.getWindowToken(), 0);
                 break;
         }
     }

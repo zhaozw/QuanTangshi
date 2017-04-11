@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,18 +16,18 @@ import java.util.List;
 
 import animalize.github.com.quantangshi.Data.TagInfo;
 import animalize.github.com.quantangshi.Database.TagAgent;
+import animalize.github.com.quantangshi.MyApplication;
 import animalize.github.com.quantangshi.R;
 import co.lujun.androidtagview.TagContainerLayout;
 
 
 public class TagView extends LinearLayout {
+    InputMethodManager imm;
     private int mPid;
-
     private List<TagInfo> mTagList;
     private List<TagInfo> mAllTagList;
     private TagContainerLayout mPoemTags;
     private TagContainerLayout mAllTags;
-
     private EditText mEdit;
 
     private Button mAddTag;
@@ -34,6 +35,10 @@ public class TagView extends LinearLayout {
     public TagView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.view_tag, this);
+
+        imm = (InputMethodManager) MyApplication
+                .getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mEdit = (EditText) findViewById(R.id.tag_edit);
 
@@ -47,6 +52,9 @@ public class TagView extends LinearLayout {
                 }
                 addTag(tag);
                 mEdit.setText("");
+
+                // 关闭输入法
+                hideSoftInput();
             }
         });
 
@@ -107,12 +115,12 @@ public class TagView extends LinearLayout {
         });
     }
 
-    public void addTag(String tag) {
+    private void addTag(String tag) {
         TagAgent.addTagToPoem(tag, mPid);
         setPoemId(mPid);
     }
 
-    public void removeTag(TagInfo info) {
+    private void removeTag(TagInfo info) {
         TagAgent.delTagFromPoem(mPid, info);
 
         Toast.makeText(getContext(),
@@ -131,9 +139,16 @@ public class TagView extends LinearLayout {
         mPoemTags.setTags(tags);
 
         setAllTags();
+
+        hideSoftInput();
     }
 
-    public void setAllTags() {
+    private void hideSoftInput() {
+        mEdit.clearFocus();
+        imm.hideSoftInputFromWindow(mEdit.getWindowToken(), 0);
+    }
+
+    private void setAllTags() {
         mAllTagList = TagAgent.getTagInfos();
         mAllTags.setTags(TagAgent.getTagsHasCount(TagAgent.getTagInfos()));
     }
