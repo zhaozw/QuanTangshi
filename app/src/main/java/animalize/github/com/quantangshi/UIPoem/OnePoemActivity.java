@@ -102,7 +102,6 @@ public class OnePoemActivity
                         swichFrame.getLayoutParams().height = r.height();
                         swichFrame.requestLayout();
                     }
-
                     collapsed = false;
                 } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     collapsed = true;
@@ -387,9 +386,14 @@ public class OnePoemActivity
         collapsed = savedInstanceState.getBoolean("collapsed");
 
         setView(savedInstanceState.getInt("view"));
-        setBoldButton();
 
-        int state = savedInstanceState.getInt("slider");
-        slider.setPanelState(SlidingUpPanelLayout.PanelState.values()[state]);
+        int t = savedInstanceState.getInt("slider");
+        SlidingUpPanelLayout.PanelState state = SlidingUpPanelLayout.PanelState.values()[t];
+        if (state == SlidingUpPanelLayout.PanelState.DRAGGING) {
+            state = SlidingUpPanelLayout.PanelState.ANCHORED;
+        }
+        slider.setPanelState(state);
+
+        setBoldButton();
     }
 }
