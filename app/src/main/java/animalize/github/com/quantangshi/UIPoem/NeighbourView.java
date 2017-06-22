@@ -129,9 +129,14 @@ public class NeighbourView extends LinearLayout {
                 holder.root.setBackgroundColor(Color.rgb(0xcc, 0xcc, 0xff));
             }
 
-            holder.order.setText("" +
-                    (ri.getId() - NeighbourView.this.getPoemID())
-            );
+            int temp = ri.getId() - NeighbourView.this.getPoemID();
+            String order;
+            if (temp > 0) {
+                order = "+" + temp;
+            } else {
+                order = "" + temp;
+            }
+            holder.order.setText(order);
             holder.title.setText(ri.getTitle());
             holder.author.setText(ri.getAuthor());
             holder.id.setText("" + ri.getId());

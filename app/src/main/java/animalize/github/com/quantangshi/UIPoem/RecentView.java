@@ -47,7 +47,7 @@ public class RecentView extends LinearLayout {
         mRecentList.setAdapter(mRecentAdapter);
 
         TextView tv = (TextView) findViewById(R.id.recent_title);
-        tv.setText("最近" + recentLimit + "条");
+        tv.setText("最近" + recentLimit + "首");
     }
 
     public void setPoemController(PoemController controller) {
