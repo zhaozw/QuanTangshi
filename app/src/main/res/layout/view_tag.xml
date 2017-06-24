@@ -39,7 +39,7 @@
                 android:id="@+id/tag_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="添加" />
+                android:text="添加标签" />
         </LinearLayout>
 
         <co.lujun.androidtagview.TagContainerLayout

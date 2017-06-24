@@ -372,7 +372,6 @@ public class OnePoemActivity
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("view", currentView);
         outState.putBoolean("collapsed", collapsed);
-        outState.putInt("slider", slider.getPanelState().ordinal());
 
         super.onSaveInstanceState(outState);
     }
@@ -383,17 +382,10 @@ public class OnePoemActivity
 
         poemView.setPoem(currentPoem, true);
 
+        currentView = savedInstanceState.getInt("view");
+        setView(currentView);
+
         collapsed = savedInstanceState.getBoolean("collapsed");
-
-        setView(savedInstanceState.getInt("view"));
-
-        int t = savedInstanceState.getInt("slider");
-        SlidingUpPanelLayout.PanelState state = SlidingUpPanelLayout.PanelState.values()[t];
-        if (state == SlidingUpPanelLayout.PanelState.DRAGGING) {
-            state = SlidingUpPanelLayout.PanelState.ANCHORED;
-        }
-        slider.setPanelState(state);
-
         setBoldButton();
     }
 }
