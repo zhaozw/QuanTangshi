@@ -106,7 +106,7 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String tag = currentTag.getText().toString();
-                        String newname = newName.getText().toString();
+                        String newname = newName.getText().toString().trim();
 
                         TagAgent.renameTag(tag, newname);
                         refreshTags();
