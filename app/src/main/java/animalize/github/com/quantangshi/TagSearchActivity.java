@@ -72,7 +72,7 @@ public class TagSearchActivity extends AppCompatActivity {
         }
 
         // 所有tags 数组
-        mAllTagList = TagAgent.getTagInfos();
+        mAllTagList = TagAgent.getAllTagInfos();
 
         // 所有tags
         allTags = (TagContainerLayout) findViewById(R.id.all_tags);
@@ -93,7 +93,7 @@ public class TagSearchActivity extends AppCompatActivity {
 
             }
         });
-        allTags.setTags(TagAgent.getTagsHasCount(mAllTagList));
+        allTags.setTags(TagAgent.getAllTagsHasCount());
 
         // 开始搜索
         Button bt = (Button) findViewById(R.id.search_button);
@@ -161,8 +161,8 @@ public class TagSearchActivity extends AppCompatActivity {
 
     private void resultToSearch() {
         // 所有标签
-        mAllTagList = TagAgent.getTagInfos();
-        allTags.setTags(TagAgent.getTagsHasCount(mAllTagList));
+        mAllTagList = TagAgent.getAllTagInfos();
+        allTags.setTags(TagAgent.getAllTagsHasCount());
 
         // 可能被删除的搜索标签
         List<String> tmp = searchTags.getTags();

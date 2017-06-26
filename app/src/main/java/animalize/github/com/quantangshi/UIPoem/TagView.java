@@ -149,7 +149,7 @@ public class TagView extends LinearLayout {
     }
 
     private void setAllTags() {
-        mAllTagList = TagAgent.getTagInfos();
-        mAllTags.setTags(TagAgent.getTagsHasCount(TagAgent.getTagInfos()));
+        mAllTagList = TagAgent.getAllTagInfos();
+        mAllTags.setTags(TagAgent.getAllTagsHasCount());
     }
 }

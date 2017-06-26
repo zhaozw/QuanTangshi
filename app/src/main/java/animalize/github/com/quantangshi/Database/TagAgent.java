@@ -11,22 +11,43 @@ import animalize.github.com.quantangshi.Data.TagInfo;
 
 public class TagAgent {
 
-    public static synchronized List<TagInfo> getTagInfos() {
-        return MyDatabaseHelper.getTags();
-    }
+    private static List<TagInfo> allTags;
+    private static List<String> allHasCount;
 
-    public static List<String> getTagsHasCount(List<TagInfo> list) {
-        List<String> tags = new ArrayList<>();
-        for (TagInfo info : list) {
-            String s = info.getName();
-            if (info.getCount() != 1) {
-                s += "(" + info.getCount() + ")";
-            }
-            tags.add(s);
+    // 得到所有tags
+    public static synchronized List<TagInfo> getAllTagInfos() {
+        if (allTags == null) {
+            allTags = MyDatabaseHelper.getTags();
         }
-        return tags;
+
+        return allTags;
     }
 
+    // 内部，无效所有tags
+    private static void invalideTags() {
+        allTags = null;
+        allHasCount = null;
+    }
+
+    // 所有，有计数字符串
+    public static List<String> getAllTagsHasCount() {
+        if (allHasCount == null) {
+            List<TagInfo> list = getAllTagInfos();
+
+            allHasCount = new ArrayList<>();
+            for (TagInfo info : list) {
+                String s = info.getName();
+                if (info.getCount() != 1) {
+                    s += "(" + info.getCount() + ")";
+                }
+                allHasCount.add(s);
+            }
+        }
+
+        return allHasCount;
+    }
+
+    // 得到 无计数字符串
     public static List<String> getTagsNoCount(List<TagInfo> list) {
         List<String> tags = new ArrayList<>();
         for (TagInfo info : list) {
@@ -36,28 +57,44 @@ public class TagAgent {
         return tags;
     }
 
+    // 得到一首诗的tags
     public static synchronized List<TagInfo> getTagsInfo(int pid) {
-        List<TagInfo> tagsinfo = MyDatabaseHelper.getTagsByPoem(pid);
-        return tagsinfo;
+        return MyDatabaseHelper.getTagsByPoem(pid);
     }
 
+    // 给诗添加tag
     public static synchronized boolean addTagToPoem(String tag, int pid) {
-        return MyDatabaseHelper.addTagToPoem(tag, pid);
+        boolean r = MyDatabaseHelper.addTagToPoem(tag, pid);
+        invalideTags();
+
+        return r;
     }
 
+    // 从诗删tag
     public static synchronized boolean delTagFromPoem(int pid, TagInfo info) {
-        return MyDatabaseHelper.delTagFromPoem(pid, info);
+        boolean r = MyDatabaseHelper.delTagFromPoem(pid, info);
+        invalideTags();
+
+        return r;
     }
 
+    // 整体，改名、合并
     public static synchronized boolean renameTag(String o, String n) {
         if (o.equals(n)) {
             return false;
         }
 
-        return MyDatabaseHelper.renameTag(o, n);
+        boolean r = MyDatabaseHelper.renameTag(o, n);
+        invalideTags();
+
+        return r;
     }
 
+    // 整体，删
     public static synchronized boolean delTag(String tag) {
-        return MyDatabaseHelper.delTag(tag);
+        boolean r = MyDatabaseHelper.delTag(tag);
+        invalideTags();
+
+        return r;
     }
 }

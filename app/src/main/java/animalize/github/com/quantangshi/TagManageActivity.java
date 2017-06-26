@@ -82,9 +82,8 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
         newName.setText("");
 
         // 所有tags 数组
-        mAllTagList = TagAgent.getTagInfos();
-
-        selectTag.setTags(TagAgent.getTagsHasCount(mAllTagList));
+        mAllTagList = TagAgent.getAllTagInfos();
+        selectTag.setTags(TagAgent.getAllTagsHasCount());
     }
 
     @Override
