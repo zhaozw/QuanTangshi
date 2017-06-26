@@ -90,10 +90,14 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         String tag = currentTag.getText().toString();
-        String newname = newName.getText().toString();
+        String newname = newName.getText().toString().trim();
 
         switch (v.getId()) {
             case R.id.rename_tag:
+                if ("".equals(newname)) {
+                    return;
+                }
+
                 AlertDialog.Builder d = new AlertDialog.Builder(this);
                 d.setTitle("确认改名或合并操作");
                 d.setMessage("是否将 " + tag + " 改名或合并到 " + newname + " ？");
