@@ -48,4 +48,16 @@ public class TagAgent {
     public static synchronized boolean delTagFromPoem(int pid, TagInfo info) {
         return MyDatabaseHelper.delTagFromPoem(pid, info);
     }
+
+    public static synchronized boolean renameTag(String o, String n) {
+        if (o.equals(n)) {
+            return false;
+        }
+
+        return MyDatabaseHelper.renameTag(o, n);
+    }
+
+    public static synchronized boolean delTag(String tag) {
+        return MyDatabaseHelper.delTag(tag);
+    }
 }

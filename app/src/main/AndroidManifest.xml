@@ -32,6 +32,7 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".TipActivity" />
         <activity android:name=".BackupActivity" />
+        <activity android:name=".TagManageActivity"></activity>
     </application>
 
 </manifest>

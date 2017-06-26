@@ -48,12 +48,26 @@
             android:text="清空" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/main_opentag"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="标签搜索" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/main_opentag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="标签搜索" />
+
+        <Button
+            android:id="@+id/main_managetag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="标签管理" />
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"

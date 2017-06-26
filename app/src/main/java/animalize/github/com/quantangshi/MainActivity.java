@@ -53,8 +53,12 @@ public class MainActivity
         bt = (Button) findViewById(R.id.jump_clear);
         bt.setOnClickListener(this);
 
-        // 标签管理 -------------------------
+        // 标签检索 -------------------------
         bt = (Button) findViewById(R.id.main_opentag);
+        bt.setOnClickListener(this);
+
+        // 标签管理 -------------------------
+        bt = (Button) findViewById(R.id.main_managetag);
         bt.setOnClickListener(this);
 
         // 阅读设置 ------------------------------
@@ -103,6 +107,10 @@ public class MainActivity
 
             case R.id.main_opentag:
                 TagSearchActivity.actionStart(MainActivity.this);
+                break;
+
+            case R.id.main_managetag:
+                TagManageActivity.actionStart(MainActivity.this);
                 break;
 
             case R.id.main_option:

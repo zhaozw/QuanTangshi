@@ -449,6 +449,90 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return l;
     }
 
+    // 整体，改名/合并标签
+    public static boolean renameTag(String o, String n) {
+        int ntid = -1, otid;
+
+        // 得到新tag id
+        String sql = "SELECT id FROM tag WHERE name=?";
+        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(n)});
+        if (c.moveToFirst()) {
+            ntid = c.getInt(0);
+        }
+        c.close();
+
+        if (ntid == -1) { // 仅改名
+            sql = "UPDATE tag SET name=? WHERE name=?";
+            mDb.execSQL(sql, new String[]{String.valueOf(n), String.valueOf(o)});
+        } else { // 合并
+            // 得到旧tag id
+            sql = "SELECT id FROM tag WHERE name=?";
+            c = mDb.rawQuery(sql, new String[]{String.valueOf(o)});
+            c.moveToFirst();
+            otid = c.getInt(0);
+            c.close();
+
+            // 得到所有旧的pid list
+            sql = "SELECT pid FROM tag_map WHERE tid=?";
+            c = mDb.rawQuery(sql, new String[]{String.valueOf(otid)});
+
+            ArrayList<Integer> l = new ArrayList<>();
+            if (c.moveToFirst()) {
+                do {
+                    l.add(c.getInt(0));
+                } while (c.moveToNext());
+            }
+            c.close();
+
+            // 添加到新的
+            sql = "UPDATE tag_map SET tid=? WHERE " +
+                    "(pid=? AND tid=? AND NOT EXISTS(" +
+                    "SELECT * FROM tag_map WHERE pid=? AND tid=?" +
+                    "))";
+            for (int pid : l) {
+                mDb.execSQL(sql, new String[]{String.valueOf(ntid),
+                        String.valueOf(pid), String.valueOf(otid),
+                        String.valueOf(pid), String.valueOf(ntid)});
+            }
+
+            // 删除旧的tag
+            sql = "DELETE FROM tag_map WHERE tid=?";
+            mDb.execSQL(sql, new String[]{String.valueOf(otid)});
+
+            sql = "DELETE FROM tag WHERE id=?";
+            mDb.execSQL(sql, new String[]{String.valueOf(otid)});
+
+            // 更新count
+            sql = "SELECT count(*) FROM tag_map WHERE tid=?";
+            c = mDb.rawQuery(sql, new String[]{String.valueOf(ntid)});
+            c.moveToFirst();
+            int count = c.getInt(0);
+            c.close();
+
+            updateTagCount(ntid, count);
+        }
+
+        return true;
+    }
+
+    // 整体，删除一个标签
+    public static boolean delTag(String tag) {
+        init();
+
+        // 从tag map删除
+        String sql = "DELETE FROM tag_map " +
+                "WHERE tid IN (SELECT id " +
+                "FROM tag " +
+                "WHERE name=?)";
+        mDb.execSQL(sql, new String[]{String.valueOf(tag)});
+
+        // 从tag删除
+        sql = "DELETE FROM tag WHERE name=?";
+        mDb.execSQL(sql, new String[]{String.valueOf(tag)});
+
+        return true;
+    }
+
     // vacuum
     public static synchronized void vacuum() {
         init();
@@ -599,4 +683,5 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(sql);
         }
     }
+
 }
