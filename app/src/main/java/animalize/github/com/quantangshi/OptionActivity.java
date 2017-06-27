@@ -2,8 +2,11 @@ package animalize.github.com.quantangshi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,6 +23,8 @@ public class OptionActivity extends AppCompatActivity {
             "北斗七星高，哥舒夜带刀。\n故人西辞黄鹤楼，烟花三月下扬州。\n头上何所有，翠微盍叶垂鬓唇。\n朝避猛虎，夕避长蛇。"
     );
     private PoemView poemView;
+
+    private CheckBox jumpToRead;
 
     private TextView titleLinesTextView;
     private SeekBar titleLinesSeekbar;
@@ -48,6 +53,27 @@ public class OptionActivity extends AppCompatActivity {
 
         poemView = (PoemView) findViewById(R.id.poem_view);
         poemView.setPoem(samplePoem, true);
+
+        // 启动后跳转
+        jumpToRead = (CheckBox) findViewById(R.id.jump_to_read);
+        Context c = MyApplication.getContext();
+        SharedPreferences sp = c.getSharedPreferences(
+                "global",
+                Context.MODE_PRIVATE);
+        jumpToRead.setChecked(sp.getBoolean("jump", false));
+
+        jumpToRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Context c = MyApplication.getContext();
+                SharedPreferences.Editor editor = c.getSharedPreferences(
+                        "global",
+                        Context.MODE_PRIVATE).edit();
+
+                editor.putBoolean("jump", isChecked);
+                editor.apply();
+            }
+        });
 
         // 标题行数
         titleLinesTextView = (TextView) findViewById(R.id.title_lines_text);

@@ -1,5 +1,7 @@
 package animalize.github.com.quantangshi;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -76,6 +78,15 @@ public class MainActivity
         // 关于 ------------------------------
         bt = (Button) findViewById(R.id.main_about);
         bt.setOnClickListener(this);
+
+        // 启动后跳转
+        Context c = MyApplication.getContext();
+        SharedPreferences sp = c.getSharedPreferences(
+                "global",
+                Context.MODE_PRIVATE);
+        if (sp.getBoolean("jump", false)) {
+            OnePoemActivity.actionStart(MainActivity.this);
+        }
     }
 
     @Override

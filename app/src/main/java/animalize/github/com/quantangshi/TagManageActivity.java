@@ -72,6 +72,10 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
 
         // 刷新标签
         refreshTags();
+
+        if (mAllTagList.isEmpty()) {
+            Toast.makeText(this, "尚未添加标签，请在添加后使用本功能。", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void refreshTags() {

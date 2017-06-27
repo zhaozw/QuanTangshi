@@ -73,6 +73,9 @@ public class TagSearchActivity extends AppCompatActivity {
 
         // 所有tags 数组
         mAllTagList = TagAgent.getAllTagInfos();
+        if (mAllTagList.isEmpty()) {
+            Toast.makeText(this, "尚未添加标签，请在添加后使用本功能。", Toast.LENGTH_LONG).show();
+        }
 
         // 所有tags
         allTags = (TagContainerLayout) findViewById(R.id.all_tags);

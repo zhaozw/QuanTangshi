@@ -9,6 +9,27 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动后立即跳转到阅读界面: " />
+
+        <CheckBox
+            android:id="@+id/jump_to_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(建议勾选)" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
             android:id="@+id/title_lines_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

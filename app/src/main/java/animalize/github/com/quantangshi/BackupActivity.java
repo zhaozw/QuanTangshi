@@ -159,7 +159,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean isDBFile(String path) {
-        String p = ".*QTS\\d{6}_\\d{6}\\.db$";
+        String p = ".*QTS\\d{6}_\\d{6}\\.\\w+$";
 
         Pattern pattern = Pattern.compile(p);
         Matcher matcher = pattern.matcher(path);

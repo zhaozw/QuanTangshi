@@ -72,6 +72,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="文件名的模式须为QTS170329_162710.db，其中的数字表示备份时间。" />
+        android:text="文件名的模式须为QTS170329_162710.*，其中的数字表示备份时间。" />
 
 </LinearLayout>
