@@ -36,14 +36,14 @@ public class MainActivity
 
         setContentView(R.layout.activity_main);
 
+        mPoemCount = MyDatabaseHelper.getPoemCount();
+
         // toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(tb);
 
         // 打开诗 ------------------------------
-        mPoemCount = MyDatabaseHelper.getPoemCount();
         Button bt = (Button) findViewById(R.id.main_viewpoem);
-        bt.setText("共" + mPoemCount + "首诗");
         bt.setOnClickListener(this);
 
         // 跳转指定ID ------------------------------

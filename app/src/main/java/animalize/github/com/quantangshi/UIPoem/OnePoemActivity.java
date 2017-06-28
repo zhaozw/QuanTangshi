@@ -67,7 +67,7 @@ public class OnePoemActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.poem_main);
+        setContentView(R.layout.activity_poem_main);
 
         // intent
         Intent intent = getIntent();

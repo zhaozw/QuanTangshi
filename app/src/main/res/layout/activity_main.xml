@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="共xxxx首诗" />
+        android:text="开始阅读" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,8 +31,9 @@
 
         <EditText
             android:id="@+id/jump_edit"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="1至57591"
             android:inputType="number" />
 
         <Button
