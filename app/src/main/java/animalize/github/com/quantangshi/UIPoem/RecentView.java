@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,8 +19,6 @@ import animalize.github.com.quantangshi.R;
  */
 
 public class RecentView extends LinearLayout {
-    final static int recentLimit = 60;
-
     private PoemController mController;
 
     private RecyclerView mRecentList;
@@ -45,9 +42,6 @@ public class RecentView extends LinearLayout {
             }
         };
         mRecentList.setAdapter(mRecentAdapter);
-
-        TextView tv = (TextView) findViewById(R.id.recent_title);
-        tv.setText("最近" + recentLimit + "首");
     }
 
     public void setPoemController(PoemController controller) {
@@ -55,7 +49,7 @@ public class RecentView extends LinearLayout {
     }
 
     public void setPoem(InfoItem info) {
-        RecentAgent.addToRecent(info, recentLimit);
+        RecentAgent.addToRecent(info);
     }
 
     public void LoadRecentList() {

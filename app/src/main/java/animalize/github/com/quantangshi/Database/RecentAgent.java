@@ -10,16 +10,14 @@ import animalize.github.com.quantangshi.Data.InfoItem;
 
 
 public class RecentAgent {
+    // 最多记录60条
+    private static final int limit = 60;
     private static MyLinkedHashMap recentList;
-    private static int limit = 0xffff;
 
-    public static synchronized void addToRecent(final InfoItem info, final int limit) {
+    public static synchronized void addToRecent(final InfoItem info) {
         if (recentList == null) {
             loadRecentList();
         }
-
-        // 设置最大容量
-        RecentAgent.limit = limit;
 
         // 删已有的
         recentList.remove(info.getId());
