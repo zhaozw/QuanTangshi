@@ -84,7 +84,7 @@ public class MainActivity
         SharedPreferences sp = c.getSharedPreferences(
                 "global",
                 Context.MODE_PRIVATE);
-        if (sp.getBoolean("jump", false)) {
+        if (savedInstanceState == null && sp.getBoolean("jump", false)) {
             OnePoemActivity.actionStart(MainActivity.this);
         }
     }
