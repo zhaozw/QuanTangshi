@@ -80,12 +80,14 @@ public class MainActivity
         bt.setOnClickListener(this);
 
         // 启动后跳转
-        Context c = MyApplication.getContext();
-        SharedPreferences sp = c.getSharedPreferences(
-                "global",
-                Context.MODE_PRIVATE);
-        if (savedInstanceState == null && sp.getBoolean("jump", false)) {
-            OnePoemActivity.actionStart(MainActivity.this);
+        if (savedInstanceState == null) {
+            Context c = MyApplication.getContext();
+            SharedPreferences sp = c.getSharedPreferences(
+                    "global",
+                    Context.MODE_PRIVATE);
+            if (sp.getBoolean("jump", false)) {
+                OnePoemActivity.actionStart(MainActivity.this);
+            }
         }
     }
 
