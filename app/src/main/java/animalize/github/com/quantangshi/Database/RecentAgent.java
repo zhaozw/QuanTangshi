@@ -17,6 +17,7 @@ public class RecentAgent {
         if (recentList == null) {
             loadRecentList();
         }
+
         // 设置最大容量
         RecentAgent.limit = limit;
 
@@ -47,7 +48,7 @@ public class RecentAgent {
         return t;
     }
 
-    public static synchronized void reload() {
+    public static synchronized void invalideRecent() {
         recentList = null;
     }
 
@@ -55,8 +56,6 @@ public class RecentAgent {
         recentList = new MyLinkedHashMap();
 
         ArrayList<InfoItem> tempList = MyDatabaseHelper.getRecentList();
-        // 反转
-        Collections.reverse(tempList);
 
         // 添加到本地
         for (InfoItem info : tempList) {

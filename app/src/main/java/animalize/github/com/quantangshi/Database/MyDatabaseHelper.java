@@ -360,7 +360,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         String sql = "SELECT pid, title, author " +
                 "FROM recent " +
-                "ORDER BY id DESC";
+                "ORDER BY id";
         Cursor c = mDb.rawQuery(sql, null);
 
         ArrayList<InfoItem> l = new ArrayList<>();

@@ -24,7 +24,7 @@ public class TagAgent {
     }
 
     // 内部，无效所有tags
-    private static void invalideTags() {
+    public static synchronized void invalideTags() {
         allTags = null;
         allHasCount = null;
     }

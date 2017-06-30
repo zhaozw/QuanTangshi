@@ -59,6 +59,9 @@ public class BackupUtil {
         MyDatabaseHelper.restore(file);
 
         // 重载最近列表
-        RecentAgent.reload();
+        RecentAgent.invalideRecent();
+
+        // 重载所有tags
+        TagAgent.invalideTags();
     }
 }
