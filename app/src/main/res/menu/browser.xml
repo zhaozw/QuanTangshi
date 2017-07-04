@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/set_font_ratio"
-        android:title="字体设置"
+        android:title="设置缩放"
         app:showAsAction="never" />
     <item
         android:id="@+id/set_clear_caches"
-        android:title="清除缓存"
+        android:title="清除WebView缓存"
         app:showAsAction="never" />
 </menu>

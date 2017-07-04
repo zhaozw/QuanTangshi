@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +56,8 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
 
         // 要在setSupportActionBar之后
         tb.setOnMenuItemClickListener(this);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         ratio = loadRatio();
 
@@ -87,7 +91,6 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
         ratioText.setText(PREFIX + ratio);
 
         ratioBar = (SeekBar) findViewById(R.id.ratio_bar);
-        ratioBar.incrementProgressBy(10);
         ratioBar.setProgress(ratio);
         ratioBar.setOnSeekBarChangeListener(this);
     }
@@ -116,14 +119,38 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
                 initWidgets();
                 ratioPanel.setVisibility(View.VISIBLE);
                 break;
+
             case R.id.set_clear_caches:
                 webView.clearCache(true);
                 Toast.makeText(this, "已清除本应用的WebView缓存", Toast.LENGTH_SHORT).show();
                 break;
+
             default:
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                    } else {
+                        finish();
+                    }
+                    return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -150,8 +177,8 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        progress = progress / 10;
-        progress = progress * 10;
+        progress = progress / 5;
+        progress = progress * 5;
         ratioText.setText(PREFIX + progress);
 
         webView.getSettings().setTextZoom(progress);
