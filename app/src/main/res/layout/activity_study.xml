@@ -73,13 +73,23 @@
                 android:id="@+id/button_t"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="繁体" />
+                android:minHeight="0dp"
+                android:minWidth="30dp"
+                android:text="繁" />
 
             <Button
                 android:id="@+id/button_s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="简体" />
+                android:minHeight="0dp"
+                android:minWidth="30dp"
+                android:text="简" />
+
+            <CheckBox
+                android:id="@+id/sys_browser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="系统浏览器" />
 
             <View
                 android:layout_width="0dp"

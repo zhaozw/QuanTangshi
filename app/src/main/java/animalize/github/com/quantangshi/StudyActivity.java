@@ -16,6 +16,8 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,7 +33,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
 
-public class StudyActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener, RadioGroup.OnCheckedChangeListener {
+public class StudyActivity extends AppCompatActivity implements View.OnClickListener, TagView.OnTagClickListener, RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
     private final static String SAVE_ID = "poem_id";
     private final static String SAVE_WORDS = "search_words";
 
@@ -44,6 +46,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
     private Button button_t;
     private Button button_s;
+    private CheckBox sys_browser;
 
     private EditText edit_item;
     private TagContainerLayout items;
@@ -71,6 +74,9 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
         button_s = (Button) findViewById(R.id.button_s);
         button_s.setOnClickListener(this);
+
+        sys_browser = (CheckBox) findViewById(R.id.sys_browser);
+        sys_browser.setOnCheckedChangeListener(this);
 
         // 编辑按钮
         Button b = (Button) findViewById(R.id.add_item);
@@ -107,11 +113,14 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
         mode = pref.getInt("mode", 1);
         int engine = pref.getInt("engine", 0);
+        boolean isSysBroswer = pref.getBoolean("sysbroswer", false);
 
         changeButtonMode(mode, false);
         if (savedInstanceState == null) {
             showPoem();
         }
+
+        sys_browser.setChecked(isSysBroswer);
 
         engines = (RadioGroup) findViewById(R.id.radioGroup);
         if (engine == 0) {
@@ -364,9 +373,13 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if (url != null) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+            if (sys_browser.isChecked()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            } else {
+                StudyResultActivity.actionStart(this, text, url);
+            }
         }
     }
 
@@ -403,6 +416,13 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
 
         SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
         editor.putInt("engine", engine);
+        editor.apply();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putBoolean("sysbroswer", isChecked);
         editor.apply();
     }
 
