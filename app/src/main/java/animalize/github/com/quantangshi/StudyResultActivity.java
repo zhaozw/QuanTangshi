@@ -123,7 +123,7 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
             case R.id.set_clear_caches:
                 webView.clearCache(true);
                 String s = "已清除本应用的WebView缓存。\n通常不必执行此操作。";
-                Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, s, Toast.LENGTH_LONG).show();
                 break;
 
             default:
