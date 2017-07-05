@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class StudyResultActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    private static final String PREFIX = "当前比例：";
+    private static final String PREFIX = "缩放比例：";
     private WebView webView;
     private LinearLayout ratioPanel;
     private Button ratioOK, ratioCancel;
@@ -122,7 +122,8 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
 
             case R.id.set_clear_caches:
                 webView.clearCache(true);
-                Toast.makeText(this, "已清除本应用的WebView缓存", Toast.LENGTH_SHORT).show();
+                String s = "已清除本应用的WebView缓存。\n通常不必执行此操作。";
+                Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
                 break;
 
             default:

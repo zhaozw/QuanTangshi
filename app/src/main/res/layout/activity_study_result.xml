@@ -19,7 +19,9 @@
         android:id="@+id/ratio_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/layout_border"
         android:orientation="vertical"
+        android:padding="5dp"
         android:visibility="gone">
 
         <LinearLayout
