@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="将“我的使用数据”备份到主存储器的这个目录：" />
+        android:text="将当前的标签、最近列表备份到主存储器的这个目录：" />
 
     <TextView
         android:id="@+id/loc_path"
@@ -47,6 +47,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="开始备份" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="文件名的模式为QTS170329_162710.db，其中的数字表示备份时间。" />
 
     <View
         android:layout_width="match_parent"
@@ -72,6 +77,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="文件名的模式须为QTS170329_162710.*，其中的数字表示备份时间。" />
+        android:text="文件名的模式须为QTS170329_162710.*，否则无法通过验证。" />
 
 </LinearLayout>
