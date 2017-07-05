@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -45,7 +46,15 @@ public class TagSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag);
+        setContentView(R.layout.activity_tag_search);
+
+        // toolbar
+        Toolbar tb = (Toolbar) findViewById(R.id.tag_search_toolbar);
+        tb.setTitle("标签搜索");
+        setSupportActionBar(tb);
+
+        // 要在setSupportActionBar之后
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         searchTags = (TagContainerLayout) findViewById(R.id.search_tags);
         searchTags.setOnTagClickListener(new TagView.OnTagClickListener() {
@@ -213,5 +222,11 @@ public class TagSearchActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,14 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_manage);
+
+        // toolbar
+        Toolbar tb = (Toolbar) findViewById(R.id.tag_manage_toolbar);
+        tb.setTitle("标签管理");
+        setSupportActionBar(tb);
+
+        // 要在setSupportActionBar之后
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         currentTag = (TextView) findViewById(R.id.current_tag);
 
@@ -147,5 +156,11 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
 
                 break;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

@@ -7,11 +7,21 @@
     android:orientation="vertical"
     tools:context="animalize.github.com.quantangshi.TagSearchActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tag_search_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:contentInsetStartWithNavigation="0dp"
+        app:theme="@style/ToolbarColoredBackArrow"
+        app:titleTextColor="@android:color/white" />
+
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/search_tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tag_enable_cross="true" />
+        app:tag_enable_cross="true"
+        app:tag_text_size="18sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -52,7 +62,8 @@
                 <co.lujun.androidtagview.TagContainerLayout
                     android:id="@+id/all_tags"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:tag_text_size="18sp" />
             </ScrollView>
         </LinearLayout>
 

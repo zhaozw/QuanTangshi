@@ -33,7 +33,9 @@
         <activity android:name=".TipActivity" />
         <activity android:name=".BackupActivity" />
         <activity android:name=".TagManageActivity" />
-        <activity android:name=".StudyResultActivity" />
+        <activity
+            android:name=".StudyResultActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>
