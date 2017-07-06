@@ -199,7 +199,7 @@ public class OnePoemActivity
             @Override
             public void onClick(View v) {
                 randomPoem();
-                updateUIForPoem(true);
+                updateUIForPoem(true, true);
             }
         });
 
@@ -212,6 +212,7 @@ public class OnePoemActivity
         setPoemMode(mode);
 
         // 读取诗
+        boolean saveID = true;
         if (intentID != -1) {
             toPoemByID(intentID);
             intent.removeExtra("poem_id");
@@ -219,6 +220,7 @@ public class OnePoemActivity
             // load上回的
             if (id != -1) {
                 toPoemByID(id);
+                saveID = false;
             } else {
                 randomPoem();
             }
@@ -226,14 +228,14 @@ public class OnePoemActivity
 
         // 各种UI
         boolean showPoem = savedInstanceState == null;
-        updateUIForPoem(showPoem);
+        updateUIForPoem(showPoem, saveID);
     }
 
     @Override
     public void setPoemID(int id) {
         toPoemByID(id);
 
-        updateUIForPoem(true);
+        updateUIForPoem(true, true);
     }
 
     private void randomPoem() {
@@ -245,7 +247,7 @@ public class OnePoemActivity
         currentPoem = MyDatabaseHelper.getPoemById(id);
     }
 
-    private void updateUIForPoem(boolean showPoem) {
+    private void updateUIForPoem(boolean showPoem, boolean saveID) {
         // 诗
         poemView.setPoem(currentPoem, showPoem);
 
@@ -261,9 +263,11 @@ public class OnePoemActivity
         tagView.setPoemId(currentPoem.getId());
 
         // 写入
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-        editor.putInt("poem_id", currentPoem.getId());
-        editor.apply();
+        if (saveID) {
+            SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+            editor.putInt("poem_id", currentPoem.getId());
+            editor.apply();
+        }
     }
 
     private void setPoemModeSave(int mode) {
