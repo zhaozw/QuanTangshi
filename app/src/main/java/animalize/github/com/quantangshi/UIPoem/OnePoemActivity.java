@@ -26,7 +26,7 @@ import animalize.github.com.quantangshi.StudyActivity;
 
 public class OnePoemActivity
         extends AppCompatActivity
-        implements PoemController {
+        implements PoemController, View.OnClickListener, SlidingUpPanelLayout.PanelSlideListener {
 
     private final static int NO = 1;
     private final static int NEIGHBOR = 2;
@@ -86,122 +86,35 @@ public class OnePoemActivity
         swichFrame = (FrameLayout) findViewById(R.id.switch_frame);
 
         slider = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        slider.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.DRAGGING) {
-                    return;
-                } else if (newState == SlidingUpPanelLayout.PanelState.ANCHORED) {
-                    Rect r = new Rect();
-                    if (swichFrame.getGlobalVisibleRect(r)) {
-                        swichFrame.getLayoutParams().height = r.height();
-                        swichFrame.requestLayout();
-                    }
-                    collapsed = false;
-                } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    collapsed = true;
-                } else {
-                    swichFrame.setLayoutParams(
-                            new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT)
-                    );
-                    collapsed = false;
-                }
-                setBoldButton();
-            }
-        });
+        slider.addPanelSlideListener(this);
 
         // 显示tag
         tagButton = (Button) findViewById(R.id.show_tag);
-        tagButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                }
-                setView(TAG);
-                setBoldButton();
-            }
-        });
+        tagButton.setOnClickListener(this);
 
         // 显示最近列表
-        recentButton = (Button) findViewById(R.id.show_drawer);
-        recentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                }
-                setView(RECENT);
-                setBoldButton();
-            }
-        });
+        recentButton = (Button) findViewById(R.id.show_recent);
+        recentButton.setOnClickListener(this);
 
         // 显示邻近
         neighborButton = (Button) findViewById(R.id.show_neighbour);
-        neighborButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                neighbourView.centerPosition();
-
-                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                }
-                setView(NEIGHBOR);
-                setBoldButton();
-            }
-        });
+        neighborButton.setOnClickListener(this);
 
         // 学习
-        mDicButton = (Button) findViewById(R.id.start_dic);
-        mDicButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StudyActivity.actionStart(OnePoemActivity.this, currentPoem.getId());
-            }
-        });
+        mDicButton = (Button) findViewById(R.id.start_study);
+        mDicButton.setOnClickListener(this);
 
         // 繁体、简体、简体+
         mTButton = (Button) findViewById(R.id.button_t);
-        mTButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                poemView.setMode(0);
-                setPoemModeSave(0);
-            }
-        });
+        mTButton.setOnClickListener(this);
         mSButton = (Button) findViewById(R.id.button_s);
-        mSButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                poemView.setMode(1);
-                setPoemModeSave(1);
-            }
-        });
+        mSButton.setOnClickListener(this);
         mSpButton = (Button) findViewById(R.id.button_sp);
-        mSpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                poemView.setMode(2);
-                setPoemModeSave(2);
-            }
-        });
+        mSpButton.setOnClickListener(this);
 
         // 下一首随机诗
         Button b = (Button) findViewById(R.id.next_random);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                randomPoem();
-                updateUIForPoem(true, true);
-            }
-        });
+        b.setOnClickListener(this);
 
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
@@ -391,6 +304,90 @@ public class OnePoemActivity
         setView(currentView);
 
         collapsed = savedInstanceState.getBoolean("collapsed");
+        setBoldButton();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.next_random:
+                randomPoem();
+                updateUIForPoem(true, true);
+                break;
+
+            case R.id.show_tag:
+                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                }
+                setView(TAG);
+                setBoldButton();
+                break;
+
+            case R.id.show_recent:
+                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                }
+                setView(RECENT);
+                setBoldButton();
+                break;
+
+            case R.id.show_neighbour:
+                neighbourView.centerPosition();
+
+                if (slider.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slider.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+                }
+                setView(NEIGHBOR);
+                setBoldButton();
+                break;
+
+            case R.id.start_study:
+                StudyActivity.actionStart(OnePoemActivity.this, currentPoem.getId());
+                break;
+
+            case R.id.button_t:
+                poemView.setMode(0);
+                setPoemModeSave(0);
+                break;
+
+            case R.id.button_s:
+                poemView.setMode(1);
+                setPoemModeSave(1);
+                break;
+
+            case R.id.button_sp:
+                poemView.setMode(2);
+                setPoemModeSave(2);
+                break;
+        }
+    }
+
+    @Override
+    public void onPanelSlide(View panel, float slideOffset) {
+
+    }
+
+    @Override
+    public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+        if (newState == SlidingUpPanelLayout.PanelState.DRAGGING) {
+            return;
+        } else if (newState == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            Rect r = new Rect();
+            if (swichFrame.getGlobalVisibleRect(r)) {
+                swichFrame.getLayoutParams().height = r.height();
+                swichFrame.requestLayout();
+            }
+            collapsed = false;
+        } else if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            collapsed = true;
+        } else {
+            swichFrame.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT)
+            );
+            collapsed = false;
+        }
         setBoldButton();
     }
 }

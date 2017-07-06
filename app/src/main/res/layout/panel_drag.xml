@@ -46,7 +46,7 @@
             android:textColor="#990000" />
 
         <Button
-            android:id="@+id/start_dic"
+            android:id="@+id/start_study"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="学习" />
@@ -65,7 +65,7 @@
             android:text="邻近" />
 
         <Button
-            android:id="@+id/show_drawer"
+            android:id="@+id/show_recent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="最近" />
