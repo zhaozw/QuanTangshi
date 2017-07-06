@@ -118,25 +118,20 @@ public class OnePoemActivity
 
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        int id = pref.getInt("poem_id", -1);
         int mode = pref.getInt("mode", 2);
-
         // 模式
         setPoemMode(mode);
 
         // 读取诗
         boolean saveID = true;
-        if (intentID != -1) {
+        if (intentID == -1) {
+            // load上回的
+            int id = pref.getInt("poem_id", 1);
+            toPoemByID(id);
+            saveID = false;
+        } else {
             toPoemByID(intentID);
             intent.removeExtra("poem_id");
-        } else {
-            // load上回的
-            if (id != -1) {
-                toPoemByID(id);
-                saveID = false;
-            } else {
-                randomPoem();
-            }
         }
 
         // 各种UI
@@ -146,9 +141,10 @@ public class OnePoemActivity
 
     @Override
     public void setPoemID(int id) {
-        toPoemByID(id);
-
-        updateUIForPoem(true, true);
+        if (currentPoem == null || currentPoem.getId() != id) {
+            toPoemByID(id);
+            updateUIForPoem(true, true);
+        }
     }
 
     private void randomPoem() {
