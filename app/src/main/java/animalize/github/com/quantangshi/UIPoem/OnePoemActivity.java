@@ -214,6 +214,7 @@ public class OnePoemActivity
         // 读取诗
         if (intentID != -1) {
             toPoemByID(intentID);
+            intent.removeExtra("poem_id");
         } else {
             // load上回的
             if (id != -1) {
