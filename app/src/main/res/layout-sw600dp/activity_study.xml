@@ -25,16 +25,14 @@
                 android:ellipsize="end"
                 android:padding="9dp"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="28sp" />
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/poem_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:paddingRight="20dp"
-                android:textSize="28sp" />
+                android:paddingRight="20dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -50,8 +48,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="28sp" />
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
     </ScrollView>

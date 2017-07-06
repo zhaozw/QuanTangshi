@@ -28,6 +28,7 @@ import java.util.List;
 
 import animalize.github.com.quantangshi.Data.PoemWrapper;
 import animalize.github.com.quantangshi.Data.RawPoem;
+import animalize.github.com.quantangshi.Data.Typeset;
 import animalize.github.com.quantangshi.Database.MyDatabaseHelper;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
@@ -37,6 +38,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
     private final static String SAVE_ID = "poem_id";
     private final static String SAVE_WORDS = "search_words";
 
+    private Typeset mTypeset = Typeset.getInstance();
     private PoemWrapper poemWrapper;
     private int mode;
 
@@ -65,8 +67,14 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_study);
 
         title = (TextView) findViewById(R.id.poem_title);
+        title.setTextSize(mTypeset.getTextSize());
+
         author = (TextView) findViewById(R.id.poem_author);
+        author.setTextSize(mTypeset.getTextSize());
+
         text = (TextView) findViewById(R.id.poem_text);
+        text.setTextSize(mTypeset.getTextSize());
+
         edit_item = (EditText) findViewById(R.id.item_edit);
 
         button_t = (Button) findViewById(R.id.button_t);
@@ -100,6 +108,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt(SAVE_ID, 1);
 
+            // 恢复标签
             ArrayList<String> tags = savedInstanceState.getStringArrayList(SAVE_WORDS);
             items.setTags(tags);
         } else {
@@ -107,7 +116,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             id = intent.getIntExtra("id", 1);
         }
         RawPoem poem = MyDatabaseHelper.getPoemById(id);
-        poemWrapper = new PoemWrapper(poem);
+        poemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
 
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);
