@@ -123,7 +123,7 @@ public class OnePoemActivity
         setPoemMode(mode);
 
         // 读取诗
-        boolean saveID = true;
+        boolean saveID;
         if (intentID == -1) {
             // load上回的
             int id = pref.getInt("poem_id", 1);
@@ -132,6 +132,7 @@ public class OnePoemActivity
         } else {
             toPoemByID(intentID);
             intent.removeExtra("poem_id");
+            saveID = true;
         }
 
         // 各种UI

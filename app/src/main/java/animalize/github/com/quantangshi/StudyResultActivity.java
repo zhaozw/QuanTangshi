@@ -208,4 +208,29 @@ public class StudyResultActivity extends AppCompatActivity implements Toolbar.On
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
+    @Override
+    public void onPause() {
+        webView.onPause();
+        webView.pauseTimers();
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        webView.resumeTimers();
+        webView.onResume();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        webView.destroy();
+        webView = null;
+
+        super.onDestroy();
+    }
 }
