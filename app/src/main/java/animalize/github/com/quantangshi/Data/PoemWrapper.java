@@ -9,6 +9,8 @@ import animalize.github.com.quantangshi.T2sMap.T2s;
  */
 
 public class PoemWrapper {
+    private static PoemWrapper cache;
+
     private RawPoem poem;
     private String text;
 
@@ -23,14 +25,16 @@ public class PoemWrapper {
     private String sp_text;
     private ArrayList<CodepointPosition> posi_text;
 
-    public PoemWrapper(RawPoem poem, int lineBreak) {
+    private PoemWrapper(RawPoem poem, int lineBreak) {
         this.poem = poem;
         setLineBreak(lineBreak);
     }
 
-    public PoemWrapper(RawPoem poem) {
-        this.poem = poem;
-        text = poem.getText();
+    public static PoemWrapper getPoemWrapper(RawPoem poem, int lineBreak) {
+        if (cache == null || cache.getID() != poem.getId()) {
+            cache = new PoemWrapper(poem, lineBreak);
+        }
+        return cache;
     }
 
     public void setLineBreak(int lineBreak) {

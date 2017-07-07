@@ -116,7 +116,7 @@ public class StudyActivity extends AppCompatActivity implements View.OnClickList
             id = intent.getIntExtra("id", 1);
         }
         RawPoem poem = MyDatabaseHelper.getPoemById(id);
-        poemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
+        poemWrapper = PoemWrapper.getPoemWrapper(poem, mTypeset.getLineBreak());
 
         // 读取配置
         SharedPreferences pref = getPreferences(MODE_PRIVATE);

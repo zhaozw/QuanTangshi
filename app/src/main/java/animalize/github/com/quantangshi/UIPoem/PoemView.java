@@ -81,7 +81,7 @@ public class PoemView extends LinearLayout {
 
     public void setPoem(RawPoem poem, boolean showPoem) {
         boolean first = mPoemWrapper == null;
-        mPoemWrapper = new PoemWrapper(poem, mTypeset.getLineBreak());
+        mPoemWrapper = PoemWrapper.getPoemWrapper(poem, mTypeset.getLineBreak());
 
         if (first) {
             updateTypeset();
