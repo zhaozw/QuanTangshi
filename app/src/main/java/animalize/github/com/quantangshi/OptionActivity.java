@@ -16,8 +16,9 @@ import animalize.github.com.quantangshi.UIPoem.PoemView;
 
 public class OptionActivity extends AppCompatActivity {
 
+    // 编号一定要大于诗的总数
     private RawPoem samplePoem = new RawPoem(
-            666,
+            66666,
             "在学习界面可以看到完整的诗标题，很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
             "诗的作者",
             "北斗七星高，哥舒夜带刀。\n故人西辞黄鹤楼，烟花三月下扬州。\n头上何所有，翠微盍叶垂鬓唇。\n朝避猛虎，夕避长蛇。"
