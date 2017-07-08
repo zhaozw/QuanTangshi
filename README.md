@@ -11,12 +11,22 @@
 ### 截图
 <table>
 <tr>
-<td>阅读</td><td>学习功能</td><td>标签功能</td><td>最近列表</td>
+<td>阅读</td><td>学习功能</td><td>学习功能</td><td>最近列表</td>
 </tr>
+<tr>
 <td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/1.png" /></td>
 <td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/2.png" /></td>
 <td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/3.png" /></td>
 <td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/4.png" /></td>
+</tr>
+<td>标签功能</td><td>标签搜索</td><td>标签管理</td><td>阅读设置</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/5.png" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/6.png" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/7.png" /></td>
+<td><img src="https://raw.githubusercontent.com/animalize/pics/master/QuanTangshi/8.png" /></td>
+</tr>
 </table>
 
 ### 编译指南
