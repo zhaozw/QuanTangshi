@@ -32,6 +32,7 @@ public class TagSearchActivity extends AppCompatActivity {
     private TagContainerLayout searchTags;
     private TagContainerLayout allTags;
 
+    private Toolbar tb;
     private LinearLayout layoutAll;
     private LinearLayout layoutResult;
 
@@ -49,7 +50,7 @@ public class TagSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tag_search);
 
         // toolbar
-        Toolbar tb = (Toolbar) findViewById(R.id.tag_search_toolbar);
+        tb = (Toolbar) findViewById(R.id.tag_search_toolbar);
         tb.setTitle("标签搜索");
         setSupportActionBar(tb);
 
@@ -121,6 +122,8 @@ public class TagSearchActivity extends AppCompatActivity {
                 }
 
                 ArrayList<InfoItem> l = MyDatabaseHelper.queryByTags(list);
+
+                tb.setTitle("标签搜索 - 找到" + l.size() + "首");
 
                 resultAdapter.setArrayList(l);
 
@@ -194,6 +197,8 @@ public class TagSearchActivity extends AppCompatActivity {
                 }
             }
         }
+
+        tb.setTitle("标签搜索");
 
         // 可见、不可见
         layoutResult.setVisibility(View.INVISIBLE);
