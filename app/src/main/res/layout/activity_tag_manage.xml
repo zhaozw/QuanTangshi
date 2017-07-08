@@ -24,7 +24,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="操作对象：" />
+            android:text="当前操作对象："
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/current_tag"
@@ -42,12 +43,14 @@
             android:id="@+id/rename_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="将“操作对象”改名/合并到:" />
+            android:text="将“操作对象”改名或合并到:" />
 
         <EditText
             android:id="@+id/new_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
 
     </LinearLayout>
 
@@ -56,6 +59,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="删除“操作对象”" />
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="点击下列标签作为操作对象"
+        android:textSize="20sp" />
 
     <ScrollView
         android:layout_width="match_parent"

@@ -107,6 +107,7 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.rename_tag:
                 if ("".equals(newname)) {
+                    Toast.makeText(this, "请先输入新的标签名称", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
