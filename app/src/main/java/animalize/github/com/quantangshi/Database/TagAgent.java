@@ -23,7 +23,7 @@ public class TagAgent {
         return allTags;
     }
 
-    // 内部，无效所有tags
+    // 无效所有tags
     public static synchronized void invalideTags() {
         allTags = null;
         allHasCount = null;
@@ -76,6 +76,11 @@ public class TagAgent {
         invalideTags();
 
         return r;
+    }
+
+    // 是否存在tag
+    public static synchronized boolean hasTag(String tag) {
+        return MyDatabaseHelper.hasTag(tag);
     }
 
     // 整体，改名、合并

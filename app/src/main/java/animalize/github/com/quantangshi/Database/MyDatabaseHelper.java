@@ -63,7 +63,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         init();
 
-        String sql = "SELECT count(*) FROM tangshi.poem";
+        String sql = "SELECT COUNT(*) FROM tangshi.poem";
         Cursor c = mDb.rawQuery(sql, null);
         c.moveToFirst();
         mPoemCount = c.getInt(0);
@@ -196,6 +196,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         mDb.execSQL("COMMIT");
 
         return true;
+    }
+
+    // 是否存在tag
+    public static synchronized boolean hasTag(String tag) {
+        init();
+
+        String sql = "SELECT COUNT(*) FROM tag WHERE name=?";
+        Cursor c = mDb.rawQuery(sql, new String[]{tag});
+        c.moveToFirst();
+        int count = c.getInt(0);
+        c.close();
+
+        return count > 0;
     }
 
     // 得到所有tag
@@ -395,7 +408,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         mDb.insert("recent", null, cv);
 
         // get count
-        String sql = "SELECT count(*) FROM recent";
+        String sql = "SELECT COUNT(*) FROM recent";
         Cursor c = mDb.rawQuery(sql, null);
         c.moveToFirst();
         int count = c.getInt(0);
@@ -503,7 +516,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             mDb.execSQL(sql, new String[]{String.valueOf(otid)});
 
             // 更新count
-            sql = "SELECT count(*) FROM tag_map WHERE tid=?";
+            sql = "SELECT COUNT(*) FROM tag_map WHERE tid=?";
             c = mDb.rawQuery(sql, new String[]{String.valueOf(ntid)});
             c.moveToFirst();
             int count = c.getInt(0);

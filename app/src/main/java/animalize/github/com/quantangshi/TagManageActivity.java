@@ -113,7 +113,9 @@ public class TagManageActivity extends AppCompatActivity implements View.OnClick
 
                 AlertDialog.Builder d = new AlertDialog.Builder(this);
                 d.setTitle("确认改名或合并操作");
-                d.setMessage("是否将 " + tag + " 改名或合并到 " + newname + " ？");
+
+                String s = TagAgent.hasTag(newname) ? " 【合并】到 " : " 【改名】为 ";
+                d.setMessage("是否将 " + tag + s + newname + " ？");
                 d.setCancelable(false);
                 d.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
