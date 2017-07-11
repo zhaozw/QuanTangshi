@@ -148,9 +148,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
 
     private void chooseFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //设置类型，我这里是任意类型，任意后缀的可以这样写。
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("file/*");
+
         try {
             startActivityForResult(intent, FILE_SELECT_CODE);
         } catch (Exception e) {
