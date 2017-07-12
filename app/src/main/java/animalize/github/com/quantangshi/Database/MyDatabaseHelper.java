@@ -433,8 +433,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                                                                     int window) {
         init();
 
-        int left = id - window / 2;
-        int right = id + window / 2;
+        window = window / 2;
+        final int left = id - window;
+        final int right = id + window;
 
         String sql = "SELECT id,title,author FROM tangshi.poem " +
                 "WHERE ? <= id AND id <= ? " +
