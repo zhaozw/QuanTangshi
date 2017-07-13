@@ -195,7 +195,7 @@
                 app:tag_cross_color="#999999"
                 app:tag_enable_cross="true"
                 app:tag_horizontal_padding="12dp"
-                app:tag_text_color="#FF0f0f0f"
+                app:tag_text_color="#0f0f0f"
                 app:tag_text_size="18sp"
                 app:tag_theme="none"
                 app:tag_vertical_padding="10dp" />

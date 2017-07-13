@@ -407,25 +407,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put("time", (int) (System.currentTimeMillis() / 1000));
         mDb.insert("recent", null, cv);
 
-        // get count
-        String sql = "SELECT COUNT(*) FROM recent";
-        Cursor c = mDb.rawQuery(sql, null);
-        c.moveToFirst();
-        int count = c.getInt(0);
-        c.close();
-
-        if (count <= limit) {
-            return;
-        }
-
         // del old
-        sql = "DELETE FROM recent " +
-                "WHERE ID IN (SELECT ID " +
-                "FROM recent " +
-                "ORDER BY ID ASC " +
-                "LIMIT ?);";
-        int deltop = count - limit;
-        mDb.execSQL(sql, new String[]{String.valueOf(deltop)});
+        String sql = "DELETE FROM recent " +
+                "WHERE ID IN (" +
+                "SELECT ID FROM recent ORDER BY ID DESC LIMIT ? OFFSET ?)";
+        String temp = String.valueOf(limit);
+        mDb.execSQL(sql, new String[]{temp, temp});
     }
 
     // 得到邻近的
