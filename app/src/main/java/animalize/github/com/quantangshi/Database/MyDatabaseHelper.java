@@ -456,7 +456,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         // 得到新tag id
         String sql = "SELECT id FROM tag WHERE name=?";
-        Cursor c = mDb.rawQuery(sql, new String[]{String.valueOf(n)});
+        Cursor c = mDb.rawQuery(sql, new String[]{n});
         if (c.moveToFirst()) {
             ntid = c.getInt(0);
         }
@@ -464,11 +464,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         if (ntid == -1) { // 仅改名
             sql = "UPDATE tag SET name=? WHERE name=?";
-            mDb.execSQL(sql, new String[]{String.valueOf(n), String.valueOf(o)});
+            mDb.execSQL(sql, new String[]{n, o});
         } else { // 合并
             // 得到旧tag id
             sql = "SELECT id FROM tag WHERE name=?";
-            c = mDb.rawQuery(sql, new String[]{String.valueOf(o)});
+            c = mDb.rawQuery(sql, new String[]{o});
             c.moveToFirst();
             otid = c.getInt(0);
             c.close();
@@ -525,11 +525,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "WHERE tid IN (SELECT id " +
                 "FROM tag " +
                 "WHERE name=?)";
-        mDb.execSQL(sql, new String[]{String.valueOf(tag)});
+        mDb.execSQL(sql, new String[]{tag});
 
         // 从tag删除
         sql = "DELETE FROM tag WHERE name=?";
-        mDb.execSQL(sql, new String[]{String.valueOf(tag)});
+        mDb.execSQL(sql, new String[]{tag});
 
         return true;
     }
