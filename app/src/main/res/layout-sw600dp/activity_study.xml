@@ -186,7 +186,7 @@
                 android:id="@+id/items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:container_background_color="#FFEEEE"
+                app:container_background_color="#11FF0000"
                 app:container_border_color="#22FF0000"
                 app:container_border_radius="0dp"
                 app:tag_background_color="#BDD5D9"
