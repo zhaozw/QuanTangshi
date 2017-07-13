@@ -10,10 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:gravity="center_horizontal"
         android:maxLines="2"
         android:padding="9dp"
-        android:textAlignment="center"
-
         android:textColor="@android:color/black"
         android:textSize="26sp" />
 
@@ -28,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:paddingLeft="20dp"
-
             android:textSize="20sp" />
 
         <TextView
@@ -37,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="20dp"
-
             android:textSize="20sp" />
 
     </RelativeLayout>
@@ -62,10 +59,9 @@
             android:id="@+id/poem_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:textAlignment="center"
-
             android:textColor="@android:color/black"
             android:textSize="26sp" />
     </ScrollView>

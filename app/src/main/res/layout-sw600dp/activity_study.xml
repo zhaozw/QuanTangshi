@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:gravity="center_horizontal"
                 android:padding="9dp"
-                android:textAlignment="center"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -45,9 +45,9 @@
                 android:id="@+id/poem_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:textAlignment="center"
                 android:textColor="@android:color/black" />
 
         </LinearLayout>
