@@ -409,8 +409,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         // del old
         String sql = "DELETE FROM recent " +
-                "WHERE ID IN (" +
-                "SELECT ID FROM recent ORDER BY ID DESC LIMIT ? OFFSET ?)";
+                "WHERE id IN (" +
+                "SELECT id FROM recent ORDER BY id DESC LIMIT ? OFFSET ?)";
         String temp = String.valueOf(limit);
         mDb.execSQL(sql, new String[]{temp, temp});
     }
