@@ -296,7 +296,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    // 更新tag count
+    // 更新tag count, 由外层设置事务
     private static void updateTagCount(int tid, int count) {
         String sql = "UPDATE tag SET count=? WHERE id=?";
         mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
@@ -396,6 +396,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static synchronized void addToRecentList(InfoItem info, int limit) {
         init();
 
+        mDb.execSQL("BEGIN");
+
         // 已有的话，先删
         mDb.delete("recent", "pid=?", new String[]{String.valueOf(info.getId())});
 
@@ -413,6 +415,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 "SELECT id FROM recent ORDER BY id DESC LIMIT ? OFFSET ?)";
         String temp = String.valueOf(limit);
         mDb.execSQL(sql, new String[]{temp, temp});
+
+        mDb.execSQL("COMMIT");
     }
 
     // 得到邻近的
@@ -466,6 +470,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             sql = "UPDATE tag SET name=? WHERE name=?";
             mDb.execSQL(sql, new String[]{n, o});
         } else { // 合并
+            mDb.execSQL("BEGIN");
+
             // 得到旧tag id
             sql = "SELECT id FROM tag WHERE name=?";
             c = mDb.rawQuery(sql, new String[]{o});
@@ -511,6 +517,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             c.close();
 
             updateTagCount(ntid, count);
+
+            mDb.execSQL("COMMIT");
         }
 
         return true;
@@ -519,6 +527,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     // 整体，删除一个标签
     public static boolean delTag(String tag) {
         init();
+
+        mDb.execSQL("BEGIN");
 
         // 从tag map删除
         String sql = "DELETE FROM tag_map " +
@@ -530,6 +540,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // 从tag删除
         sql = "DELETE FROM tag WHERE name=?";
         mDb.execSQL(sql, new String[]{tag});
+
+        mDb.execSQL("COMMIT");
 
         return true;
     }
