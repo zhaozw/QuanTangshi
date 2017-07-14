@@ -298,12 +298,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // 更新tag count, 由外层设置事务
     private static void updateTagCount(int tid, int count) {
-        String sql = "UPDATE tag SET count=? WHERE id=?";
-        mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
+        String sql;
 
-        // 当引用为0时删除
-        sql = "DELETE FROM tag WHERE id=? AND count<=0";
-        mDb.execSQL(sql, new String[]{String.valueOf(tid)});
+        if (count > 0) {
+            sql = "UPDATE tag SET count=? WHERE id=?";
+            mDb.execSQL(sql, new String[]{String.valueOf(count), String.valueOf(tid)});
+        } else {
+            // 引用为0时删除
+            sql = "DELETE FROM tag WHERE id=?";
+            mDb.execSQL(sql, new String[]{String.valueOf(tid)});
+        }
     }
 
     // 添加到tag_map
